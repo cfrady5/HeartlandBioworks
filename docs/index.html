@@ -115,47 +115,34 @@
     .partner-mark{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;flex-shrink:0;}
     .partner-name{font-size:.85rem;font-weight:600;color:var(--muted);}
 
-    /* ── ECOSYSTEM CARDS ── */
+    /* ── PROGRAM ACCORDION ── */
     .eco-header{text-align:center;margin-bottom:52px;}
     .eco-header .ssub{margin:8px auto 0;}
-    .eco-track{display:flex;gap:10px;height:440px;overflow:hidden;}
-    .eco-card{
-      flex:1;min-width:0;position:relative;border-radius:16px;
-      overflow:hidden;cursor:pointer;
-      transition:flex 450ms ease-in-out;
-      outline:none;
-    }
-    .eco-track.has-active .eco-card:not(.active){flex:.38;}
-    .eco-card.active{flex:2.6;}
-    .eco-card[data-p="biotrain"]{background:linear-gradient(155deg,#0D4568 0%,#082D46 100%);}
-    .eco-card[data-p="biolaunch"]{background:linear-gradient(155deg,#00843D 0%,#054A24 100%);}
-    .eco-card[data-p="biocan"]{background:linear-gradient(155deg,#0D5A70 0%,#0D4568 100%);}
-    .eco-card[data-p="biodefense"]{background:linear-gradient(155deg,#1A1A2E 0%,#0D4568 100%);}
-    /* Hover affordance on collapsed cards */
-    .eco-card:not(.active):hover{flex:.48 !important;}
-    /* Collapsed state */
-    .eco-collapsed{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px 20px;transition:opacity 200ms;}
-    .eco-card.active .eco-collapsed{opacity:0;pointer-events:none;}
-    .eco-ico{width:40px;height:40px;border-radius:9px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;margin-bottom:12px;flex-shrink:0;}
-    .eco-ico svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:1.8;}
-    .eco-collapsed-name{font-family:'Manrope',system-ui,sans-serif;font-size:1rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;}
-    .eco-collapsed-sub{font-size:.72rem;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:10px;}
-    .eco-expand-hint{display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.35);transition:color 200ms;}
-    .eco-card:hover .eco-expand-hint{color:rgba(255,255,255,.65);}
-    .eco-expand-hint svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
-    /* Expanded state */
-    .eco-expanded{position:absolute;inset:0;padding:32px 28px;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 280ms 160ms;overflow-y:auto;}
-    .eco-card.active .eco-expanded{opacity:1;pointer-events:auto;}
-    .eco-exp-tag{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px;}
-    .eco-exp-title{font-family:'Manrope',system-ui,sans-serif;font-size:1.85rem;font-weight:800;color:#fff;line-height:1.05;letter-spacing:-.03em;margin-bottom:10px;}
-    .eco-exp-desc{font-size:.9rem;line-height:1.65;color:rgba(255,255,255,.7);margin-bottom:22px;max-width:420px;}
-    .eco-links-lbl{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:10px;}
-    .eco-links{display:flex;flex-direction:column;gap:0;flex:1;}
-    .eco-link{display:flex;align-items:center;gap:8px;padding:9px 0;font-size:.9rem;font-weight:500;color:rgba(255,255,255,.78);border-bottom:1px solid rgba(255,255,255,.08);transition:color 140ms,padding-left 140ms;}
-    .eco-link:hover{color:#fff;padding-left:4px;}
-    .eco-link::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);flex-shrink:0;}
-    .eco-learn{display:inline-flex;align-items:center;gap:6px;margin-top:20px;padding:10px 20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:7px;font-size:.88rem;font-weight:600;color:#fff;align-self:flex-start;transition:background 180ms,border-color 180ms;}
-    .eco-learn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.35);}
+    .program-stack{display:grid;gap:14px;}
+    .program-row{border-radius:16px;overflow:hidden;color:#fff;box-shadow:0 14px 40px rgba(8,24,40,.14);transition:box-shadow 240ms cubic-bezier(.2,0,0,1);}
+    .program-row:hover{box-shadow:0 20px 54px rgba(8,24,40,.22);}
+    .program-row[data-p="biotrain"]{background:linear-gradient(120deg,#0D4568 0%,#082D46 100%);}
+    .program-row[data-p="biolaunch"]{background:linear-gradient(120deg,#00843D 0%,#054A24 100%);}
+    .program-row[data-p="biocan"]{background:linear-gradient(120deg,#0D5A70 0%,#0D4568 100%);}
+    .program-row[data-p="biodefense"]{background:linear-gradient(120deg,#1A1A2E 0%,#0D4568 100%);}
+    .program-h{margin:0;}
+    .program-head{width:100%;display:flex;align-items:center;gap:18px;padding:24px 28px;background:transparent;border:0;cursor:pointer;text-align:left;color:inherit;font-family:inherit;}
+    .program-chip{flex:none;width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.1);display:inline-flex;align-items:center;justify-content:center;}
+    .program-chip svg{width:21px;height:21px;stroke:#fff;stroke-width:1.8;fill:none;}
+    .program-name{color:#fff;font-family:'Manrope',system-ui,sans-serif;font-size:clamp(1.25rem,2vw,1.65rem);font-weight:800;letter-spacing:-.02em;line-height:1.2;}
+    .program-cat{display:inline-flex;padding:6px 12px;border-radius:999px;font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.92);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);white-space:nowrap;}
+    .program-toggle{flex:none;margin-left:auto;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.38);display:inline-flex;align-items:center;justify-content:center;transition:transform 320ms cubic-bezier(.2,0,0,1),background 240ms cubic-bezier(.2,0,0,1);}
+    .program-toggle svg{width:16px;height:16px;stroke:#fff;stroke-width:2.2;fill:none;}
+    .program-row.open .program-toggle{transform:rotate(45deg);background:rgba(255,255,255,.14);}
+    .program-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows 420ms cubic-bezier(.2,0,0,1);}
+    .program-body>div{overflow:hidden;}
+    .program-row.open .program-body{grid-template-rows:1fr;}
+    .program-detail{padding:2px 28px 28px 90px;display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap;}
+    .program-detail p{margin:0;max-width:680px;font-size:1rem;line-height:1.7;color:rgba(255,255,255,.88);}
+    .program-link{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;font-weight:800;color:#fff;text-decoration:none;white-space:nowrap;}
+    .program-link svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;transition:transform 240ms cubic-bezier(.2,0,0,1);}
+    .program-link:hover svg{transform:translateX(4px);}
+    @media(prefers-reduced-motion:reduce){.program-body,.program-toggle,.program-link svg{transition:none;}}
 
     /* ── WHY INDIANA ── */
     .indiana-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
@@ -275,13 +262,9 @@
     @media(max-width:860px){
       .nav-links,.nav-cta{display:none;}
       .nav-hamburger{display:flex;}
-      .eco-track{flex-direction:column;height:auto;}
-      .eco-card{flex:none !important;height:80px;border-radius:12px;transition:height 400ms ease-in-out;}
-      .eco-card.active{height:380px;}
-      .eco-collapsed{flex-direction:row;align-items:center;padding:0 20px;gap:14px;}
-      .eco-ico{margin-bottom:0;width:36px;height:36px;}
-      .eco-collapsed-name{font-size:.95rem;}
-      .eco-collapsed-sub{display:none;}
+      .program-head{padding:18px 20px;flex-wrap:wrap;}
+      .program-cat{order:4;}
+      .program-detail{padding:2px 20px 24px;}
       .grid-3{grid-template-columns:1fr;}
       .testi-grid{grid-template-columns:1fr;}
       .news-featured{grid-column:span 1;}
@@ -445,101 +428,73 @@
       <h2 class="stitle" style="max-width:480px;margin:0 auto;">Four Programs. One Mission.</h2>
       <p class="ssub">Click any program to explore. Indiana's integrated biomanufacturing infrastructure — from workforce to national defense.</p>
     </div>
-    <div class="eco-track" id="ecoTrack" role="list">
+    <div class="program-stack" id="programStack">
 
-      <div class="eco-card" data-p="biotrain" tabindex="0" role="listitem button" aria-expanded="false" aria-label="BioTrain – Workforce Development">
-        <div class="eco-collapsed">
-          <div class="eco-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-          <div style="min-width:0">
-            <div class="eco-collapsed-name">BioTrain</div>
-            <div class="eco-collapsed-sub">Workforce Development</div>
-            <div class="eco-expand-hint"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg> Expand</div>
+      <div class="program-row open" data-p="biotrain">
+        <h3 class="program-h"><button class="program-head" type="button" aria-expanded="true" aria-controls="program-biotrain">
+          <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+          <span class="program-name">BioTrain</span>
+          <span class="program-cat">Workforce</span>
+          <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button></h3>
+        <div class="program-body" id="program-biotrain">
+          <div>
+            <div class="program-detail">
+              <p>Hands-on training, credentialing, and job placement that move Hoosiers into biomanufacturing careers — no four-year degree required.</p>
+              <a href="#" class="program-link">Learn more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
           </div>
-        </div>
-        <div class="eco-expanded" aria-hidden="true">
-          <div class="eco-exp-tag">Workforce Development</div>
-          <div class="eco-exp-title">BioTrain</div>
-          <p class="eco-exp-desc">Building Indiana's biotech workforce pipeline through training, employer partnerships, and talent development programs.</p>
-          <div class="eco-links-lbl">Explore</div>
-          <div class="eco-links">
-            <a class="eco-link" href="#">Training Programs</a>
-            <a class="eco-link" href="#">Employer Partnerships</a>
-            <a class="eco-link" href="#">Student Opportunities</a>
-            <a class="eco-link" href="#">Workforce Resources</a>
-          </div>
-          <a class="eco-learn" href="#">Learn More →</a>
         </div>
       </div>
 
-      <div class="eco-card" data-p="biolaunch" tabindex="0" role="listitem button" aria-expanded="false" aria-label="BioLaunch – Commercialization">
-        <div class="eco-collapsed">
-          <div class="eco-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg></div>
-          <div style="min-width:0">
-            <div class="eco-collapsed-name">BioLaunch</div>
-            <div class="eco-collapsed-sub">Commercialization</div>
-            <div class="eco-expand-hint"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg> Expand</div>
+      <div class="program-row" data-p="biolaunch">
+        <h3 class="program-h"><button class="program-head" type="button" aria-expanded="false" aria-controls="program-biolaunch">
+          <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
+          <span class="program-name">BioLaunch</span>
+          <span class="program-cat">Commercialization</span>
+          <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button></h3>
+        <div class="program-body" id="program-biolaunch">
+          <div>
+            <div class="program-detail">
+              <p>Commercialization support, pilot-scale resources, and expert guidance that help innovators take bioproducts from lab bench to market.</p>
+              <a href="#" class="program-link">Learn more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
           </div>
-        </div>
-        <div class="eco-expanded" aria-hidden="true">
-          <div class="eco-exp-tag">Commercialization &amp; Startups</div>
-          <div class="eco-exp-title">BioLaunch</div>
-          <p class="eco-exp-desc">Accelerating biotech startups from concept to market through mentorship, funding connections, and innovation support.</p>
-          <div class="eco-links-lbl">Explore</div>
-          <div class="eco-links">
-            <a class="eco-link" href="#">Startup Accelerator</a>
-            <a class="eco-link" href="#">Mentorship Network</a>
-            <a class="eco-link" href="#">Innovation Lab</a>
-            <a class="eco-link" href="#">Investor Connections</a>
-          </div>
-          <a class="eco-learn" href="#">Learn More →</a>
         </div>
       </div>
 
-      <div class="eco-card" data-p="biocan" tabindex="0" role="listitem button" aria-expanded="false" aria-label="BioCAN – CDMO Network and Funding">
-        <div class="eco-collapsed">
-          <div class="eco-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-          <div style="min-width:0">
-            <div class="eco-collapsed-name">BioCAN</div>
-            <div class="eco-collapsed-sub">CDMO Network &amp; Funding</div>
-            <div class="eco-expand-hint"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg> Expand</div>
+      <div class="program-row" data-p="biocan">
+        <h3 class="program-h"><button class="program-head" type="button" aria-expanded="false" aria-controls="program-biocan">
+          <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span>
+          <span class="program-name">BioCAN</span>
+          <span class="program-cat">CDMO &amp; Funding</span>
+          <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button></h3>
+        <div class="program-body" id="program-biocan">
+          <div>
+            <div class="program-detail">
+              <p>Contract development, manufacturing capacity, and capital access that give companies the resources and funding to scale production in Indiana.</p>
+              <a href="#" class="program-link">Learn more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
           </div>
-        </div>
-        <div class="eco-expanded" aria-hidden="true">
-          <div class="eco-exp-tag">CDMO Network &amp; Funding</div>
-          <div class="eco-exp-title">BioCAN</div>
-          <p class="eco-exp-desc">Connecting companies to CDMO capabilities, grant opportunities, and the funding network that powers Indiana's bioeconomy.</p>
-          <div class="eco-links-lbl">Explore</div>
-          <div class="eco-links">
-            <a class="eco-link" href="#">Funding Opportunities</a>
-            <a class="eco-link" href="#">CDMO Network</a>
-            <a class="eco-link" href="#">Grant Applications</a>
-            <a class="eco-link" href="#">Industry Partners</a>
-          </div>
-          <a class="eco-learn" href="#">Learn More →</a>
         </div>
       </div>
 
-      <div class="eco-card" data-p="biodefense" tabindex="0" role="listitem button" aria-expanded="false" aria-label="BioDefense – National Security">
-        <div class="eco-collapsed">
-          <div class="eco-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div style="min-width:0">
-            <div class="eco-collapsed-name">BioDefense</div>
-            <div class="eco-collapsed-sub">National Security</div>
-            <div class="eco-expand-hint"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg> Expand</div>
+      <div class="program-row" data-p="biodefense">
+        <h3 class="program-h"><button class="program-head" type="button" aria-expanded="false" aria-controls="program-biodefense">
+          <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+          <span class="program-name">BioDefense</span>
+          <span class="program-cat">National Security</span>
+          <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button></h3>
+        <div class="program-body" id="program-biodefense">
+          <div>
+            <div class="program-detail">
+              <p>Strengthening domestic production of critical medicines and countermeasures to secure America's biomanufacturing supply chain.</p>
+              <a href="#" class="program-link">Learn more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
           </div>
-        </div>
-        <div class="eco-expanded" aria-hidden="true">
-          <div class="eco-exp-tag">National Security &amp; Defense</div>
-          <div class="eco-exp-title">BioDefense</div>
-          <p class="eco-exp-desc">Strengthening America's biodefense capabilities through strategic partnerships, supply chain resilience, and defense biotechnology.</p>
-          <div class="eco-links-lbl">Explore</div>
-          <div class="eco-links">
-            <a class="eco-link" href="#">Defense Partnerships</a>
-            <a class="eco-link" href="#">Supply Chain Resilience</a>
-            <a class="eco-link" href="#">Strategic Biotechnology</a>
-            <a class="eco-link" href="#">National Security</a>
-          </div>
-          <a class="eco-learn" href="#">Learn More →</a>
         </div>
       </div>
 
@@ -847,18 +802,16 @@ function onScroll(){nav.classList.toggle('scrolled',window.scrollY>100);}
 window.addEventListener('scroll',onScroll,{passive:true});
 onScroll();
 
-// ── ECOSYSTEM EXPAND ──
-const track = document.getElementById('ecoTrack');
-const cards = track.querySelectorAll('.eco-card');
-cards.forEach(card=>{
-  function toggle(){
-    const wasActive=card.classList.contains('active');
-    cards.forEach(c=>{c.classList.remove('active');c.setAttribute('aria-expanded','false');c.querySelector('.eco-expanded').setAttribute('aria-hidden','true');});
-    if(!wasActive){card.classList.add('active');card.setAttribute('aria-expanded','true');card.querySelector('.eco-expanded').setAttribute('aria-hidden','false');track.classList.add('has-active');}
-    else{track.classList.remove('has-active');}
-  }
-  card.addEventListener('click',toggle);
-  card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+// ── PROGRAM ACCORDION ──
+// One row open at a time; clicking the open row collapses it.
+const stack = document.getElementById('programStack');
+const rows = stack.querySelectorAll('.program-row');
+rows.forEach(row=>{
+  row.querySelector('.program-head').addEventListener('click',()=>{
+    const wasOpen=row.classList.contains('open');
+    rows.forEach(r=>{r.classList.remove('open');r.querySelector('.program-head').setAttribute('aria-expanded','false');});
+    if(!wasOpen){row.classList.add('open');row.querySelector('.program-head').setAttribute('aria-expanded','true');}
+  });
 });
 
 // ── COUNTER ANIMATION ──
