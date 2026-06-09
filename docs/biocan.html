@@ -64,7 +64,7 @@
   </style>
 </head>
 <body>
-<nav class="nav"><div class="container nav-inner"><a href="/" class="nav-logo"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" /></a><a href="/" class="nav-back">← All Programs</a><a href="#cta" class="nav-cta">Apply for Funding</a></div></nav>
+<nav class="nav"><div class="container nav-inner"><a href="index.html" class="nav-logo"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" /></a><a href="programs.html" class="nav-back">← All Programs</a><a href="#cta" class="nav-cta">Apply for Funding</a></div></nav>
 
 <section class="prog-hero">
   <div class="container">
@@ -167,7 +167,7 @@
 </section>
 
 <footer style="background:#050E18;padding:32px 0;text-align:center;font-size:.82rem;color:rgba(255,255,255,.3);">
-  <div class="container"><a href="/" style="display:inline-block;margin-bottom:14px;"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" style="height:34px;opacity:.65;margin:0 auto;" /></a><p>© 2026 Heartland BioWorks. All rights reserved.</p></div>
+  <div class="container"><a href="index.html" style="display:inline-block;margin-bottom:14px;"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" style="height:34px;opacity:.65;margin:0 auto;" /></a><p>© 2026 Heartland BioWorks. All rights reserved.</p></div>
 </footer>
 <script>
 document.querySelectorAll('.faq-q').forEach(q=>{function t(){const i=q.parentElement,o=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>{x.classList.remove('open');x.querySelector('.faq-a').style.maxHeight='0';x.querySelector('.faq-q').setAttribute('aria-expanded','false');});if(!o){i.classList.add('open');i.querySelector('.faq-a').style.maxHeight=i.querySelector('.faq-a-inner').scrollHeight+'px';q.setAttribute('aria-expanded','true');}}q.addEventListener('click',t);q.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t();}});});

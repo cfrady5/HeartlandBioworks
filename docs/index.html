@@ -50,6 +50,10 @@
     .nav-cta:hover{background:var(--green2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(62,178,72,.3);}
     .nav-hamburger{display:none;background:none;border:none;padding:8px;cursor:pointer;color:rgba(255,255,255,.9);}
     .nav.scrolled .nav-hamburger{color:var(--text);}
+    .nav-mobile{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 16px 40px rgba(13,69,104,.16);padding:10px 24px 18px;flex-direction:column;}
+    .nav-mobile.open{display:flex;}
+    .nav-mobile a{padding:13px 4px;font-size:1rem;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);}
+    .nav-mobile a:last-child{border-bottom:0;}
 
     /* ── HERO ── */
     .hero{
@@ -137,8 +141,12 @@
     .program-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows 420ms cubic-bezier(.2,0,0,1);}
     .program-body>div{overflow:hidden;}
     .program-row.open .program-body{grid-template-rows:1fr;}
-    .program-detail{padding:2px 28px 28px 90px;display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap;}
-    .program-detail p{margin:0;max-width:680px;font-size:1rem;line-height:1.7;color:rgba(255,255,255,.88);}
+    .program-detail{padding:2px 28px 28px 90px;}
+    .program-detail p{margin:0 0 18px;max-width:680px;font-size:1rem;line-height:1.7;color:rgba(255,255,255,.88);}
+    .program-sublinks{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+    .program-sublink{display:inline-flex;align-items:center;gap:8px;padding:8px 15px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);border-radius:8px;font-size:.85rem;font-weight:600;color:rgba(255,255,255,.85);transition:background 160ms,border-color 160ms,color 160ms;}
+    .program-sublink:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4);color:#fff;}
+    .program-sublink::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);flex-shrink:0;}
     .program-link{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;font-weight:800;color:#fff;text-decoration:none;white-space:nowrap;}
     .program-link svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;transition:transform 240ms cubic-bezier(.2,0,0,1);}
     .program-link:hover svg{transform:translateX(4px);}
@@ -174,36 +182,6 @@
     .opp-cta{font-weight:600;color:var(--navy);display:flex;align-items:center;gap:4px;transition:gap 140ms;}
     .opp-cta:hover{gap:8px;}
 
-    /* ── TESTIMONIALS ── */
-    .testimonials{padding:96px 0;}
-    .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px;}
-    .testi-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px;position:relative;}
-    .testi-card::before{content:'\201C';font-family:Georgia,serif;font-size:4rem;line-height:1;color:var(--green);opacity:.3;position:absolute;top:16px;left:22px;}
-    .testi-text{font-size:.95rem;line-height:1.72;color:var(--muted);margin-bottom:24px;padding-top:20px;}
-    .testi-author{display:flex;align-items:center;gap:12px;}
-    .testi-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;background:var(--bg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:var(--navy);}
-    .testi-name{font-size:.88rem;font-weight:700;color:var(--text);}
-    .testi-role{font-size:.78rem;color:var(--muted);}
-
-    /* ── NEWS ── */
-    .news-card{border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform 200ms var(--ease),box-shadow 200ms var(--ease);}
-    .news-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(13,69,104,.12);}
-    .news-img{aspect-ratio:16/9;overflow:hidden;background:var(--bg2);}
-    .news-img img{width:100%;height:100%;object-fit:cover;transition:transform 400ms var(--ease);}
-    .news-card:hover .news-img img{transform:scale(1.05);}
-    .news-body{padding:22px;}
-    .news-cat{display:inline-flex;padding:3px 10px;background:rgba(13,69,104,.08);color:var(--navy);border-radius:100px;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
-    .news-body h3{font-size:.97rem;font-weight:700;line-height:1.45;color:var(--text);margin-bottom:8px;}
-    .news-date{font-size:.8rem;color:var(--muted);}
-    /* Featured news card */
-    .news-featured{grid-column:span 3;display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow 200ms var(--ease);}
-    .news-featured:hover{box-shadow:0 8px 32px rgba(13,69,104,.12);}
-    .news-featured .news-img{aspect-ratio:unset;min-height:280px;}
-    .news-featured .news-body{padding:36px;display:flex;flex-direction:column;justify-content:center;}
-    .news-featured .news-body h3{font-size:1.3rem;line-height:1.35;margin-bottom:12px;}
-    .news-featured .news-body p{font-size:.92rem;line-height:1.7;color:var(--muted);margin-bottom:20px;}
-    .news-read-more{font-size:.88rem;font-weight:600;color:var(--navy);display:inline-flex;align-items:center;gap:4px;transition:gap 140ms;}
-    .news-read-more:hover{gap:8px;}
 
     /* ── CONNECT ── */
     .connect-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
@@ -256,8 +234,6 @@
       .footer-top{grid-template-columns:1fr 1fr;gap:36px;}
       .f-brand{grid-column:1/-1;}
       .audience-grid{grid-template-columns:repeat(2,1fr);}
-      .news-featured{grid-template-columns:1fr;grid-column:span 3;}
-      .news-featured .news-img{min-height:200px;}
     }
     @media(max-width:860px){
       .nav-links,.nav-cta{display:none;}
@@ -266,8 +242,6 @@
       .program-cat{order:4;}
       .program-detail{padding:2px 20px 24px;}
       .grid-3{grid-template-columns:1fr;}
-      .testi-grid{grid-template-columns:1fr;}
-      .news-featured{grid-column:span 1;}
       .stats-col{flex-direction:row;flex-wrap:wrap;}
       .stat-card{flex:1;min-width:180px;}
       .form-row{grid-template-columns:1fr;}
@@ -294,18 +268,18 @@
     </a>
     <ul class="nav-links" aria-label="Site navigation">
       <li>
-        <div class="nav-link" tabindex="0" role="button" aria-haspopup="true">Programs <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <a href="programs.html" class="nav-link" aria-haspopup="true">Programs <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></a>
         <div class="nav-drop" role="menu">
-          <a href="#" role="menuitem"><div class="dd-ico">🧬</div> BioTrain</a>
-          <a href="#" role="menuitem"><div class="dd-ico">🚀</div> BioLaunch</a>
-          <a href="#" role="menuitem"><div class="dd-ico">⚗️</div> BioCAN</a>
-          <a href="#" role="menuitem"><div class="dd-ico">🛡️</div> BioDefense</a>
+          <a href="programs.html" role="menuitem"><div class="dd-ico">🗂️</div> All Programs</a>
+          <a href="biotrain.html" role="menuitem"><div class="dd-ico">🧬</div> BioTrain</a>
+          <a href="biolaunch.html" role="menuitem"><div class="dd-ico">🚀</div> BioLaunch</a>
+          <a href="biocan.html" role="menuitem"><div class="dd-ico">⚗️</div> BioCAN</a>
+          <a href="biodefense.html" role="menuitem"><div class="dd-ico">🛡️</div> BioDefense</a>
         </div>
       </li>
       <li>
         <div class="nav-link" tabindex="0" role="button" aria-haspopup="true">Resources <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
         <div class="nav-drop" role="menu">
-          <a href="#news" role="menuitem"><div class="dd-ico">📰</div> News &amp; Media</a>
           <a href="#" role="menuitem"><div class="dd-ico">📅</div> Upcoming Events</a>
           <a href="#" role="menuitem"><div class="dd-ico">📚</div> Educational Library</a>
         </div>
@@ -320,11 +294,20 @@
       </li>
     </ul>
     <a href="#connect" class="nav-cta">Contact Us</a>
-    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
       </svg>
     </button>
+  </div>
+  <div class="nav-mobile" id="mobileMenu">
+    <a href="#home">Home</a>
+    <a href="programs.html">All Programs</a>
+    <a href="biotrain.html">BioTrain</a>
+    <a href="biolaunch.html">BioLaunch</a>
+    <a href="biocan.html">BioCAN</a>
+    <a href="biodefense.html">BioDefense</a>
+    <a href="#connect">Contact Us</a>
   </div>
 </nav>
 
@@ -395,25 +378,25 @@
         <div class="aud-ico">🏭</div>
         <h3>Biotech Companies</h3>
         <p>Access CDMO capacity, federal funding navigation, and commercialization support to scale your Indiana operations.</p>
-        <a href="#" class="aud-link">Explore BioCAN &amp; BioLaunch →</a>
+        <a href="programs.html" class="aud-link">Explore BioCAN &amp; BioLaunch →</a>
       </div>
       <div class="aud-card reveal">
         <div class="aud-ico">🎓</div>
         <h3>Workforce Candidates</h3>
         <p>Launch or advance your biotech career with industry-validated training programs and direct employer connections.</p>
-        <a href="#" class="aud-link">Explore BioTrain →</a>
+        <a href="biotrain.html" class="aud-link">Explore BioTrain →</a>
       </div>
       <div class="aud-card reveal">
         <div class="aud-ico">🏢</div>
         <h3>Employers &amp; Industry</h3>
         <p>Build your talent pipeline, access CDMO partners, and connect to Indiana's growing biomanufacturing workforce.</p>
-        <a href="#" class="aud-link">Partner With Us →</a>
+        <a href="#connect" class="aud-link">Partner With Us →</a>
       </div>
       <div class="aud-card reveal">
         <div class="aud-ico">🏛️</div>
         <h3>Federal &amp; Government</h3>
         <p>Strengthen domestic biodefense, medical countermeasure manufacturing, and supply chain resilience through Indiana.</p>
-        <a href="#" class="aud-link">Explore BioDefense →</a>
+        <a href="biodefense.html" class="aud-link">Explore BioDefense →</a>
       </div>
     </div>
   </div>
@@ -425,7 +408,7 @@
   <div class="container">
     <div class="eco-header">
       <div class="slabel">Explore the Ecosystem</div>
-      <h2 class="stitle" style="max-width:480px;margin:0 auto;">Four Programs. One Mission.</h2>
+      <h2 class="stitle" style="margin:0 auto;">Four Programs. One Mission.</h2>
       <p class="ssub">Click any program to explore. Indiana's integrated biomanufacturing infrastructure — from workforce to national defense.</p>
     </div>
     <div class="program-stack" id="programStack">
@@ -441,7 +424,13 @@
           <div>
             <div class="program-detail">
               <p>Hands-on training, credentialing, and job placement that move Hoosiers into biomanufacturing careers — no four-year degree required.</p>
-              <a href="#" class="program-link">Learn more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <div class="program-sublinks">
+                <a class="program-sublink" href="biotrain.html#programs">Training Pathways</a>
+                <a class="program-sublink" href="biotrain.html#impact">Outcomes &amp; Impact</a>
+                <a class="program-sublink" href="biotrain.html#faq">Common Questions</a>
+                <a class="program-sublink" href="biotrain.html#cta">Join the Workforce Network</a>
+              </div>
+              <a href="biotrain.html" class="program-link">Explore BioTrain <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
         </div>
@@ -458,7 +447,13 @@
           <div>
             <div class="program-detail">
               <p>Commercialization support, pilot-scale resources, and expert guidance that help innovators take bioproducts from lab bench to market.</p>
-              <a href="#" class="program-link">Learn more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <div class="program-sublinks">
+                <a class="program-sublink" href="biolaunch.html#pathway">From Idea to Market</a>
+                <a class="program-sublink" href="biolaunch.html#programs">How We Support Companies</a>
+                <a class="program-sublink" href="biolaunch.html#faq">Common Questions</a>
+                <a class="program-sublink" href="biolaunch.html#cta">Get Started</a>
+              </div>
+              <a href="biolaunch.html" class="program-link">Explore BioLaunch <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
         </div>
@@ -475,7 +470,13 @@
           <div>
             <div class="program-detail">
               <p>Contract development, manufacturing capacity, and capital access that give companies the resources and funding to scale production in Indiana.</p>
-              <a href="#" class="program-link">Learn more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <div class="program-sublinks">
+                <a class="program-sublink" href="biocan.html#cdmos">Manufacturing Partners</a>
+                <a class="program-sublink" href="biocan.html#funding">Capital Access</a>
+                <a class="program-sublink" href="biocan.html#faq">Common Questions</a>
+                <a class="program-sublink" href="biocan.html#cta">Apply for Funding</a>
+              </div>
+              <a href="biocan.html" class="program-link">Explore BioCAN <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
         </div>
@@ -492,7 +493,13 @@
           <div>
             <div class="program-detail">
               <p>Strengthening domestic production of critical medicines and countermeasures to secure America's biomanufacturing supply chain.</p>
-              <a href="#" class="program-link">Learn more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <div class="program-sublinks">
+                <a class="program-sublink" href="biodefense.html#pillars">The BioDefense Framework</a>
+                <a class="program-sublink" href="biodefense.html#partners">Agency Partnerships</a>
+                <a class="program-sublink" href="biodefense.html#faq">Common Questions</a>
+                <a class="program-sublink" href="biodefense.html#cta">Get Involved</a>
+              </div>
+              <a href="biodefense.html" class="program-link">Explore BioDefense <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
         </div>
@@ -606,97 +613,6 @@
 </section>
 
 
-<!-- ══ TESTIMONIALS ══ -->
-<section class="testimonials" id="testimonials" aria-label="Testimonials">
-  <div class="container">
-    <div class="slabel">What People Are Saying</div>
-    <h2 class="stitle">Outcomes from Indiana's<br>Biomanufacturing Ecosystem</h2>
-    <div class="testi-grid">
-      <div class="testi-card reveal">
-        <p class="testi-text">"BioLaunch connected us to our first CDMO partner and helped us secure a Phase II SBIR within six months. Without the Heartland BioWorks network, we'd still be knocking on doors."</p>
-        <div class="testi-author">
-          <div class="testi-avatar">SK</div>
-          <div>
-            <div class="testi-name">Sarah K.</div>
-            <div class="testi-role">Founder &amp; CEO, Indiana Biotech Startup</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card reveal">
-        <p class="testi-text">"BioTrain gave us a pipeline of job-ready technicians when we were scaling our facility. These aren't just trained workers — they're day-one contributors. We've hired 14 BioTrain graduates this year."</p>
-        <div class="testi-author">
-          <div class="testi-avatar">MR</div>
-          <div>
-            <div class="testi-name">Michael R.</div>
-            <div class="testi-role">VP Operations, Indiana Biomanufacturing Company</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card reveal">
-        <p class="testi-text">"Indiana's biomanufacturing infrastructure — anchored by Heartland BioWorks — represents exactly the kind of regional capability the federal government needs for domestic supply chain resilience."</p>
-        <div class="testi-author">
-          <div class="testi-avatar">JL</div>
-          <div>
-            <div class="testi-name">J. L.</div>
-            <div class="testi-role">Program Officer, Federal Agency Partner</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ══ NEWS ══ -->
-<section class="section section-light" id="news" aria-label="News and Media">
-  <div class="container">
-    <div class="cards-header">
-      <div>
-        <div class="slabel">News &amp; Media</div>
-        <h2 class="stitle">Latest from Heartland BioWorks</h2>
-      </div>
-      <a href="#" class="view-all-btn">View All News →</a>
-    </div>
-    <div class="grid-3">
-      <!-- Featured story -->
-      <div class="news-featured reveal">
-        <div class="news-img">
-          <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=900&q=75" alt="Biotech lab research" loading="lazy" />
-        </div>
-        <div class="news-body">
-          <div class="news-cat">Announcement</div>
-          <h3>Heartland BioWorks Launches Phase II BARDA Partnership for Domestic Biomanufacturing</h3>
-          <p>Indiana's Regional Tech Hub secures major federal partnership to expand domestic medical countermeasure manufacturing capacity and workforce training infrastructure.</p>
-          <a href="#" class="news-read-more">Read Full Story →</a>
-          <p class="news-date" style="margin-top:12px;">June 3, 2026</p>
-        </div>
-      </div>
-      <!-- Smaller cards -->
-      <div class="news-card reveal">
-        <div class="news-img">
-          <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=700&q=70" alt="Life science research" loading="lazy" />
-        </div>
-        <div class="news-body">
-          <div class="news-cat">News</div>
-          <h3>Indiana Named Top State for Biotech Workforce Development by National Life Sciences Council</h3>
-          <p class="news-date">May 20, 2026</p>
-        </div>
-      </div>
-      <div class="news-card reveal">
-        <div class="news-img">
-          <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=700&q=70" alt="Collaboration" loading="lazy" />
-        </div>
-        <div class="news-body">
-          <div class="news-cat">Press Release</div>
-          <h3>BioCAN Network Announces $12M in Commercialization Funding for Indiana Biotech Startups</h3>
-          <p class="news-date">May 8, 2026</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
 <!-- ══ STAY CONNECTED ══ -->
 <section class="section section-dark" id="connect" aria-label="Stay Connected">
   <div class="container connect-inner">
@@ -758,10 +674,11 @@
       <div class="f-col">
         <h4>Programs</h4>
         <ul>
-          <li><a href="#">BioTrain</a></li>
-          <li><a href="#">BioLaunch</a></li>
-          <li><a href="#">BioCAN</a></li>
-          <li><a href="#">BioDefense</a></li>
+          <li><a href="programs.html">All Programs</a></li>
+          <li><a href="biotrain.html">BioTrain</a></li>
+          <li><a href="biolaunch.html">BioLaunch</a></li>
+          <li><a href="biocan.html">BioCAN</a></li>
+          <li><a href="biodefense.html">BioDefense</a></li>
         </ul>
       </div>
       <div class="f-col">
@@ -801,6 +718,15 @@ const nav = document.getElementById('nav');
 function onScroll(){nav.classList.toggle('scrolled',window.scrollY>100);}
 window.addEventListener('scroll',onScroll,{passive:true});
 onScroll();
+
+// ── MOBILE MENU ──
+const hamburger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobileMenu');
+hamburger.addEventListener('click',()=>{
+  const open=mobileMenu.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded',String(open));
+});
+mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobileMenu.classList.remove('open');hamburger.setAttribute('aria-expanded','false');}));
 
 // ── PROGRAM ACCORDION ──
 // One row open at a time; clicking the open row collapses it.

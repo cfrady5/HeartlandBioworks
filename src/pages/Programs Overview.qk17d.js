@@ -54,7 +54,7 @@
   </style>
 </head>
 <body>
-<nav class="nav"><div class="container nav-inner"><a href="/" class="nav-logo"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" /></a><a href="#" class="nav-cta">Contact Us</a></div></nav>
+<nav class="nav"><div class="container nav-inner"><a href="index.html" class="nav-logo"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" /></a><a href="index.html#connect" class="nav-cta">Contact Us</a></div></nav>
 
 <section class="hero">
   <div class="container">
@@ -72,7 +72,7 @@
       <p style="font-size:1.02rem;line-height:1.72;color:var(--muted);max-width:520px;margin:0 auto;">Each program addresses a critical dimension of Indiana's biomanufacturing ecosystem — and all four work together as one integrated strategy.</p>
     </div>
     <div class="prog-grid">
-      <a href="#" class="prog-card reveal" data-p="biotrain">
+      <a href="biotrain.html" class="prog-card reveal" data-p="biotrain">
         <div class="prog-card-bg"></div>
         <div class="prog-card-content">
           <div class="prog-ico">🧬</div>
@@ -82,7 +82,7 @@
           <div class="prog-link">Explore BioTrain →</div>
         </div>
       </a>
-      <a href="#" class="prog-card reveal" data-p="biolaunch">
+      <a href="biolaunch.html" class="prog-card reveal" data-p="biolaunch">
         <div class="prog-card-bg"></div>
         <div class="prog-card-content">
           <div class="prog-ico">🚀</div>
@@ -92,7 +92,7 @@
           <div class="prog-link">Explore BioLaunch →</div>
         </div>
       </a>
-      <a href="#" class="prog-card reveal" data-p="biocan">
+      <a href="biocan.html" class="prog-card reveal" data-p="biocan">
         <div class="prog-card-bg"></div>
         <div class="prog-card-content">
           <div class="prog-ico">⚗️</div>
@@ -102,7 +102,7 @@
           <div class="prog-link">Explore BioCAN →</div>
         </div>
       </a>
-      <a href="#" class="prog-card reveal" data-p="biodefense">
+      <a href="biodefense.html" class="prog-card reveal" data-p="biodefense">
         <div class="prog-card-bg"></div>
         <div class="prog-card-content">
           <div class="prog-ico">🛡️</div>
@@ -133,7 +133,7 @@
 </section>
 
 <footer style="background:#050E18;padding:32px 0;text-align:center;font-size:.82rem;color:rgba(255,255,255,.3);">
-  <div class="container"><a href="/" style="display:inline-block;margin-bottom:14px;"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" style="height:34px;opacity:.65;margin:0 auto;" /></a><p>© 2026 Heartland BioWorks. All rights reserved.</p></div>
+  <div class="container"><a href="index.html" style="display:inline-block;margin-bottom:14px;"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" style="height:34px;opacity:.65;margin:0 auto;" /></a><p>© 2026 Heartland BioWorks. All rights reserved.</p></div>
 </footer>
 <script>
 const obs=new IntersectionObserver(e=>e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('vis');obs.unobserve(en.target);}}),{threshold:.1});
