@@ -2,1662 +2,1223 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
-  <title>Rapid Acquisition Model (RAM)</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heartland BioWorks – Building America's Biomanufacturing Future</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #05070c;
-      --bg-2: #090d15;
-      --bg-3: #0e1421;
-      --panel: rgba(14, 20, 33, 0.82);
-      --panel-2: rgba(255, 255, 255, 0.03);
-      --panel-3: rgba(255, 255, 255, 0.05);
-      --line: rgba(255, 255, 255, 0.12);
-      --line-strong: rgba(255, 255, 255, 0.22);
-      --text: #f5f7fb;
-      --text-2: rgba(245, 247, 251, 0.78);
-      --text-3: rgba(245, 247, 251, 0.55);
-      --text-4: rgba(245, 247, 251, 0.34);
-      --accent: #6f7fa8;
-      --accent-2: #495879;
-      --accent-3: rgba(111, 127, 168, 0.12);
-      --glow: rgba(111, 127, 168, 0.28);
-      --success: #1bb34a;
-      --container: 1280px;
-      --radius: 24px;
-      --radius-sm: 14px;
-      --shadow: 0 24px 90px rgba(0, 0, 0, 0.42);
-      --shadow-soft: 0 16px 50px rgba(0, 0, 0, 0.24);
-      --ease: 220ms cubic-bezier(0.2, 0, 0, 1);
+      --navy:   #0D4568;
+      --green:  #3EB248;
+      --green2: #00843D;
+      --bg:     #FFFFFF;
+      --bg2:    #F7F9FB;
+      --dark:   #082D46;
+      --border: #E6EAF0;
+      --text:   #102A43;
+      --muted:  #627D98;
+      --r:      16px;
+      --rl:     24px;
+      --sh-sm:  0 2px 8px rgba(13,69,104,.08);
+      --sh-md:  0 8px 32px rgba(13,69,104,.12);
+      --sh-lg:  0 20px 60px rgba(13,69,104,.16);
+      --ease:   cubic-bezier(.2,0,0,1);
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      margin: 0;
-      padding: 0;
-      scroll-behavior: smooth;
-      background: var(--bg);
-    }
-
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      margin: 0;
-      padding: 0;
-      color: var(--text);
-      font-family:
-        Inter,
-        "Helvetica Neue",
-        Helvetica,
-        Arial,
-        system-ui,
-        sans-serif;
-      background:
-        radial-gradient(circle at 18% 18%, rgba(111, 127, 168, 0.11), transparent 26%),
-        radial-gradient(circle at 85% 35%, rgba(111, 127, 168, 0.09), transparent 24%),
-        linear-gradient(180deg, #05070c 0%, #080c14 50%, #05070c 100%);
-      overflow-x: hidden;
+      margin: 0; padding: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text); background: var(--bg);
       -webkit-font-smoothing: antialiased;
-      text-rendering: geometricPrecision;
+      overflow-x: hidden;
     }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 72px 72px;
-      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 88%);
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
-      background:
-        linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.015) 45%, transparent 70%);
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
-    }
-
-    iframe {
-      display: block;
-      width: 100%;
-      border: 0;
-    }
-
-    .shell {
-      position: relative;
-      overflow: hidden;
-    }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Manrope','Inter',system-ui,sans-serif; margin: 0; }
+    p { margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
 
     .container {
-      width: min(calc(100% - 48px), var(--container));
+      width: min(calc(100% - 48px), 1280px);
       margin: 0 auto;
     }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--text-3);
-      font-size: 0.77rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 14px;
-      height: 14px;
-      border: 1px solid var(--line-strong);
-      display: inline-block;
-      position: relative;
-      box-shadow: inset 0 0 0 3px transparent;
-    }
-
-    .eyebrow::after {
-      content: "";
-      width: 72px;
-      height: 1px;
-      background: linear-gradient(90deg, var(--line-strong), transparent);
-      display: inline-block;
-    }
-
-    h1,
-    h2,
-    h3,
-    p {
-      margin: 0;
-    }
-
-    h1 {
-      font-size: clamp(3.25rem, 7vw, 6.8rem);
-      line-height: 0.94;
-      letter-spacing: -0.07em;
-      font-weight: 800;
-      max-width: 820px;
-    }
-
-    h2 {
-      font-size: clamp(2.2rem, 4.6vw, 4.8rem);
-      line-height: 0.98;
-      letter-spacing: -0.055em;
-      font-weight: 760;
-      max-width: 900px;
-    }
-
-    h3 {
-      font-size: clamp(1.15rem, 1.6vw, 1.45rem);
-      line-height: 1.2;
-      font-weight: 680;
-      letter-spacing: -0.03em;
-    }
-
-    p {
-      color: var(--text-2);
-      font-size: 1.03rem;
-      line-height: 1.72;
-    }
-
-    .muted {
-      color: var(--text-3);
-    }
-
-    .accent {
-      color: #ffffff;
-      text-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
-    }
-
-    .section {
-      position: relative;
-      padding: 120px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    .section-tight {
-      padding: 90px 0;
-    }
-
-    .rule {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, var(--line-strong), transparent 85%);
-      margin: 18px 0 26px;
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 34px;
-    }
-
-    .btn {
-      min-height: 54px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 24px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      font-size: 0.94rem;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      transition:
-        transform var(--ease),
-        border-color var(--ease),
-        background var(--ease),
-        box-shadow var(--ease);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, rgba(111, 127, 168, 0.92), rgba(73, 88, 121, 0.92));
-      border-color: rgba(111, 127, 168, 0.55);
-      box-shadow: 0 16px 44px rgba(73, 88, 121, 0.32);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 20px 56px rgba(73, 88, 121, 0.42);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.025);
-      color: var(--text);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.055);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
+    /* ── NAV ── */
     .nav {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: linear-gradient(180deg, rgba(5, 7, 12, 0.94), rgba(5, 7, 12, 0.78));
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 200; height: 90px;
+      display: flex; align-items: center;
+      transition: background 320ms var(--ease), box-shadow 320ms var(--ease);
+    }
+    .nav.scrolled {
+      background: rgba(255,255,255,.97);
+      box-shadow: 0 1px 0 var(--border), var(--sh-sm);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
     }
-
     .nav-inner {
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
+      width: 100%; display: flex;
+      align-items: center; justify-content: space-between; gap: 24px;
     }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 16px;
-      min-width: 0;
-    }
-
-    .brand-logo {
-      width: 116px;
-      height: auto;
-      object-fit: contain;
-      filter: brightness(1.02);
-    }
-
-    .brand-copy {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .brand-kicker {
-      color: var(--text-4);
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
+    .nav-logo { display: flex; align-items: center; flex-shrink: 0; }
+    .nav-logo img { height: 46px; width: auto; }
     .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      color: var(--text-3);
-      font-size: 0.9rem;
+      display: flex; align-items: center; gap: 4px;
+      list-style: none; margin: 0; padding: 0;
     }
-
-    .nav-links a {
-      position: relative;
-      transition: color var(--ease);
+    .nav-links > li { position: relative; }
+    .nav-link {
+      display: flex; align-items: center; gap: 5px;
+      padding: 9px 14px;
+      font-size: .9375rem; font-weight: 500;
+      color: rgba(255,255,255,.88);
+      border-radius: 8px;
+      transition: color 180ms, background 180ms;
+      cursor: pointer; user-select: none;
     }
-
-    .nav-links a:hover {
-      color: white;
+    .nav.scrolled .nav-link { color: var(--text); }
+    .nav-link:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .nav.scrolled .nav-link:hover { background: var(--bg2); color: var(--navy); }
+    .nav-link svg {
+      width: 13px; height: 13px;
+      stroke: currentColor; fill: none; stroke-width: 2.2;
+      transition: transform 200ms var(--ease);
     }
+    .nav-links > li:hover .nav-link svg { transform: rotate(180deg); }
 
+    /* Dropdown */
+    .nav-drop {
+      position: absolute; top: calc(100% + 10px); left: 0;
+      min-width: 210px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--sh-lg);
+      padding: 6px;
+      opacity: 0; transform: translateY(-8px);
+      pointer-events: none;
+      transition: opacity 200ms var(--ease), transform 200ms var(--ease);
+    }
+    .nav-links > li:hover .nav-drop {
+      opacity: 1; transform: translateY(0); pointer-events: auto;
+    }
+    .nav-drop a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px;
+      font-size: .88rem; font-weight: 500;
+      color: var(--text); border-radius: 8px;
+      transition: background 140ms, color 140ms;
+    }
+    .nav-drop a:hover { background: var(--bg2); color: var(--navy); }
+    .dd-ico {
+      width: 28px; height: 28px;
+      border-radius: 6px; background: var(--bg2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem; flex-shrink: 0;
+    }
+    .nav-cta {
+      display: inline-flex; align-items: center;
+      padding: 10px 22px;
+      background: var(--green); color: #fff;
+      border-radius: 8px;
+      font-size: .9rem; font-weight: 600;
+      transition: background 200ms, transform 200ms, box-shadow 200ms;
+      flex-shrink: 0;
+    }
+    .nav-cta:hover { background: var(--green2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(62,178,72,.3); }
+    .nav-hamburger {
+      display: none; background: none; border: none;
+      padding: 8px; cursor: pointer;
+      color: rgba(255,255,255,.9);
+    }
+    .nav.scrolled .nav-hamburger { color: var(--text); }
+
+    /* ── HERO ── */
     .hero {
-      position: relative;
-      padding: 82px 0 110px;
-      min-height: calc(100vh - 78px);
-      display: flex;
-      align-items: center;
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center;
+      background: var(--dark); overflow: hidden;
     }
-
-    .hero-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(380px, 0.95fr);
-      align-items: center;
-      gap: 48px;
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1576086213369-97a306d36557?w=1920&q=80');
+      background-size: cover; background-position: center;
+      opacity: .22;
     }
-
-    .hero-copy {
-      position: relative;
-      z-index: 2;
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(8,45,70,.95) 0%, rgba(13,69,104,.82) 60%, rgba(8,45,70,.7) 100%);
     }
-
-    .hero-copy p.lead {
-      max-width: 700px;
-      font-size: 1.12rem;
-      margin-top: 22px;
-      color: var(--text-2);
-    }
-
-    .hero-topline {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--text-3);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .hero-topline .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 16px var(--glow);
-    }
-
-    .hero-interface {
-      display: grid;
-      gap: 18px;
-      position: relative;
-    }
-
-    .ui-panel {
-      position: relative;
-      border: 1px solid var(--line);
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)),
-        rgba(8, 12, 20, 0.78);
-      border-radius: 26px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .ui-panel::before,
-    .ui-panel::after {
-      content: "";
-      position: absolute;
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      width: 12px;
-      height: 12px;
+    .hero-glow {
+      position: absolute; top: -100px; right: -100px;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(62,178,72,.12) 0%, transparent 70%);
       pointer-events: none;
     }
-
-    .ui-panel::before {
-      top: 16px;
-      left: 16px;
-      border-right: 0;
-      border-bottom: 0;
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 130px 0 110px;
+      max-width: 800px;
     }
-
-    .ui-panel::after {
-      right: 16px;
-      bottom: 16px;
-      border-left: 0;
-      border-top: 0;
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px;
+      background: rgba(62,178,72,.15);
+      border: 1px solid rgba(62,178,72,.3);
+      border-radius: 100px;
+      font-size: .78rem; font-weight: 700;
+      color: #7DD580; letter-spacing: .06em;
+      text-transform: uppercase; margin-bottom: 28px;
     }
-
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 14px 18px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-      background: rgba(255, 255, 255, 0.02);
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+      animation: pulse 2.2s ease-in-out infinite;
     }
-
-    .panel-title {
-      color: var(--text-3);
-      font-size: 0.76rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-weight: 700;
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .6; transform: scale(.8); }
     }
-
-    .panel-controls {
-      display: flex;
-      gap: 8px;
-    }
-
-    .panel-controls span {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.25);
-      display: inline-block;
-    }
-
-    .video-shell {
-      padding: 0;
-    }
-
-    .video-shell iframe {
-      aspect-ratio: 16 / 9;
-      min-height: 300px;
-      background: #000;
-    }
-
-    .micro-panels {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .micro-panel {
-      position: relative;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.015));
-      border-radius: 18px;
-      min-height: 158px;
-      overflow: hidden;
-      padding: 18px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .micro-panel h4 {
-      margin: 0 0 12px;
-      color: var(--text);
-      font-size: 0.92rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .micro-panel .table-lines {
-      display: grid;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .micro-panel .table-lines span {
-      display: block;
-      height: 9px;
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      background: rgba(255, 255, 255, 0.01);
-    }
-
-    .micro-panel .bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      height: 70px;
-      margin-top: 18px;
-    }
-
-    .micro-panel .bars span {
-      flex: 1;
-      background: linear-gradient(180deg, rgba(111, 127, 168, 0.9), rgba(111, 127, 168, 0.24));
-      border: 1px solid rgba(111, 127, 168, 0.36);
-      min-height: 14px;
-    }
-
-    .floating-orbit {
-      position: absolute;
-      left: -20px;
-      top: 90px;
-      width: 170px;
-      height: 170px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow:
-        0 0 0 18px rgba(255,255,255,0.015),
-        0 0 0 54px rgba(255,255,255,0.01),
-        0 0 42px rgba(111, 127, 168, 0.12);
-      opacity: 0.45;
-      filter: blur(0.2px);
-      pointer-events: none;
-    }
-
-    .floating-orbit::before {
-      content: "";
-      position: absolute;
-      inset: 38px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      overflow: hidden;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
-      box-shadow: var(--shadow-soft);
-    }
-
-    .metric {
-      padding: 34px 28px;
-      min-height: 184px;
-      border-right: 1px solid rgba(255,255,255,0.07);
-      position: relative;
-    }
-
-    .metric:last-child {
-      border-right: 0;
-    }
-
-    .metric::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 28px;
-      right: 28px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-    }
-
-    .metric-number {
-      font-size: clamp(2.7rem, 4vw, 4rem);
-      line-height: 0.95;
-      letter-spacing: -0.065em;
-      font-weight: 800;
-      color: white;
-    }
-
-    .metric-label {
-      margin-top: 18px;
-      color: var(--text-3);
-      font-size: 0.97rem;
-      max-width: 220px;
-      line-height: 1.45;
-    }
-
-    .split-editorial {
-      display: grid;
-      grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.02fr);
-      gap: 0;
-      border: 1px solid var(--line);
-      border-radius: 30px;
-      overflow: hidden;
-      background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
-      box-shadow: var(--shadow);
-    }
-
-    .split-left,
-    .split-right {
-      padding: 54px 42px;
-      position: relative;
-      min-height: 520px;
-    }
-
-    .split-left {
-      border-right: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .split-left .issue-row {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      color: var(--text-3);
-      font-size: 0.8rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+    .hero h1 {
+      font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+      font-weight: 800; line-height: 1.06;
+      letter-spacing: -.04em; color: #fff;
       margin-bottom: 24px;
     }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(120deg, #3EB248 0%, #7DD580 60%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1.1rem; line-height: 1.72;
+      color: rgba(255,255,255,.68);
+      max-width: 580px; margin-bottom: 40px;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 14px 28px;
+      background: var(--green); color: #fff;
+      border-radius: 8px;
+      font-size: 1rem; font-weight: 600;
+      transition: background 200ms, transform 200ms, box-shadow 200ms;
+    }
+    .btn-primary:hover { background: var(--green2); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(62,178,72,.35); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 14px 28px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.24);
+      color: #fff; border-radius: 8px;
+      font-size: 1rem; font-weight: 600;
+      transition: background 200ms, border-color 200ms, transform 200ms;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.4); transform: translateY(-2px); }
+    .hero-scroll-hint {
+      position: absolute; bottom: 32px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,.35);
+      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+      z-index: 2; animation: float 2.2s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
 
-    .split-left .issue-row .divider {
-      width: 1px;
-      height: 24px;
-      background: rgba(255,255,255,0.14);
+    /* fade-up entries */
+    .fu { opacity: 0; transform: translateY(22px); animation: fadeUp 800ms var(--ease) forwards; }
+    .fu:nth-child(1){animation-delay:0ms} .fu:nth-child(2){animation-delay:120ms}
+    .fu:nth-child(3){animation-delay:220ms} .fu:nth-child(4){animation-delay:320ms}
+    @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+
+    /* ── SECTION SHARED ── */
+    .section { padding: 100px 0; }
+    .section-dark { background: var(--dark); color: #fff; }
+    .section-light { background: var(--bg2); }
+    .slabel {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .78rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 14px;
+    }
+    .slabel::before {
+      content: ''; width: 20px; height: 2px;
+      background: var(--green); border-radius: 1px;
+    }
+    .section-dark .slabel { color: var(--green); }
+    .stitle {
+      font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -.03em; color: var(--text);
+      margin-bottom: 14px;
+    }
+    .section-dark .stitle { color: #fff; }
+    .ssub {
+      font-size: 1.05rem; line-height: 1.72;
+      color: var(--muted); max-width: 540px;
+    }
+    .section-dark .ssub { color: rgba(255,255,255,.58); }
+
+    /* ── PARTNERS ── */
+    .partners-bar {
+      padding: 36px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .partners-lbl {
+      text-align: center;
+      font-size: .76rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 28px;
+    }
+    .marquee-wrap {
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+    }
+    .marquee-track {
+      display: flex; align-items: center;
+      gap: 24px; width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .partner-chip {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 18px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: .88rem; font-weight: 600;
+      color: var(--muted); white-space: nowrap;
+      transition: color 200ms, border-color 200ms;
+    }
+    .partner-chip:hover { color: var(--navy); border-color: var(--navy); }
+
+    /* ── ECOSYSTEM CARDS ── */
+    .eco-header { text-align: center; margin-bottom: 52px; }
+    .eco-header .ssub { margin: 8px auto 0; }
+    .eco-track {
+      display: flex; gap: 10px;
+      height: 420px; border-radius: var(--rl);
+      overflow: hidden;
+    }
+    .eco-card {
+      flex: 1; min-width: 0;
+      position: relative; border-radius: var(--r);
+      overflow: hidden; cursor: pointer;
+      transition: flex 450ms ease-in-out;
+      outline: none;
+    }
+    .eco-track.has-active .eco-card:not(.active) { flex: .45; }
+    .eco-card.active { flex: 2.5; }
+
+    .eco-card[data-p="biotrain"]  { background: linear-gradient(155deg, #0D4568 0%, #082D46 100%); }
+    .eco-card[data-p="biolaunch"] { background: linear-gradient(155deg, #00843D 0%, #054A24 100%); }
+    .eco-card[data-p="biocan"]    { background: linear-gradient(155deg, #0D5A70 0%, #0D4568 100%); }
+    .eco-card[data-p="biodefense"]{ background: linear-gradient(155deg, #1A1A2E 0%, #0D4568 100%); }
+
+    /* Collapsed state */
+    .eco-collapsed {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 28px 24px;
+      transition: opacity 250ms;
+    }
+    .eco-card.active .eco-collapsed { opacity: 0; pointer-events: none; }
+    .eco-ico {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: rgba(255,255,255,.12);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .eco-ico svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 1.8; }
+    .eco-name-v {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-family: 'Manrope',system-ui,sans-serif;
+      font-size: 1.15rem; font-weight: 700; color: #fff;
+    }
+    .eco-tag-v {
+      font-size: .7rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      margin-bottom: 10px;
     }
 
-    .split-left h2 {
-      max-width: 560px;
-      font-size: clamp(2.8rem, 5vw, 5.4rem);
-      line-height: 0.96;
+    /* Expanded state */
+    .eco-expanded {
+      position: absolute; inset: 0;
+      padding: 34px 30px;
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
+      transition: opacity 280ms 160ms;
+      overflow-y: auto;
     }
-
-    .split-left .foot-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 22px;
-      color: var(--text-3);
-      font-size: 0.95rem;
+    .eco-card.active .eco-expanded { opacity: 1; pointer-events: auto; }
+    .eco-exp-tag {
+      font-size: .7rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); margin-bottom: 8px;
     }
+    .eco-exp-title {
+      font-family: 'Manrope',system-ui,sans-serif;
+      font-size: 1.9rem; font-weight: 800;
+      color: #fff; line-height: 1.05;
+      letter-spacing: -.03em; margin-bottom: 10px;
+    }
+    .eco-exp-desc {
+      font-size: .92rem; line-height: 1.65;
+      color: rgba(255,255,255,.7); margin-bottom: 22px;
+      max-width: 420px;
+    }
+    .eco-links-lbl {
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.38); margin-bottom: 10px;
+    }
+    .eco-links { display: flex; flex-direction: column; gap: 0; flex: 1; }
+    .eco-link {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 0;
+      font-size: .9rem; font-weight: 500;
+      color: rgba(255,255,255,.78);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      transition: color 140ms, padding-left 140ms;
+    }
+    .eco-link:hover { color: #fff; padding-left: 4px; }
+    .eco-link::before {
+      content: ''; width: 4px; height: 4px; border-radius: 50%;
+      background: var(--green); flex-shrink: 0;
+    }
+    .eco-learn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 20px; padding: 10px 20px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 7px;
+      font-size: .88rem; font-weight: 600; color: #fff;
+      align-self: flex-start;
+      transition: background 180ms, border-color 180ms;
+    }
+    .eco-learn:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
 
-    .split-right .label-line {
-      display: flex;
-      align-items: center;
+    /* ── WHY INDIANA ── */
+    .indiana-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .stats-col { display: flex; flex-direction: column; gap: 20px; }
+    .stat-card {
+      padding: 26px 30px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      transition: background 200ms, border-color 200ms;
+    }
+    .stat-card:hover { background: rgba(255,255,255,.09); border-color: rgba(62,178,72,.3); }
+    .stat-num {
+      font-family: 'Manrope',system-ui,sans-serif;
+      font-size: 3.2rem; font-weight: 800;
+      letter-spacing: -.04em; color: #fff;
+      line-height: 1; margin-bottom: 8px;
+    }
+    .stat-num em { font-style: normal; color: var(--green); }
+    .stat-lbl { font-size: 1rem; font-weight: 700; color: rgba(255,255,255,.88); margin-bottom: 4px; }
+    .stat-detail { font-size: .85rem; color: rgba(255,255,255,.42); }
+    .map-col { display: flex; align-items: center; justify-content: center; position: relative; }
+    .map-wrap { position: relative; width: 300px; }
+    .map-wrap svg { width: 100%; height: auto; filter: drop-shadow(0 0 30px rgba(62,178,72,.15)); }
+
+    /* ── OPP / NEWS CARD GRID ── */
+    .cards-header {
+      display: flex; align-items: flex-end;
       justify-content: space-between;
-      color: var(--text-3);
-      font-size: 0.95rem;
-      margin-bottom: 22px;
+      gap: 24px; flex-wrap: wrap; margin-bottom: 44px;
     }
+    .view-all-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: .88rem; font-weight: 600;
+      color: var(--navy);
+      transition: border-color 180ms, background 180ms;
+      flex-shrink: 0;
+    }
+    .view-all-btn:hover { border-color: var(--navy); background: var(--bg2); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
 
-    .split-right .diagram-box {
-      position: relative;
-      border: 1px solid rgba(255,255,255,0.12);
-      min-height: 280px;
-      margin-top: 22px;
-      background:
-        repeating-linear-gradient(
-          135deg,
-          rgba(255,255,255,0.03) 0,
-          rgba(255,255,255,0.03) 2px,
-          transparent 2px,
-          transparent 10px
-        );
+    .opp-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 26px;
+      transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
+    }
+    .opp-card:hover { transform: translateY(-4px); box-shadow: var(--sh-md); }
+    .tag {
+      display: inline-flex; padding: 4px 10px;
+      background: rgba(62,178,72,.1); color: var(--green2);
+      border-radius: 100px; font-size: .73rem; font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .opp-card h3 { font-size: 1rem; font-weight: 700; line-height: 1.42; color: var(--text); margin-bottom: 8px; }
+    .opp-card p { font-size: .88rem; line-height: 1.65; color: var(--muted); margin-bottom: 18px; }
+    .opp-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 14px; border-top: 1px solid var(--border);
+      font-size: .8rem; color: var(--muted);
+    }
+    .opp-cta { font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 4px; transition: gap 140ms; }
+    .opp-cta:hover { gap: 8px; }
+
+    .news-card {
+      border: 1px solid var(--border); border-radius: 16px;
       overflow: hidden;
+      transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
     }
-
-    .scatter {
-      position: absolute;
-      inset: 26px auto auto 28px;
-      width: 180px;
-      height: 180px;
+    .news-card:hover { transform: translateY(-4px); box-shadow: var(--sh-md); }
+    .news-img { aspect-ratio: 16/9; overflow: hidden; background: var(--bg2); }
+    .news-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 400ms var(--ease); }
+    .news-card:hover .news-img img { transform: scale(1.05); }
+    .news-body { padding: 22px; }
+    .news-cat {
+      display: inline-flex; padding: 3px 10px;
+      background: rgba(13,69,104,.08); color: var(--navy);
+      border-radius: 100px;
+      font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      margin-bottom: 10px;
     }
+    .news-body h3 { font-size: .97rem; font-weight: 700; line-height: 1.45; color: var(--text); margin-bottom: 8px; }
+    .news-date { font-size: .8rem; color: var(--muted); }
 
-    .scatter span,
-    .grid-chart span {
-      position: absolute;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.78);
+    /* ── CONNECT ── */
+    .connect-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: center;
     }
-
-    .grid-chart {
-      position: absolute;
-      right: 26px;
-      bottom: 28px;
-      width: 210px;
-      height: 130px;
-      border: 1px solid rgba(255,255,255,0.24);
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      grid-template-rows: repeat(5, 1fr);
+    .connect-perks { margin-top: 32px; display: flex; flex-direction: column; gap: 14px; }
+    .perk {
+      display: flex; align-items: center; gap: 12px;
+      font-size: .92rem; color: rgba(255,255,255,.68);
     }
-
-    .grid-chart::before,
-    .grid-chart::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
+    .perk-ico {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(62,178,72,.2); border: 1px solid rgba(62,178,72,.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--green); font-size: .8rem; flex-shrink: 0;
     }
-
-    .grid-chart::before {
-      background-image:
-        linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px);
-      background-size: calc(100% / 7) calc(100% / 5);
+    .form-box {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 20px; padding: 34px;
     }
-
-    .principles {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 22px;
-      margin-top: 34px;
+    .form-box h3 { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 22px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .form-row.full { grid-template-columns: 1fr; }
+    .fg { display: flex; flex-direction: column; gap: 5px; }
+    label { font-size: .8rem; font-weight: 600; color: rgba(255,255,255,.65); }
+    input, select {
+      padding: 11px 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px;
+      font-size: .9rem; color: #fff;
+      font-family: inherit;
+      transition: border-color 180ms, background 180ms;
     }
-
-    .principle {
-      padding-top: 18px;
-      border-top: 1px solid rgba(255,255,255,0.16);
+    input::placeholder { color: rgba(255,255,255,.28); }
+    input:focus, select:focus {
+      outline: none;
+      border-color: rgba(62,178,72,.55);
+      background: rgba(255,255,255,.08);
     }
-
-    .principle .num {
-      color: white;
-      font-size: 2rem;
-      letter-spacing: -0.05em;
-      margin-bottom: 8px;
+    select option { background: var(--dark); }
+    .btn-sub {
+      width: 100%; padding: 13px;
+      background: var(--green); color: #fff;
+      border: none; border-radius: 8px;
+      font-size: .97rem; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      margin-top: 6px;
+      transition: background 200ms, transform 200ms;
     }
+    .btn-sub:hover { background: var(--green2); transform: translateY(-1px); }
+    .form-note { font-size: .75rem; color: rgba(255,255,255,.28); text-align: center; margin-top: 10px; }
 
-    .principle .title {
-      color: var(--text);
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 6px;
+    /* ── FOOTER ── */
+    .footer { background: #050E18; padding: 64px 0 32px; }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      margin-bottom: 28px;
     }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 22px;
-      margin-top: 42px;
+    .f-brand img { height: 40px; margin-bottom: 16px; }
+    .f-brand p { font-size: .88rem; line-height: 1.7; color: rgba(255,255,255,.38); max-width: 280px; }
+    .f-col h4 {
+      font-size: .78rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.75); margin-bottom: 14px;
     }
-
-    .card {
-      position: relative;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)),
-        rgba(8, 12, 20, 0.78);
-      padding: 28px;
-      overflow: hidden;
-      box-shadow: var(--shadow-soft);
+    .f-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
+    .f-col a { font-size: .88rem; color: rgba(255,255,255,.4); transition: color 140ms; }
+    .f-col a:hover { color: rgba(255,255,255,.88); }
+    .footer-bot {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 20px; flex-wrap: wrap;
+      font-size: .8rem; color: rgba(255,255,255,.3);
     }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 28px;
-      right: 28px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    .f-social { display: flex; gap: 10px; }
+    .f-social a {
+      width: 34px; height: 34px; border-radius: 7px;
+      border: 1px solid rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 180ms, border-color 180ms;
     }
+    .f-social a:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); }
+    .f-social svg { width: 15px; height: 15px; fill: rgba(255,255,255,.55); }
 
-    .card h3 {
-      margin: 10px 0 14px;
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
+    .reveal.vis { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .indiana-grid, .connect-inner { grid-template-columns: 1fr; gap: 48px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .f-brand { grid-column: 1/-1; }
     }
-
-    .card ul {
-      list-style: none;
-      padding: 0;
-      margin: 16px 0 0;
-      display: grid;
-      gap: 10px;
-    }
-
-    .card li {
-      position: relative;
-      padding-left: 18px;
-      color: var(--text-2);
-      line-height: 1.6;
-    }
-
-    .card li::before {
-      content: "";
-      position: absolute;
-      top: 0.62em;
-      left: 0;
-      width: 7px;
-      height: 7px;
-      border: 1px solid rgba(255,255,255,0.38);
-      background: rgba(111, 127, 168, 0.25);
-    }
-
-    .icon-chip {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.14);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,0.03);
-    }
-
-    .icon-chip svg {
-      width: 22px;
-      height: 22px;
-      stroke: #ffffff;
-      stroke-width: 1.5;
-      fill: none;
-      opacity: 0.88;
-    }
-
-    .organizations {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 36px;
-    }
-
-    .org {
-      min-height: 132px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-      background: rgba(255,255,255,0.02);
-      color: var(--text-2);
-      font-size: 0.93rem;
-      line-height: 1.45;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .timeline-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 40px;
-    }
-
-    .timeline-card {
-      position: relative;
-      min-height: 280px;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 28px 24px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
-        rgba(8, 12, 20, 0.78);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .timeline-card .step {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      border: 1px solid rgba(111,127,168,0.36);
-      background: linear-gradient(180deg, rgba(111,127,168,0.24), rgba(111,127,168,0.08));
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: white;
-      box-shadow: 0 0 28px rgba(111, 127, 168, 0.18);
-      margin-bottom: 20px;
-    }
-
-    .timeline-card p {
-      margin-top: 12px;
-    }
-
-    .timeline-card ul {
-      list-style: none;
-      padding: 0;
-      margin: 16px 0 0;
-      display: grid;
-      gap: 8px;
-    }
-
-    .timeline-card li {
-      color: var(--text-3);
-      font-size: 0.96rem;
-      line-height: 1.5;
-      padding-left: 16px;
-      position: relative;
-    }
-
-    .timeline-card li::before {
-      content: "·";
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: var(--accent);
-      font-weight: 800;
-    }
-
-    .award-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 36px;
-    }
-
-    .award {
-      border: 1px solid var(--line);
-      border-left: 3px solid rgba(255,255,255,0.28);
-      border-radius: 18px;
-      padding: 24px 24px 24px 22px;
-      background: rgba(255,255,255,0.025);
-    }
-
-    .award h4 {
-      margin: 0 0 8px;
-      color: white;
-      font-size: 1.05rem;
-      font-weight: 700;
-    }
-
-    .cta-shell {
-      position: relative;
-      border: 1px solid var(--line);
-      border-radius: 30px;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(111,127,168,0.14), transparent 28%),
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
-      padding: 56px 36px;
-      text-align: center;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .cta-shell::before {
-      content: "";
-      position: absolute;
-      left: -90px;
-      top: -90px;
-      width: 220px;
-      height: 220px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 50%;
-      box-shadow: 0 0 0 36px rgba(255,255,255,0.015);
-      opacity: 0.6;
-    }
-
-    .cta-shell::after {
-      content: "";
-      position: absolute;
-      right: -70px;
-      bottom: -70px;
-      width: 180px;
-      height: 180px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 50%;
-      box-shadow: 0 0 0 28px rgba(255,255,255,0.015);
-      opacity: 0.4;
-    }
-
-    .cta-shell p {
-      max-width: 760px;
-      margin: 18px auto 0;
-    }
-
-    footer {
-      padding: 34px 0 50px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      color: var(--text-4);
-      font-size: 0.88rem;
-      text-align: center;
-    }
-
-    @media (max-width: 1180px) {
-      .hero-layout,
-      .split-editorial {
-        grid-template-columns: 1fr;
+    @media (max-width: 860px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .eco-track {
+        flex-direction: column; height: auto;
       }
-
-      .split-left {
-        border-right: 0;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-        min-height: auto;
+      .eco-card {
+        flex: none !important;
+        height: 70px; border-radius: 12px;
+        transition: height 400ms ease-in-out;
       }
-
-      .metrics,
-      .organizations,
-      .timeline-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .eco-card.active { height: 360px; }
+      .eco-collapsed {
+        flex-direction: row; align-items: center;
+        padding: 0 20px; gap: 14px; justify-content: flex-start;
       }
+      .eco-name-v { writing-mode: horizontal-tb; transform: none; font-size: 1rem; }
+      .eco-tag-v { writing-mode: horizontal-tb; transform: none; font-size: .72rem; margin-bottom: 0; }
+      .eco-ico { margin-bottom: 0; width: 36px; height: 36px; }
+      .stats-col { flex-direction: row; flex-wrap: wrap; }
+      .stat-card { flex: 1; min-width: 180px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
     }
-
-    @media (max-width: 900px) {
-      .container {
-        width: min(calc(100% - 32px), var(--container));
-      }
-
-      .nav-inner {
-        min-height: 72px;
-      }
-
-      .brand {
-        gap: 12px;
-      }
-
-      .brand-logo {
-        width: 94px;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .hero {
-        padding: 62px 0 80px;
-      }
-
-      .micro-panels,
-      .grid-2,
-      .principles,
-      .award-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .metrics,
-      .organizations,
-      .timeline-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .metric {
-        border-right: 0;
-        border-bottom: 1px solid rgba(255,255,255,0.07);
-      }
-
-      .metric:last-child {
-        border-bottom: 0;
-      }
-
-      .split-left,
-      .split-right,
-      .cta-shell {
-        padding: 38px 24px;
-      }
-
-      .floating-orbit {
-        display: none;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .hero-topline,
-      .eyebrow {
-        font-size: 0.7rem;
-      }
-
-      .button-row {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .panel-header {
-        padding: 12px 14px;
-      }
-
-      .card,
-      .timeline-card,
-      .award,
-      .org {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-
-      .section {
-        padding: 84px 0;
-      }
-
-      .section-tight {
-        padding: 74px 0;
-      }
+    @media (max-width: 540px) {
+      .hero-btns { flex-direction: column; }
+      .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+      .section { padding: 72px 0; }
+      .cards-header { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <nav class="nav">
-      <div class="container nav-inner">
-        <a href="#home" class="brand" aria-label="RAM Home">
-          <img
-            class="brand-logo"
-            src="https://static.wixstatic.com/media/fcced6_f19335b6f6ed433b9a5c9a2294f3db1a~mv2.png"
-            alt="RAM Powered by ARI logo"
-          />
-          <div class="brand-copy">
-            <span class="brand-kicker">Rapid Acquisition Model</span>
-            <span class="brand-kicker">Powered by Applied Research Institute</span>
-          </div>
-        </a>
 
-        <div class="nav-links">
-          <a href="#impact">Impact</a>
-          <a href="#model">Model</a>
-          <a href="#pathway">Pathway</a>
-          <a href="#recognition">Recognition</a>
+<!-- ══ NAV ══ -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#home" class="nav-logo" aria-label="Heartland BioWorks – Home">
+      <img src="https://static.wixstatic.com/media/fcced6_f19335b6f6ed433b9a5c9a2294f3db1a~mv2.png" alt="Heartland BioWorks" />
+    </a>
+
+    <ul class="nav-links" aria-label="Site navigation">
+      <li>
+        <div class="nav-link" tabindex="0" role="button" aria-haspopup="true">
+          Programs
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-
-        <a
-          href="https://linktr.ee/AppliedResearchInstitute"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-secondary"
-        >
-          Explore RAM ↗
-        </a>
-      </div>
-    </nav>
-
-    <header class="hero" id="home">
-      <div class="container hero-layout">
-        <div class="hero-copy">
-          <div class="floating-orbit" aria-hidden="true"></div>
-
-          <div class="hero-topline">
-            <span class="dot"></span>
-            <span>Operating model for acquisition velocity</span>
-          </div>
-
-          <div class="rule"></div>
-
-          <h1>
-            Rapid Acquisition
-            <span class="accent">Model for the modern mission</span>
-          </h1>
-
-          <p class="lead">
-            The Rapid Acquisition Model moves technology from initial engagement to awardable outcomes.
-            It gives government agencies a more direct, transparent, and accelerated way to identify,
-            evaluate, and acquire emerging capabilities across the Department of War.
-          </p>
-
-          <div class="button-row">
-            <a
-              href="https://linktr.ee/AppliedResearchInstitute"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-primary"
-            >
-              Explore RAM in Action
-            </a>
-            <a href="#model" class="btn btn-secondary">See the model</a>
-          </div>
+        <div class="nav-drop" role="menu">
+          <a href="#" role="menuitem"><div class="dd-ico">🧬</div> BioTrain</a>
+          <a href="#" role="menuitem"><div class="dd-ico">🚀</div> BioLaunch</a>
+          <a href="#" role="menuitem"><div class="dd-ico">⚗️</div> BioCAN</a>
+          <a href="#" role="menuitem"><div class="dd-ico">🛡️</div> BioDefense</a>
         </div>
-
-        <div class="hero-interface">
-          <div class="ui-panel video-shell">
-            <div class="panel-header">
-              <div class="panel-title">Mission Brief | RAM Overview</div>
-              <div class="panel-controls" aria-hidden="true">
-                <span></span><span></span><span></span>
-              </div>
-            </div>
-            <iframe
-              src="https://www.youtube.com/embed/e688KErAKjA?rel=0"
-              title="Revolutionizing Defense: How ARI's RAM Speeds Technology Transition"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-            ></iframe>
-          </div>
-
-          <div class="micro-panels">
-            <div class="micro-panel">
-              <h4>Transparent Evaluation</h4>
-              <div class="table-lines" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <div class="bars" aria-hidden="true">
-                <span style="height:26%"></span>
-                <span style="height:38%"></span>
-                <span style="height:52%"></span>
-                <span style="height:71%"></span>
-                <span style="height:44%"></span>
-              </div>
-            </div>
-
-            <div class="micro-panel">
-              <h4>Mission Data Signals</h4>
-              <div class="table-lines" aria-hidden="true">
-                <span style="width:90%"></span>
-                <span style="width:76%"></span>
-                <span style="width:84%"></span>
-                <span style="width:58%"></span>
-                <span style="width:66%"></span>
-              </div>
-              <div class="bars" aria-hidden="true">
-                <span style="height:18%"></span>
-                <span style="height:28%"></span>
-                <span style="height:63%"></span>
-                <span style="height:46%"></span>
-                <span style="height:80%"></span>
-              </div>
-            </div>
-          </div>
+      </li>
+      <li>
+        <div class="nav-link" tabindex="0" role="button" aria-haspopup="true">
+          Resources
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-      </div>
-    </header>
-
-    <section class="section-tight" id="impact">
-      <div class="container">
-        <div class="eyebrow">Proven impact</div>
-        <div class="rule"></div>
-
-        <h2>
-          A data-driven acquisition model already
-          <span class="accent">delivering outcomes</span>
-        </h2>
-
-        <div class="metrics" style="margin-top:40px;">
-          <div class="metric">
-            <div class="metric-number">$3B+</div>
-            <div class="metric-label">in contracts awarded</div>
-          </div>
-          <div class="metric">
-            <div class="metric-number">150+</div>
-            <div class="metric-label">government activities participating</div>
-          </div>
-          <div class="metric">
-            <div class="metric-number">300%</div>
-            <div class="metric-label">faster to award</div>
-          </div>
-          <div class="metric">
-            <div class="metric-number">85%</div>
-            <div class="metric-label">non-traditional vendor participation</div>
-          </div>
+        <div class="nav-drop" role="menu">
+          <a href="#news" role="menuitem"><div class="dd-ico">📰</div> News &amp; Media</a>
+          <a href="#" role="menuitem"><div class="dd-ico">📅</div> Upcoming Events</a>
+          <a href="#" role="menuitem"><div class="dd-ico">📚</div> Educational Library</a>
         </div>
-      </div>
-    </section>
-
-    <section class="section" id="model">
-      <div class="container">
-        <div class="split-editorial">
-          <div class="split-left">
-            <div>
-              <div class="issue-row">
-                <span>RAM briefing</span>
-                <span class="divider"></span>
-                <span>Issue no. 7</span>
-              </div>
-
-              <h2>
-                RAM is accelerating acquisition,
-                not adding friction.
-              </h2>
-            </div>
-
-            <div class="foot-meta">
-              <span>Competition</span>
-              <span>Transparency</span>
-              <span>Faster transition</span>
-            </div>
-          </div>
-
-          <div class="split-right">
-            <div class="label-line">
-              <span>Specific operational value</span>
-              <span class="muted">Data-driven decision environment</span>
-            </div>
-
-            <div class="diagram-box">
-              <div class="scatter" aria-hidden="true">
-                <span style="left:8%; top:54%"></span>
-                <span style="left:18%; top:36%"></span>
-                <span style="left:24%; top:67%"></span>
-                <span style="left:33%; top:24%"></span>
-                <span style="left:41%; top:48%"></span>
-                <span style="left:47%; top:15%"></span>
-                <span style="left:56%; top:58%"></span>
-                <span style="left:61%; top:31%"></span>
-                <span style="left:73%; top:44%"></span>
-                <span style="left:80%; top:22%"></span>
-                <span style="left:86%; top:63%"></span>
-              </div>
-
-              <div class="grid-chart" aria-hidden="true"></div>
-            </div>
-
-            <div class="principles">
-              <div class="principle">
-                <div class="num">01</div>
-                <div class="title">Software-enabled process</div>
-                <p>One environment for competition, evaluation, and award.</p>
-              </div>
-              <div class="principle">
-                <div class="num">02</div>
-                <div class="title">Privacy and trust</div>
-                <p>Criteria-based assessment with transparent workflows.</p>
-              </div>
-              <div class="principle">
-                <div class="num">03</div>
-                <div class="title">Operational delivery</div>
-                <p>Faster pathways from identification to awardable status.</p>
-              </div>
-            </div>
-          </div>
+      </li>
+      <li>
+        <div class="nav-link" tabindex="0" role="button" aria-haspopup="true">
+          About
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-
-        <div class="grid-2" style="margin-top:28px;">
-          <div class="card">
-            <div class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                <path d="M8 8h8M8 12h8M8 16h5"></path>
-              </svg>
-            </div>
-            <h3>What RAM Does</h3>
-            <p>
-              RAM demonstrates how competition, evaluation, and award can occur in one transparent,
-              data-driven environment that delivers capabilities to the field faster. It brings together
-              commercial-first access, measurable performance, and accelerated delivery into a single model.
-            </p>
-          </div>
-
-          <div class="card">
-            <div class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M5 19l14-14"></path>
-                <path d="M7 7h10v10"></path>
-              </svg>
-            </div>
-            <h3>A Different Starting Point</h3>
-            <p>
-              Through concise, video-based submissions, innovators present five to seven minute solution
-              pitches reviewed against published evaluation criteria. Competition, evaluation, and award
-              happen within the same digital environment, replacing lengthy paperwork cycles with a more
-              direct and transparent process.
-            </p>
-          </div>
+        <div class="nav-drop" role="menu">
+          <a href="#" role="menuitem"><div class="dd-ico">👥</div> Team</a>
+          <a href="#" role="menuitem"><div class="dd-ico">❓</div> FAQs</a>
+          <a href="#connect" role="menuitem"><div class="dd-ico">✉️</div> Contact Us</a>
         </div>
-      </div>
-    </section>
+      </li>
+    </ul>
 
-    <section class="section" id="organizations">
-      <div class="container">
-        <div class="eyebrow">Applied across government</div>
-        <div class="rule"></div>
+    <a href="#connect" class="nav-cta">Contact Us</a>
 
-        <h2>
-          RAM is scalable across missions,
-          <span class="accent">operational domains, and critical technology areas.</span>
-        </h2>
-
-        <div class="organizations">
-          <div class="org">Defense Advanced Research Projects Agency</div>
-          <div class="org">Chief Digital and Artificial Intelligence Office</div>
-          <div class="org">Army Applications Laboratory</div>
-          <div class="org">Department of the Air Force</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="audiences">
-      <div class="container">
-        <div class="eyebrow">Powering government and innovators</div>
-        <div class="rule"></div>
-
-        <h2>
-          One model. Two high-value outcomes.
-        </h2>
-
-        <div class="grid-2">
-          <div class="card">
-            <div class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 3v18"></path>
-                <path d="M3 12h18"></path>
-                <circle cx="12" cy="12" r="8"></circle>
-              </svg>
-            </div>
-            <h3>For Government</h3>
-            <ul>
-              <li>Mission-speed acquisition</li>
-              <li>Higher fidelity, lower burden assessments</li>
-              <li>Transparent, data-driven decisions</li>
-              <li>Broader access to the innovation base</li>
-              <li>Proven transition pathways</li>
-              <li>Reduced administrative burden</li>
-              <li>Alignment with Secretary of War acquisition priorities</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <div class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M4 12h16"></path>
-                <path d="M12 4l8 8-8 8"></path>
-              </svg>
-            </div>
-            <h3>For Vendors</h3>
-            <ul>
-              <li>Clear, predictable, fair process</li>
-              <li>Lower barrier to entry</li>
-              <li>Increased visibility to DoW buyers</li>
-              <li>Direct pathways to funding</li>
-              <li>Actionable feedback</li>
-              <li>Awardable status credibility</li>
-              <li>A single digital gateway to engage with the Department</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="why">
-      <div class="container">
-        <div class="eyebrow">Why RAM matters</div>
-        <div class="rule"></div>
-
-        <h2>
-          Government is operating in an environment that demands
-          <span class="accent">faster delivery, broader innovation access, and more adaptable acquisition.</span>
-        </h2>
-
-        <div class="grid-2">
-          <div class="card">
-            <div class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M5 19l14-14"></path>
-                <path d="M14 5h5v5"></path>
-              </svg>
-            </div>
-            <h3>Technology to the Field</h3>
-            <p>Increasing flexibility and maturity in delivering technology to the field.</p>
-          </div>
-
-          <div class="card">
-            <div class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M4 8h16"></path>
-                <path d="M4 12h16"></path>
-                <path d="M4 16h16"></path>
-              </svg>
-            </div>
-            <h3>Capability Portfolios</h3>
-            <p>Enabling acquisition approaches that support portfolios of capabilities.</p>
-          </div>
-
-          <div class="card">
-            <div class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <circle cx="6" cy="12" r="2"></circle>
-                <circle cx="12" cy="6" r="2"></circle>
-                <circle cx="18" cy="12" r="2"></circle>
-                <circle cx="12" cy="18" r="2"></circle>
-                <path d="M7.5 10.8l3-3M13.5 7.2l3 3M16.5 13.2l-3 3M10.5 16.2l-3-3"></path>
-              </svg>
-            </div>
-            <h3>Industrial Base Expansion</h3>
-            <p>Broadening opportunities for new entrants and expanding the defense industrial base.</p>
-          </div>
-
-          <div class="card">
-            <div class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M4 19h16"></path>
-                <path d="M7 15l3-3 3 2 4-5"></path>
-              </svg>
-            </div>
-            <h3>Modern Acquisition</h3>
-            <p>Advancing innovative program management and acquisition approaches.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="pathway">
-      <div class="container">
-        <div class="eyebrow">How RAM works</div>
-        <div class="rule"></div>
-
-        <h2>
-          A continuous pathway from
-          <span class="accent">engagement to award</span>
-        </h2>
-
-        <div class="timeline-grid">
-          <div class="timeline-card">
-            <div class="step">1</div>
-            <h3>Engagement and Access</h3>
-            <p>
-              Programs like DARPAConnect and SciTechCONNECT expand access and help identify alignment early.
-            </p>
-          </div>
-
-          <div class="timeline-card">
-            <div class="step">2</div>
-            <h3>Capability Alignment</h3>
-            <ul>
-              <li>Align solutions to mission needs</li>
-              <li>Connect with the right offices</li>
-              <li>Refine positioning through engagement</li>
-            </ul>
-          </div>
-
-          <div class="timeline-card">
-            <div class="step">3</div>
-            <h3>Solution Presentation</h3>
-            <ul>
-              <li>5 to 7 minute video submissions</li>
-              <li>Structured technical framing</li>
-              <li>SME-informed assessment</li>
-            </ul>
-          </div>
-
-          <div class="timeline-card">
-            <div class="step">4</div>
-            <h3>Marketplace + Award</h3>
-            <ul>
-              <li>Tradewinds Solutions Marketplace</li>
-              <li>DARPA ERIS Marketplace</li>
-              <li>Platform One Marketplace</li>
-              <li>Discovery, engagement, and award using existing authorities</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="delivering">
-      <div class="container">
-        <div class="eyebrow">What RAM is delivering</div>
-        <div class="rule"></div>
-
-        <h2>
-          Reduced friction, improved visibility,
-          and <span class="accent">faster transition to awardable outcomes.</span>
-        </h2>
-
-        <div class="grid-2">
-          <div class="card">
-            <h3>Reduced Friction at the Front End</h3>
-            <p>RAM lowers the administrative burden of early-stage acquisition and simplifies the pathway from initial engagement to decision.</p>
-          </div>
-
-          <div class="card">
-            <h3>Improved Capability Visibility</h3>
-            <p>Government buyers gain stronger visibility into relevant capabilities and measurable performance in a structured environment.</p>
-          </div>
-
-          <div class="card">
-            <h3>Shortened Timelines</h3>
-            <p>Identification, evaluation, and acquisition decisions move faster without sacrificing rigor or fairness.</p>
-          </div>
-
-          <div class="card">
-            <h3>Expanded Non-Traditional Access</h3>
-            <p>RAM broadens participation and creates more direct entry points for commercial and non-traditional performers.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="recognition">
-      <div class="container">
-        <div class="eyebrow">Recognition</div>
-        <div class="rule"></div>
-
-        <h2>
-          External validation for
-          <span class="accent">operational impact and innovation.</span>
-        </h2>
-
-        <div class="award-grid">
-          <div class="award">
-            <h4>Gov Forum Impact Award</h4>
-            <p>Disruptive Program of the Year | ARI RAM</p>
-          </div>
-
-          <div class="award">
-            <h4>2025 Forum Innovation Award</h4>
-            <p>DARPAConnect &amp; ERIS Marketplace</p>
-          </div>
-
-          <div class="award">
-            <h4>2026 Forum Innovation Award</h4>
-            <p>DARPAConnect &amp; ERIS Marketplace and SciTechCONNECT</p>
-          </div>
-
-          <div class="award">
-            <h4>2025 IT100</h4>
-            <p>Jason Preisser and Jess Resig</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="final-cta">
-      <div class="container">
-        <div class="cta-shell">
-          <div class="eyebrow" style="justify-content:center;">RAM in action</div>
-          <h2 style="margin:18px auto 0;">
-            RAM is already in use across the Department to move capability faster, broaden participation, and deliver outcomes.
-          </h2>
-          <p>
-            Explore the broader RAM ecosystem and see how programs, platforms, and pathways are connecting mission needs with real acquisition velocity.
-          </p>
-
-          <div class="button-row" style="justify-content:center;">
-            <a
-              href="https://linktr.ee/AppliedResearchInstitute"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-primary"
-            >
-              Explore All RAM Programs
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <div class="container">
-        © 2026 Rapid Acquisition Model. Powered by Applied Research Institute.
-      </div>
-    </footer>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
   </div>
+</nav>
 
-  <script>
-    (function () {
-      function postHeight() {
-        var height = Math.max(
-          document.body.scrollHeight,
-          document.documentElement.scrollHeight,
-          document.body.offsetHeight,
-          document.documentElement.offsetHeight
-        );
 
-        window.parent.postMessage(
-          {
-            type: "resize",
-            height: height
-          },
-          "*"
-        );
-      }
+<!-- ══ HERO ══ -->
+<section class="hero" id="home" aria-label="Hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge fu">Indiana's Regional Tech Hub</div>
+      <h1 class="fu">Building America's <em>Biomanufacturing</em> Future</h1>
+      <p class="hero-sub fu">Indiana's Regional Tech Hub for biotechnology, workforce development, commercialization, and national security.</p>
+      <div class="hero-btns fu">
+        <a href="#ecosystem" class="btn-primary">Explore Programs <span aria-hidden="true">→</span></a>
+        <a href="#connect" class="btn-outline">Connect With Us</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <svg width="18" height="26" viewBox="0 0 18 26" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="1" y="1" width="16" height="24" rx="8"/>
+      <circle cx="9" cy="8" r="2.5" fill="currentColor" stroke="none">
+        <animate attributeName="cy" values="8;16;8" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;.3;1" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+  </div>
+</section>
 
-      if ("ResizeObserver" in window) {
-        var observer = new ResizeObserver(function () {
-          postHeight();
-        });
-        observer.observe(document.body);
-      }
 
-      window.addEventListener("load", postHeight);
-      window.addEventListener("resize", postHeight);
+<!-- ══ PARTNERS ══ -->
+<div class="partners-bar" aria-label="Partners">
+  <p class="partners-lbl">Indiana's innovation ecosystem</p>
+  <div class="marquee-wrap">
+    <div class="marquee-track" aria-hidden="true">
+      <div class="partner-chip">Applied Research Institute</div>
+      <div class="partner-chip">Purdue University</div>
+      <div class="partner-chip">Indiana University</div>
+      <div class="partner-chip">Ivy Tech Community College</div>
+      <div class="partner-chip">BioCrossroads</div>
+      <div class="partner-chip">16 Tech Innovation District</div>
+      <div class="partner-chip">USSOCOM</div>
+      <div class="partner-chip">Indiana EDC</div>
+      <div class="partner-chip">Applied Research Institute</div>
+      <div class="partner-chip">Purdue University</div>
+      <div class="partner-chip">Indiana University</div>
+      <div class="partner-chip">Ivy Tech Community College</div>
+      <div class="partner-chip">BioCrossroads</div>
+      <div class="partner-chip">16 Tech Innovation District</div>
+      <div class="partner-chip">USSOCOM</div>
+      <div class="partner-chip">Indiana EDC</div>
+    </div>
+  </div>
+</div>
 
-      setTimeout(postHeight, 250);
-      setTimeout(postHeight, 800);
-      setTimeout(postHeight, 1500);
-    })();
-  </script>
+
+<!-- ══ ECOSYSTEM ══ -->
+<section class="section" id="ecosystem" aria-label="Explore the Ecosystem">
+  <div class="container">
+    <div class="eco-header">
+      <div class="slabel">Explore the Ecosystem</div>
+      <h2 class="stitle" style="max-width:480px;margin:0 auto;">Four Programs. One Mission.</h2>
+      <p class="ssub">Indiana's integrated biomanufacturing infrastructure — from workforce development to national defense.</p>
+    </div>
+
+    <div class="eco-track" id="ecoTrack" role="list">
+
+      <!-- BioTrain -->
+      <div class="eco-card" data-p="biotrain" tabindex="0" role="listitem button" aria-expanded="false" aria-label="BioTrain – click to expand">
+        <div class="eco-collapsed">
+          <div class="eco-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div>
+            <div class="eco-tag-v">Workforce</div>
+            <div class="eco-name-v">BioTrain</div>
+          </div>
+        </div>
+        <div class="eco-expanded" aria-hidden="true">
+          <div class="eco-exp-tag">Workforce Development</div>
+          <div class="eco-exp-title">BioTrain</div>
+          <p class="eco-exp-desc">Building Indiana's biotech workforce pipeline through training, employer partnerships, and talent development programs.</p>
+          <div class="eco-links-lbl">Explore</div>
+          <div class="eco-links">
+            <a class="eco-link" href="#">Training Programs</a>
+            <a class="eco-link" href="#">Employer Partnerships</a>
+            <a class="eco-link" href="#">Student Opportunities</a>
+            <a class="eco-link" href="#">Workforce Resources</a>
+          </div>
+          <a class="eco-learn" href="#">Learn More →</a>
+        </div>
+      </div>
+
+      <!-- BioLaunch -->
+      <div class="eco-card" data-p="biolaunch" tabindex="0" role="listitem button" aria-expanded="false" aria-label="BioLaunch – click to expand">
+        <div class="eco-collapsed">
+          <div class="eco-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
+          </div>
+          <div>
+            <div class="eco-tag-v">Commercialization</div>
+            <div class="eco-name-v">BioLaunch</div>
+          </div>
+        </div>
+        <div class="eco-expanded" aria-hidden="true">
+          <div class="eco-exp-tag">Commercialization &amp; Startups</div>
+          <div class="eco-exp-title">BioLaunch</div>
+          <p class="eco-exp-desc">Accelerating biotech startups from concept to market through mentorship, funding connections, and innovation support.</p>
+          <div class="eco-links-lbl">Explore</div>
+          <div class="eco-links">
+            <a class="eco-link" href="#">Startup Accelerator</a>
+            <a class="eco-link" href="#">Mentorship Network</a>
+            <a class="eco-link" href="#">Innovation Lab</a>
+            <a class="eco-link" href="#">Investor Connections</a>
+          </div>
+          <a class="eco-learn" href="#">Learn More →</a>
+        </div>
+      </div>
+
+      <!-- BioCAN -->
+      <div class="eco-card" data-p="biocan" tabindex="0" role="listitem button" aria-expanded="false" aria-label="BioCAN – click to expand">
+        <div class="eco-collapsed">
+          <div class="eco-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div>
+            <div class="eco-tag-v">CDMO &amp; Funding</div>
+            <div class="eco-name-v">BioCAN</div>
+          </div>
+        </div>
+        <div class="eco-expanded" aria-hidden="true">
+          <div class="eco-exp-tag">CDMO Network &amp; Funding</div>
+          <div class="eco-exp-title">BioCAN</div>
+          <p class="eco-exp-desc">Connecting companies to CDMO capabilities, grant opportunities, and the funding network that powers Indiana's bioeconomy.</p>
+          <div class="eco-links-lbl">Explore</div>
+          <div class="eco-links">
+            <a class="eco-link" href="#">Funding Opportunities</a>
+            <a class="eco-link" href="#">CDMO Network</a>
+            <a class="eco-link" href="#">Grant Applications</a>
+            <a class="eco-link" href="#">Industry Partners</a>
+          </div>
+          <a class="eco-learn" href="#">Learn More →</a>
+        </div>
+      </div>
+
+      <!-- BioDefense -->
+      <div class="eco-card" data-p="biodefense" tabindex="0" role="listitem button" aria-expanded="false" aria-label="BioDefense – click to expand">
+        <div class="eco-collapsed">
+          <div class="eco-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="eco-tag-v">National Security</div>
+            <div class="eco-name-v">BioDefense</div>
+          </div>
+        </div>
+        <div class="eco-expanded" aria-hidden="true">
+          <div class="eco-exp-tag">National Security &amp; Defense</div>
+          <div class="eco-exp-title">BioDefense</div>
+          <p class="eco-exp-desc">Strengthening America's biodefense capabilities through strategic partnerships, supply chain resilience, and defense biotechnology.</p>
+          <div class="eco-links-lbl">Explore</div>
+          <div class="eco-links">
+            <a class="eco-link" href="#">Defense Partnerships</a>
+            <a class="eco-link" href="#">Supply Chain Resilience</a>
+            <a class="eco-link" href="#">Strategic Biotechnology</a>
+            <a class="eco-link" href="#">National Security</a>
+          </div>
+          <a class="eco-learn" href="#">Learn More →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ WHY INDIANA ══ -->
+<section class="section section-dark" id="why-indiana" aria-label="Why Indiana">
+  <div class="container">
+    <div class="slabel">Why Indiana</div>
+    <h2 class="stitle" style="margin-bottom:52px;">The Numbers<br>Tell the Story</h2>
+
+    <div class="indiana-grid">
+      <div class="stats-col">
+        <div class="stat-card reveal">
+          <div class="stat-num"><em>#</em><span class="cnt" data-t="1">1</span></div>
+          <div class="stat-lbl">Pharmaceutical Exports State</div>
+          <div class="stat-detail">Leading the nation in pharmaceutical manufacturing output</div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-num">Top <em><span class="cnt" data-t="3">3</span></em></div>
+          <div class="stat-lbl">Life Science Export State</div>
+          <div class="stat-detail">Among America's top three states for life science exports</div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-num"><span class="cnt" data-t="31">0</span></div>
+          <div class="stat-lbl">Regional Tech Hubs</div>
+          <div class="stat-detail">Federally designated technology hubs powering local innovation</div>
+        </div>
+      </div>
+
+      <div class="map-col">
+        <!-- Indiana state SVG with node network -->
+        <div class="map-wrap">
+          <svg viewBox="0 0 240 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indiana state map with biomanufacturing network nodes">
+            <!-- State outline -->
+            <path d="M42 22 L52 15 L80 12 L120 10 L160 12 L188 15 L200 22 L204 42 L205 65 L207 90 L207 115 L207 140 L207 165 L205 188 L204 208 L202 225 L198 242 L192 258 L183 270 L170 280 L156 288 L145 295 L136 306 L130 318 L125 330 L120 340 L115 330 L110 318 L104 306 L94 295 L82 285 L68 272 L56 256 L46 238 L38 218 L34 196 L32 172 L33 148 L34 124 L34 100 L36 76 L38 52 L42 22 Z"
+              fill="rgba(62,178,72,0.09)"
+              stroke="rgba(62,178,72,0.45)"
+              stroke-width="1.5"
+              stroke-linejoin="round"
+            />
+            <!-- Northwest notch for Lake Michigan -->
+            <path d="M42 22 L38 10 L52 8 L52 15 L42 22Z"
+              fill="rgba(62,178,72,0.05)"
+              stroke="rgba(62,178,72,0.35)"
+              stroke-width="1"
+            />
+            <!-- Network nodes -->
+            <circle cx="120" cy="155" r="5" fill="#3EB248" opacity=".95">
+              <animate attributeName="r" values="5;7;5" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values=".95;.6;.95" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="80" cy="120" r="3.5" fill="#3EB248" opacity=".75"/>
+            <circle cx="160" cy="120" r="3.5" fill="#3EB248" opacity=".75"/>
+            <circle cx="95" cy="190" r="3.5" fill="#3EB248" opacity=".7"/>
+            <circle cx="148" cy="195" r="3.5" fill="#3EB248" opacity=".7"/>
+            <circle cx="60" cy="165" r="3" fill="#3EB248" opacity=".55"/>
+            <circle cx="178" cy="162" r="3" fill="#3EB248" opacity=".55"/>
+            <circle cx="120" cy="235" r="3.5" fill="#3EB248" opacity=".65"/>
+            <!-- Connection lines -->
+            <line x1="120" y1="155" x2="80" y2="120" stroke="rgba(62,178,72,.22)" stroke-width="1"/>
+            <line x1="120" y1="155" x2="160" y2="120" stroke="rgba(62,178,72,.22)" stroke-width="1"/>
+            <line x1="120" y1="155" x2="95" y2="190" stroke="rgba(62,178,72,.22)" stroke-width="1"/>
+            <line x1="120" y1="155" x2="148" y2="195" stroke="rgba(62,178,72,.22)" stroke-width="1"/>
+            <line x1="80" y1="120" x2="60" y2="165" stroke="rgba(62,178,72,.14)" stroke-width="1"/>
+            <line x1="160" y1="120" x2="178" y2="162" stroke="rgba(62,178,72,.14)" stroke-width="1"/>
+            <line x1="95" y1="190" x2="120" y2="235" stroke="rgba(62,178,72,.16)" stroke-width="1"/>
+            <line x1="148" y1="195" x2="120" y2="235" stroke="rgba(62,178,72,.16)" stroke-width="1"/>
+            <!-- Labels -->
+            <text x="128" y="152" fill="rgba(255,255,255,.65)" font-size="8.5" font-family="Inter,sans-serif" font-weight="600">Indianapolis</text>
+            <text x="38" y="118" fill="rgba(255,255,255,.4)" font-size="7.5" font-family="Inter,sans-serif">Lafayette</text>
+            <text x="163" y="118" fill="rgba(255,255,255,.4)" font-size="7.5" font-family="Inter,sans-serif">Muncie</text>
+            <text x="30" y="162" fill="rgba(255,255,255,.35)" font-size="7" font-family="Inter,sans-serif">Terre Haute</text>
+            <text x="138" y="240" fill="rgba(255,255,255,.38)" font-size="7.5" font-family="Inter,sans-serif">Bloomington</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ OPPORTUNITIES ══ -->
+<section class="section section-light" id="opportunities" aria-label="Latest Opportunities">
+  <div class="container">
+    <div class="cards-header">
+      <div>
+        <div class="slabel">Latest Opportunities</div>
+        <h2 class="stitle">Funding. Training.<br>Partnerships.</h2>
+      </div>
+      <a href="#" class="view-all-btn">View All <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="grid-3">
+      <div class="opp-card reveal">
+        <div class="tag">Grant Opportunity</div>
+        <h3>BARDA BioIndustrial Manufacturing Initiative</h3>
+        <p>Federal funding for scaling domestic biomanufacturing capacity for medical countermeasures and critical biodefense applications.</p>
+        <div class="opp-foot">
+          <span>Deadline: Rolling</span>
+          <a href="#" class="opp-cta">Apply Now →</a>
+        </div>
+      </div>
+      <div class="opp-card reveal">
+        <div class="tag">Training Program</div>
+        <h3>Biomanufacturing Technician Certification</h3>
+        <p>Ivy Tech and Purdue partnered program providing hands-on training for biomanufacturing technician roles at Indiana facilities.</p>
+        <div class="opp-foot">
+          <span>Next cohort: Fall 2026</span>
+          <a href="#" class="opp-cta">Register →</a>
+        </div>
+      </div>
+      <div class="opp-card reveal">
+        <div class="tag">Industry Partnership</div>
+        <h3>CDMO Network Expansion Partner</h3>
+        <p>Join the BioCAN network of contract development and manufacturing organizations supporting Indiana's biotech ecosystem.</p>
+        <div class="opp-foot">
+          <span>Applications open</span>
+          <a href="#" class="opp-cta">Learn More →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ NEWS ══ -->
+<section class="section" id="news" aria-label="News and Media">
+  <div class="container">
+    <div class="cards-header">
+      <div>
+        <div class="slabel">News &amp; Media</div>
+        <h2 class="stitle">From Indiana's<br>Biomanufacturing Hub</h2>
+      </div>
+      <a href="#" class="view-all-btn">View All News <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="grid-3">
+      <div class="news-card reveal">
+        <div class="news-img">
+          <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=70" alt="Biotech lab research" loading="lazy" />
+        </div>
+        <div class="news-body">
+          <div class="news-cat">Announcement</div>
+          <h3>Heartland BioWorks Launches Phase II BARDA Partnership for Domestic Biomanufacturing</h3>
+          <p class="news-date">June 3, 2026</p>
+        </div>
+      </div>
+      <div class="news-card reveal">
+        <div class="news-img">
+          <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=70" alt="Life science research" loading="lazy" />
+        </div>
+        <div class="news-body">
+          <div class="news-cat">News</div>
+          <h3>Indiana Named Top State for Biotech Workforce Development by National Life Sciences Council</h3>
+          <p class="news-date">May 20, 2026</p>
+        </div>
+      </div>
+      <div class="news-card reveal">
+        <div class="news-img">
+          <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=70" alt="Collaboration meeting" loading="lazy" />
+        </div>
+        <div class="news-body">
+          <div class="news-cat">Press Release</div>
+          <h3>BioCAN Network Announces $12M in Commercialization Funding for Indiana Biotech Startups</h3>
+          <p class="news-date">May 8, 2026</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ STAY CONNECTED ══ -->
+<section class="section section-dark" id="connect" aria-label="Stay Connected">
+  <div class="container connect-inner">
+    <div>
+      <div class="slabel">Stay Connected</div>
+      <h2 class="stitle" style="margin-bottom:14px;">Be Part of Indiana's Bioeconomy</h2>
+      <p class="ssub">Get the latest on funding opportunities, training programs, industry news, and events from Heartland BioWorks.</p>
+      <div class="connect-perks">
+        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> Funding announcements and grant opportunities</div>
+        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> Upcoming events and workforce training</div>
+        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> Industry news and ecosystem updates</div>
+      </div>
+    </div>
+
+    <div class="form-box">
+      <h3>Subscribe to Updates</h3>
+      <form id="subscribeForm" novalidate>
+        <div class="form-row">
+          <div class="fg">
+            <label for="fn">First Name</label>
+            <input type="text" id="fn" name="firstName" placeholder="Jane" required />
+          </div>
+          <div class="fg">
+            <label for="ln">Last Name</label>
+            <input type="text" id="ln" name="lastName" placeholder="Smith" required />
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="fg">
+            <label for="em">Email Address</label>
+            <input type="email" id="em" name="email" placeholder="jane@company.com" required />
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="fg">
+            <label for="org">Organization</label>
+            <input type="text" id="org" name="organization" placeholder="Your company or institution" />
+          </div>
+        </div>
+        <button type="submit" class="btn-sub" id="subBtn">Subscribe to Updates →</button>
+        <p class="form-note">No spam. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer" aria-label="Site footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="f-brand">
+        <a href="#home" aria-label="Heartland BioWorks – return to homepage">
+          <img src="https://static.wixstatic.com/media/fcced6_f19335b6f6ed433b9a5c9a2294f3db1a~mv2.png" alt="Heartland BioWorks" />
+        </a>
+        <p>Indiana's Regional Tech Hub powering the future of biomanufacturing — from workforce development to national security.</p>
+      </div>
+      <div class="f-col">
+        <h4>Programs</h4>
+        <ul>
+          <li><a href="#">BioTrain</a></li>
+          <li><a href="#">BioLaunch</a></li>
+          <li><a href="#">BioCAN</a></li>
+          <li><a href="#">BioDefense</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">News &amp; Media</a></li>
+          <li><a href="#">Upcoming Events</a></li>
+          <li><a href="#">Educational Library</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#connect">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <span>© 2026 Heartland BioWorks. All rights reserved.</span>
+      <div class="f-social">
+        <a href="#" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="#" aria-label="X / Twitter">
+          <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+        </a>
+        <a href="#" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+// ── NAVBAR SCROLL ──
+const nav = document.getElementById('nav');
+function onScroll() {
+  nav.classList.toggle('scrolled', window.scrollY > 100);
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// ── ECOSYSTEM EXPAND ──
+const track = document.getElementById('ecoTrack');
+const cards = track.querySelectorAll('.eco-card');
+cards.forEach(card => {
+  function toggle() {
+    const wasActive = card.classList.contains('active');
+    cards.forEach(c => {
+      c.classList.remove('active');
+      c.setAttribute('aria-expanded', 'false');
+      c.querySelector('.eco-expanded').setAttribute('aria-hidden', 'true');
+    });
+    if (!wasActive) {
+      card.classList.add('active');
+      card.setAttribute('aria-expanded', 'true');
+      card.querySelector('.eco-expanded').setAttribute('aria-hidden', 'false');
+      track.classList.add('has-active');
+    } else {
+      track.classList.remove('has-active');
+    }
+  }
+  card.addEventListener('click', toggle);
+  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+});
+
+// ── COUNTER ANIMATION ──
+function animateCount(el, target, duration) {
+  const n = parseInt(target, 10);
+  if (isNaN(n)) return;
+  const t0 = performance.now();
+  (function tick(now) {
+    const p = Math.min((now - t0) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(n * eased);
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+
+// ── SCROLL REVEAL + COUNTERS ──
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('vis');
+    revealObs.unobserve(e.target);
+  });
+}, { threshold: 0.15 });
+
+const cntObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.cnt').forEach(el => animateCount(el, el.dataset.t, 1600));
+    cntObs.unobserve(e.target);
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+document.querySelectorAll('.stat-card').forEach(el => cntObs.observe(el));
+
+// ── FORM ──
+document.getElementById('subscribeForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('subBtn');
+  btn.textContent = 'Subscribed! ✓';
+  btn.style.background = '#00843D';
+  btn.disabled = true;
+  window.parent.postMessage({
+    type: 'formSubmit', formType: 'newsletter',
+    data: { firstName: fn.value, lastName: ln.value, email: em.value, organization: org.value }
+  }, '*');
+});
+
+// ── IFRAME RESIZE ──
+function postH() {
+  window.parent.postMessage({
+    type: 'resize',
+    height: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)
+  }, '*');
+}
+if ('ResizeObserver' in window) new ResizeObserver(postH).observe(document.body);
+window.addEventListener('load', postH);
+window.addEventListener('resize', postH);
+setTimeout(postH, 300); setTimeout(postH, 900);
+</script>
 </body>
 </html>
