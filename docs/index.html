@@ -24,21 +24,14 @@
     /* ── NAV ── */
     /* NOTE: Remove the default Wix "Business Name" header in the Wix Editor
        under Settings > Header & Footer to eliminate the duplicate navbar. */
-    .nav{
-      position:fixed;top:0;left:0;right:0;z-index:200;height:90px;
-      display:flex;align-items:center;
-      transition:background 320ms var(--ease),box-shadow 320ms var(--ease);
-    }
-    .nav.scrolled{background:rgba(255,255,255,.97);box-shadow:0 1px 0 var(--border),0 2px 8px rgba(13,69,104,.08);backdrop-filter:blur(14px);}
+    .nav{position:fixed;top:0;left:0;right:0;z-index:200;height:90px;display:flex;align-items:center;background:var(--dark);box-shadow:0 1px 0 rgba(255,255,255,.08),0 2px 12px rgba(8,24,40,.3);}
     .nav-inner{width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px;}
     .nav-logo{display:flex;align-items:center;flex-shrink:0;}
     .nav-logo img{height:52px;width:auto;}
     .nav-links{display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0;}
     .nav-links>li{position:relative;}
     .nav-link{display:flex;align-items:center;gap:5px;padding:9px 14px;font-size:.9375rem;font-weight:500;color:rgba(255,255,255,.88);border-radius:8px;transition:color 180ms,background 180ms;cursor:pointer;user-select:none;}
-    .nav.scrolled .nav-link{color:var(--text);}
     .nav-link:hover{background:rgba(255,255,255,.12);color:#fff;}
-    .nav.scrolled .nav-link:hover{background:var(--bg2);color:var(--navy);}
     .nav-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;transition:transform 200ms var(--ease);}
     .nav-links>li:hover .nav-link svg{transform:rotate(180deg);}
     .nav-drop{position:absolute;top:calc(100% + 10px);left:0;min-width:210px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 20px 60px rgba(13,69,104,.16);padding:6px;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity 200ms var(--ease),transform 200ms var(--ease);}
@@ -49,7 +42,6 @@
     .nav-cta{display:inline-flex;align-items:center;padding:10px 22px;background:var(--green);color:#fff;border-radius:8px;font-size:.9rem;font-weight:600;transition:background 200ms,transform 200ms,box-shadow 200ms;flex-shrink:0;}
     .nav-cta:hover{background:var(--green2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(62,178,72,.3);}
     .nav-hamburger{display:none;background:none;border:none;padding:8px;cursor:pointer;color:rgba(255,255,255,.9);}
-    .nav.scrolled .nav-hamburger{color:var(--text);}
     .nav-mobile{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 16px 40px rgba(13,69,104,.16);padding:10px 24px 18px;flex-direction:column;}
     .nav-mobile.open{display:flex;}
     .nav-mobile a{padding:13px 4px;font-size:1rem;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);}
@@ -713,12 +705,6 @@
 
 
 <script>
-// ── NAVBAR SCROLL ──
-const nav = document.getElementById('nav');
-function onScroll(){nav.classList.toggle('scrolled',window.scrollY>100);}
-window.addEventListener('scroll',onScroll,{passive:true});
-onScroll();
-
 // ── MOBILE MENU ──
 const hamburger=document.getElementById('hamburger');
 const mobileMenu=document.getElementById('mobileMenu');
