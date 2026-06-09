@@ -54,7 +54,7 @@
   </style>
 </head>
 <body>
-<nav class="nav"><div class="container nav-inner"><a href="/" class="nav-logo"><img src="https://static.wixstatic.com/media/fcced6_f19335b6f6ed433b9a5c9a2294f3db1a~mv2.png" alt="Heartland BioWorks" /></a><a href="#" class="nav-cta">Contact Us</a></div></nav>
+<nav class="nav"><div class="container nav-inner"><a href="/" class="nav-logo"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" /></a><a href="#" class="nav-cta">Contact Us</a></div></nav>
 
 <section class="hero">
   <div class="container">
@@ -133,7 +133,7 @@
 </section>
 
 <footer style="background:#050E18;padding:32px 0;text-align:center;font-size:.82rem;color:rgba(255,255,255,.3);">
-  <div class="container"><a href="/" style="display:inline-block;margin-bottom:14px;"><img src="https://static.wixstatic.com/media/fcced6_f19335b6f6ed433b9a5c9a2294f3db1a~mv2.png" alt="Heartland BioWorks" style="height:34px;opacity:.65;margin:0 auto;" /></a><p>© 2026 Heartland BioWorks. All rights reserved.</p></div>
+  <div class="container"><a href="/" style="display:inline-block;margin-bottom:14px;"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" style="height:34px;opacity:.65;margin:0 auto;" /></a><p>© 2026 Heartland BioWorks. All rights reserved.</p></div>
 </footer>
 <script>
 const obs=new IntersectionObserver(e=>e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('vis');obs.unobserve(en.target);}}),{threshold:.1});

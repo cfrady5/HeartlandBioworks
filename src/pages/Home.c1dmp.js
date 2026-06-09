@@ -307,7 +307,7 @@
 <nav class="nav" id="nav">
   <div class="container nav-inner">
     <a href="#home" class="nav-logo" aria-label="Heartland BioWorks – Home">
-      <img src="https://static.wixstatic.com/media/fcced6_f19335b6f6ed433b9a5c9a2294f3db1a~mv2.png" alt="Heartland BioWorks" />
+      <img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" />
     </a>
     <ul class="nav-links" aria-label="Site navigation">
       <li>
@@ -792,7 +792,7 @@
     <div class="footer-top">
       <div class="f-brand">
         <a href="#home" aria-label="Heartland BioWorks – return to homepage">
-          <img src="https://static.wixstatic.com/media/fcced6_f19335b6f6ed433b9a5c9a2294f3db1a~mv2.png" alt="Heartland BioWorks" />
+          <img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" />
         </a>
         <p>Indiana's Federally Designated Regional Tech Hub powering the future of biomanufacturing — from workforce development to national security.</p>
         <div class="f-contact">
