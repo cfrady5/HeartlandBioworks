@@ -25,7 +25,7 @@
     /* NOTE: Remove the default Wix "Business Name" header in the Wix Editor
        under Settings > Header & Footer to eliminate the duplicate navbar. */
     .nav{position:fixed;top:0;left:0;right:0;z-index:200;height:90px;display:flex;align-items:center;background:var(--dark);box-shadow:0 1px 0 rgba(255,255,255,.08),0 2px 12px rgba(8,24,40,.3);}
-    .nav-inner{width:100%;padding:0 10px;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;}
     .nav-logo{display:flex;align-items:center;flex-shrink:0;}
     .nav-logo img{height:52px;width:auto;}
     .nav-links{display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0;}
