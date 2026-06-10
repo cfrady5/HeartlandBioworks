@@ -23,14 +23,14 @@
       { label: "BioCAN", href: "biocan.html", ico: "⚗️" },
       { label: "BioDefense", href: "biodefense.html", ico: "🛡️" }
     ]},
-    { key: "resources", label: "Resources", href: "#", children: [
-      { label: "News & Media", href: "#", ico: "📰" },
-      { label: "Upcoming Events", href: "#", ico: "📅" },
-      { label: "Educational Library", href: "#", ico: "📚" }
+    { key: "resources", label: "Resources", href: "news.html", children: [
+      { key: "news", label: "News & Media", href: "news.html", ico: "📰" },
+      { key: "events", label: "Upcoming Events", href: "events.html", ico: "📅" },
+      { key: "media", label: "Media Library", href: "media-library.html", ico: "📚" }
     ]},
-    { key: "about", label: "About", href: "#", children: [
-      { label: "Team", href: "#", ico: "👥" },
-      { label: "FAQs", href: "#", ico: "❓" }
+    { key: "about", label: "About", href: "about.html", children: [
+      { key: "about", label: "About Us", href: "about.html", ico: "🏛️" },
+      { key: "faqs", label: "FAQs", href: "faqs.html", ico: "❓" }
     ]}
   ];
 
@@ -39,14 +39,16 @@
   var caret = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
 
   function navItemHtml(item) {
-    var activeCls = item.key === page ? " is-active" : "";
+    var childActive = (item.children || []).some(function (c) { return c.key === page; });
+    var activeCls = (item.key === page || childActive) ? " is-active" : "";
     if (!item.children) {
       return '<li><a class="hb-link' + activeCls + '" href="' + item.href + '"' +
         (item.key === page ? ' aria-current="page"' : '') + '>' + item.label + '</a></li>';
     }
     var drop = item.children.map(function (c) {
-      return '<li><a href="' + c.href + '"><span class="hb-dd-ico" aria-hidden="true">' +
-        c.ico + '</span>' + c.label + '</a></li>';
+      var on = c.key === page;
+      return '<li><a href="' + c.href + '"' + (on ? ' class="is-active" aria-current="page"' : '') +
+        '><span class="hb-dd-ico" aria-hidden="true">' + c.ico + '</span>' + c.label + '</a></li>';
     }).join("");
     return '<li class="hb-has-drop">' +
       '<button class="hb-link' + activeCls + '" type="button" aria-haspopup="true" aria-expanded="false">' +
@@ -61,7 +63,7 @@
       if (!item.children) { out += '<a href="' + item.href + '">' + item.label + '</a>'; return; }
       out += '<div class="hb-mgroup">' + item.label + '</div>';
       item.children.forEach(function (c) {
-        out += '<a class="hb-sub" href="' + c.href + '">' + c.label + '</a>';
+        out += '<a class="hb-sub" href="' + c.href + '"' + (c.key === page ? ' aria-current="page"' : '') + '>' + c.label + '</a>';
       });
     });
     out += '<a href="#contact">Contact Us</a>';
@@ -117,14 +119,14 @@
           '<li><a href="biodefense.html">BioDefense</a></li>' +
         '</ul></div>' +
         '<div class="hb-fcol"><h4>Resources</h4><ul>' +
-          '<li><a href="#">News &amp; Media</a></li>' +
-          '<li><a href="#">Upcoming Events</a></li>' +
-          '<li><a href="#">Educational Library</a></li>' +
+          '<li><a href="news.html">News &amp; Media</a></li>' +
+          '<li><a href="events.html">Upcoming Events</a></li>' +
+          '<li><a href="media-library.html">Media Library</a></li>' +
           '<li><a href="biocan.html#ecosystem-map">Ecosystem Map</a></li>' +
         '</ul></div>' +
         '<div class="hb-fcol"><h4>About</h4><ul>' +
-          '<li><a href="#">Team</a></li>' +
-          '<li><a href="#">FAQs</a></li>' +
+          '<li><a href="about.html">About Us</a></li>' +
+          '<li><a href="faqs.html">FAQs</a></li>' +
           '<li><a href="#contact">Contact Us</a></li>' +
           '<div class="hb-fnews">' +
             '<p>Monthly funding, training, and BioCAN updates. No spam.</p>' +
@@ -137,7 +139,7 @@
       '</div>' +
       '<div class="hb-footer-bot">' +
         '<span>© 2026 Heartland BioWorks — a project of the Applied Research Institute. Indiana’s federally designated biomanufacturing Regional Tech Hub.</span>' +
-        '<div class="hb-fbot-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>' +
+        '<div class="hb-fbot-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="login.html">Staff Login</a></div>' +
         '<div class="hb-fsocial">' +
           '<a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>' +
           '<a href="#" aria-label="X"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg></a>' +
