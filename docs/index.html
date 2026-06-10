@@ -363,7 +363,7 @@
 <section class="section section-light" id="who-we-serve" aria-label="Who We Serve">
   <div class="container">
     <div class="slabel">Who We Serve</div>
-    <h2 class="stitle">Built for Every Corner<br>of the Bioeconomy</h2>
+    <h2 class="stitle">Built for Every Corner of the Bioeconomy</h2>
     <p class="ssub">Heartland BioWorks connects four distinct audiences to Indiana's integrated biomanufacturing ecosystem.</p>
     <div class="audience-grid">
       <div class="aud-card reveal">
@@ -506,7 +506,7 @@
 <section class="section section-dark" id="why-indiana" aria-label="Why Indiana">
   <div class="container">
     <div class="slabel">Why Indiana</div>
-    <h2 class="stitle" style="margin-bottom:52px;">The Numbers Tell<br>the Story</h2>
+    <h2 class="stitle" style="margin-bottom:52px;">The Numbers Tell the Story</h2>
     <div class="indiana-grid">
       <div class="stats-col">
         <div class="stat-card reveal">
@@ -568,7 +568,7 @@
     <div class="cards-header">
       <div>
         <div class="slabel">Latest Opportunities</div>
-        <h2 class="stitle">Funding. Training.<br>Partnerships.</h2>
+        <h2 class="stitle">Funding. Training. Partnerships.</h2>
       </div>
       <a href="#" class="view-all-btn">View All Opportunities →</a>
     </div>
@@ -610,7 +610,7 @@
   <div class="container connect-inner">
     <div>
       <div class="slabel">Stay Connected</div>
-      <h2 class="stitle" style="margin-bottom:14px;">Be Part of Indiana's Bioeconomy</h2>
+      <h2 class="stitle" style="margin-bottom:14px;font-size:clamp(1.8rem,2.7vw,2.3rem);">Be Part of Indiana's Bioeconomy</h2>
       <p class="ssub">Join 2,400+ biotech leaders, researchers, and government partners receiving Indiana's biomanufacturing briefing — delivered monthly.</p>
       <div class="connect-perks">
         <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> New funding announcements and grant deadlines</div>
