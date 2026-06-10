@@ -25,46 +25,46 @@
   // ---- dataset (real organizations + locations) ----
   var DATA = [
     // Drug Product Development & Manufacturing
-    { name: "INCOG BioPharma Services", city: "Fishers", state: "IN", category: "Drug Product Manufacturing", lat: 39.9568, lon: -86.0134, description: "Sterile injectable drug product development and fill-finish manufacturing." },
-    { name: "KP Pharmaceutical Technology", city: "Bloomington", state: "IN", category: "Drug Product Manufacturing", lat: 39.1653, lon: -86.5264, description: "Oral solid dose formulation, development, and manufacturing." },
-    { name: "Labyrinth BioPharma", city: "Bloomington", state: "IN", category: "Drug Product Manufacturing", lat: 39.1653, lon: -86.5264, description: "Drug product development and manufacturing services." },
-    { name: "MilliporeSigma", city: "Indianapolis", state: "IN", category: "Drug Product Manufacturing", lat: 39.7684, lon: -86.1581, description: "Life science products and contract manufacturing services." },
-    { name: "Simtra BioPharma Solutions", city: "Bloomington", state: "IN", category: "Drug Product Manufacturing", lat: 39.1653, lon: -86.5264, description: "Sterile contract manufacturing of injectable and specialty drug products." },
-    { name: "Singota Solutions", city: "Bloomington", state: "IN", category: "Drug Product Manufacturing", lat: 39.1653, lon: -86.5264, description: "Aseptic fill-finish and pharmaceutical development services." },
+    { name: "INCOG BioPharma Services", city: "Fishers", state: "IN", category: "Drug Product Manufacturing", lat: 39.9568, lon: -86.0134, description: "Sterile injectable drug product development and fill-finish manufacturing.", url: "https://www.incogbiopharma.com/" },
+    { name: "KP Pharmaceutical Technology", city: "Bloomington", state: "IN", category: "Drug Product Manufacturing", lat: 39.1653, lon: -86.5264, description: "Oral solid dose formulation, development, and manufacturing.", url: "https://kppt.com/" },
+    { name: "Labyrinth BioPharma", city: "Bloomington", state: "IN", category: "Drug Product Manufacturing", lat: 39.1653, lon: -86.5264, description: "Drug product development and manufacturing services.", url: "https://lab-bp.com/" },
+    { name: "MilliporeSigma", city: "Indianapolis", state: "IN", category: "Drug Product Manufacturing", lat: 39.7684, lon: -86.1581, description: "Life science products and contract manufacturing services.", url: "https://www.sigmaaldrich.com/US/en/services/contract-manufacturing/mrna-and-lnp-formulation-ctdmo-services/lipid-nanoparticle-cdmo-services" },
+    { name: "Simtra BioPharma Solutions", city: "Bloomington", state: "IN", category: "Drug Product Manufacturing", lat: 39.1653, lon: -86.5264, description: "Sterile contract manufacturing of injectable and specialty drug products.", url: "https://simtra.com/" },
+    { name: "Singota Solutions", city: "Bloomington", state: "IN", category: "Drug Product Manufacturing", lat: 39.1653, lon: -86.5264, description: "Aseptic fill-finish and pharmaceutical development services.", url: "https://singota.com/" },
 
     // Gene & Cell Therapy
-    { name: "Genezen", city: "Indianapolis", state: "IN", category: "Gene & Cell Therapy", lat: 39.7684, lon: -86.1581, description: "Viral vector and cell therapy contract development and manufacturing." },
+    { name: "Genezen", city: "Indianapolis", state: "IN", category: "Gene & Cell Therapy", lat: 39.7684, lon: -86.1581, description: "Viral vector and cell therapy contract development and manufacturing.", url: "https://www.genezen.com/" },
 
     // Precision Fermentation & Bioprocessing
-    { name: "EKF Diagnostics", city: "South Bend", state: "IN", category: "Precision Fermentation", lat: 41.6764, lon: -86.2520, description: "Precision fermentation and enzyme applications." },
-    { name: "Evonik Lipid Innovation Center", city: "Lafayette", state: "IN", category: "Precision Fermentation", lat: 40.4167, lon: -86.8753, description: "Lipid and bioprocessing innovation and manufacturing." },
-    { name: "Liberation Bioindustries", city: "Richmond", state: "IN", category: "Precision Fermentation", lat: 39.8289, lon: -84.8902, description: "Precision fermentation — facility coming soon." },
-    { name: "MilliporeSigma Lipid Nanoparticle Manufacturing", city: "Indianapolis", state: "IN", category: "Precision Fermentation", lat: 39.7684, lon: -86.1581, description: "Lipid nanoparticle manufacturing for advanced therapeutics." },
+    { name: "EKF Diagnostics", city: "South Bend", state: "IN", category: "Precision Fermentation", lat: 41.6764, lon: -86.2520, description: "Precision fermentation and enzyme applications.", url: "https://www.ekfdiagnostics.com/" },
+    { name: "Evonik Lipid Innovation Center", city: "Lafayette", state: "IN", category: "Precision Fermentation", lat: 40.4167, lon: -86.8753, description: "Lipid and bioprocessing innovation and manufacturing.", url: "https://healthcare.evonik.com/en/evonik-breaks-ground-on-220-million-lipid-innovation-center-in-lafayette-indiana-197660.html" },
+    { name: "Liberation Bioindustries", city: "Richmond", state: "IN", category: "Precision Fermentation", lat: 39.8289, lon: -84.8902, description: "Precision fermentation — facility coming soon.", url: "https://liberation.bio/" },
+    { name: "MilliporeSigma Lipid Nanoparticle Manufacturing", city: "Indianapolis", state: "IN", category: "Precision Fermentation", lat: 39.7684, lon: -86.1581, description: "Lipid nanoparticle manufacturing for advanced therapeutics.", url: "https://www.sigmaaldrich.com/US/en/services/contract-manufacturing/mrna-and-lnp-formulation-ctdmo-services/lipid-nanoparticle-cdmo-services" },
 
     // Radiopharmaceuticals & Nuclear Medicine
-    { name: "SpectronRx", city: "Indianapolis", state: "IN", category: "Radiopharmaceuticals", lat: 39.7684, lon: -86.1581, description: "Radiopharmaceutical development and manufacturing." },
-    { name: "SpectronRx", city: "South Bend", state: "IN", category: "Radiopharmaceuticals", lat: 41.6764, lon: -86.2520, description: "Radiopharmaceutical development and manufacturing." },
+    { name: "SpectronRx", city: "Indianapolis", state: "IN", category: "Radiopharmaceuticals", lat: 39.7684, lon: -86.1581, description: "Radiopharmaceutical development and manufacturing.", url: "https://www.spectronrx.com/" },
+    { name: "SpectronRx", city: "South Bend", state: "IN", category: "Radiopharmaceuticals", lat: 41.6764, lon: -86.2520, description: "Radiopharmaceutical development and manufacturing.", url: "https://www.spectronrx.com/" },
 
     // Laboratory, Analytical & Clinical Services
-    { name: "B2S Life Sciences", city: "Franklin", state: "IN", category: "Lab & Clinical Services", lat: 39.4806, lon: -86.0547, description: "Lab solutions, data analytics, and drug development consulting." },
-    { name: "Labcorp", city: "Indianapolis", state: "IN", category: "Lab & Clinical Services", lat: 39.7684, lon: -86.1581, description: "Biopharma nonclinical development and central lab services." },
-    { name: "Pearl Pathways", city: "Indianapolis", state: "IN", category: "Lab & Clinical Services", lat: 39.7684, lon: -86.1581, description: "Clinical, regulatory, and quality compliance services." },
-    { name: "Quantigen", city: "Indianapolis", state: "IN", category: "Lab & Clinical Services", lat: 39.7684, lon: -86.1581, description: "CRO offering sample-to-answer method development and validation." },
-    { name: "Cenetron", city: "Austin", state: "TX", category: "Lab & Clinical Services", lat: 30.2672, lon: -97.7431, outOfState: true, description: "Complete central laboratory services (out-of-state partner)." },
+    { name: "B2S Life Sciences", city: "Franklin", state: "IN", category: "Lab & Clinical Services", lat: 39.4806, lon: -86.0547, description: "Lab solutions, data analytics, and drug development consulting.", url: "https://b2slifesciences.com/" },
+    { name: "Labcorp", city: "Indianapolis", state: "IN", category: "Lab & Clinical Services", lat: 39.7684, lon: -86.1581, description: "Biopharma nonclinical development and central lab services.", url: "https://www.labcorp.com/biopharma" },
+    { name: "Pearl Pathways", city: "Indianapolis", state: "IN", category: "Lab & Clinical Services", lat: 39.7684, lon: -86.1581, description: "Clinical, regulatory, and quality compliance services.", url: "https://www.pearlpathways.com/" },
+    { name: "Quantigen", city: "Indianapolis", state: "IN", category: "Lab & Clinical Services", lat: 39.7684, lon: -86.1581, description: "CRO offering sample-to-answer method development and validation.", url: "https://www.quantigen.com/" },
+    { name: "Cenetron", city: "Austin", state: "TX", category: "Lab & Clinical Services", lat: 30.2672, lon: -97.7431, outOfState: true, description: "Complete central laboratory services (out-of-state partner).", url: "https://versiticlinicaltrials.org/about-us/our-brands/cenetron" },
 
     // Workforce & Training
-    { name: "Purdue University", city: "West Lafayette", state: "IN", category: "Workforce & Training", lat: 40.4259, lon: -86.9081, description: "Research university and biomanufacturing workforce training partner." },
-    { name: "Indiana University", city: "Bloomington", state: "IN", category: "Workforce & Training", lat: 39.1653, lon: -86.5264, description: "Research university and life sciences workforce partner." },
-    { name: "Ivy Tech Community College", city: "Indianapolis", state: "IN", category: "Workforce & Training", lat: 39.7684, lon: -86.1581, description: "Statewide community college delivering biomanufacturing credentials." },
-    { name: "EmployIndy", city: "Indianapolis", state: "IN", category: "Workforce & Training", lat: 39.7684, lon: -86.1581, description: "Workforce development board connecting talent to careers." },
-    { name: "Heartland BioWorks HQ (planned)", city: "Indianapolis", state: "IN", category: "Workforce & Training", lat: 39.7684, lon: -86.1581, description: "Planned 27,000 sq. ft. headquarters and hands-on training facility at 16 Tech." },
+    { name: "Purdue University", city: "West Lafayette", state: "IN", category: "Workforce & Training", lat: 40.4259, lon: -86.9081, description: "Research university and biomanufacturing workforce training partner.", url: "https://www.purdue.edu/" },
+    { name: "Indiana University", city: "Bloomington", state: "IN", category: "Workforce & Training", lat: 39.1653, lon: -86.5264, description: "Research university and life sciences workforce partner.", url: "https://www.iu.edu/" },
+    { name: "Ivy Tech Community College", city: "Indianapolis", state: "IN", category: "Workforce & Training", lat: 39.7684, lon: -86.1581, description: "Statewide community college delivering biomanufacturing credentials.", url: "https://www.ivytech.edu/" },
+    { name: "EmployIndy", city: "Indianapolis", state: "IN", category: "Workforce & Training", lat: 39.7684, lon: -86.1581, description: "Workforce development board connecting talent to careers.", url: "https://employindy.org/" },
+    { name: "Heartland BioWorks HQ (planned)", city: "Indianapolis", state: "IN", category: "Workforce & Training", lat: 39.7684, lon: -86.1581, description: "Planned 27,000 sq. ft. headquarters and hands-on training facility at 16 Tech.", url: "https://www.heartlandbioworks.com/" },
 
     // Commercialization & Innovation
-    { name: "Applied Research Institute", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "Lead organization powering Heartland BioWorks." },
-    { name: "BioCrossroads", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "Indiana life sciences initiative advancing the bioeconomy." },
-    { name: "16 Tech Innovation District", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7843, lon: -86.1760, description: "Innovation district and home of the planned Heartland BioWorks HQ." },
-    { name: "Heartland BioWorks BioLaunch", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "Commercialization and innovation support for biotech solutions." },
-    { name: "Heartland BioWorks BioCAN", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "BioResource Coordination and Access Network connecting innovators with Indiana CDMOs, labs, and scale-up resources." }
+    { name: "Applied Research Institute", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "Lead organization powering Heartland BioWorks.", url: "https://theari.us/" },
+    { name: "BioCrossroads", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "Indiana life sciences initiative advancing the bioeconomy.", url: "https://biocrossroads.com/" },
+    { name: "16 Tech Innovation District", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7843, lon: -86.1760, description: "Innovation district and home of the planned Heartland BioWorks HQ.", url: "https://16tech.com/" },
+    { name: "Heartland BioWorks BioLaunch", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "Commercialization and innovation support for biotech solutions.", url: "https://www.heartlandbioworks.com/" },
+    { name: "Heartland BioWorks BioCAN", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "BioResource Coordination and Access Network connecting innovators with Indiana CDMOs, labs, and scale-up resources.", url: "https://www.heartlandbioworks.com/" }
   ];
 
   // ---- real Indiana vector (county paths) + lat/long projection ----
@@ -252,8 +252,9 @@
     tip.classList.add("show");
     // position within wrapper using fractional coords
     var wrapRect = mapWrap.getBoundingClientRect();
-    var x = (cx / VB_W) * wrapRect.width;
-    var y = (cy / VB_H) * wrapRect.height;
+    var svgRect = svg.getBoundingClientRect();
+    var x = (cx / VB_W) * svgRect.width + (svgRect.left - wrapRect.left);
+    var y = (cy / VB_H) * svgRect.height + (svgRect.top - wrapRect.top);
     tip.style.left = Math.min(Math.max(x + 14, 8), wrapRect.width - 8) + "px";
     tip.style.top = Math.max(y - 10, 8) + "px";
   }
@@ -326,16 +327,23 @@
     // in-state first, out-of-state notes last
     data.sort(function (a, b) { return (a.outOfState ? 1 : 0) - (b.outOfState ? 1 : 0); });
     data.forEach(function (d) {
-      var item = document.createElement("div");
+      var item = document.createElement(d.url ? "a" : "div");
       item.className = "eco-item" + (d.outOfState ? " out-of-state" : "");
       item.setAttribute("data-city", d.city);
-      item.tabIndex = 0;
+      if (d.url) {
+        item.href = d.url;
+        item.target = "_blank";
+        item.rel = "noopener noreferrer";
+      } else {
+        item.tabIndex = 0;
+      }
       item.innerHTML =
         '<span class="eco-cat">' + d.category + "</span>" +
         "<h4>" + d.name + "</h4>" +
         '<div class="eco-loc">📍 ' + d.city + ", " + d.state +
           (d.outOfState ? ' &nbsp;<span class="eco-oos">Out of state</span>' : "") + "</div>" +
-        "<p>" + d.description + "</p>";
+        "<p>" + d.description + "</p>" +
+        (d.url ? '<span class="eco-visit">Visit site <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span>' : "");
       listEl.appendChild(item);
     });
   }

@@ -178,11 +178,18 @@
     var btn = li.querySelector(".hb-link");
     var menu = li.querySelector(".hb-drop");
     if (!btn || !menu) return;
-    function close() { li.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }
+    var closeTimeout;
+    function close() { clearTimeout(closeTimeout); li.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }
     function open() {
+      clearTimeout(closeTimeout);
       dropItems.forEach(function (o) { if (o !== li) { o.classList.remove("open"); var b = o.querySelector(".hb-link"); if (b) b.setAttribute("aria-expanded", "false"); } });
       li.classList.add("open"); btn.setAttribute("aria-expanded", "true");
     }
+    // No open delay; add a 300ms close delay so the cursor can travel from
+    // the trigger into the menu without it snapping shut.
+    function closeDelayed() { clearTimeout(closeTimeout); closeTimeout = setTimeout(close, 300); }
+    li.addEventListener("mouseenter", open);
+    li.addEventListener("mouseleave", closeDelayed);
     btn.addEventListener("click", function (e) {
       e.preventDefault();
       li.classList.contains("open") ? close() : open();
