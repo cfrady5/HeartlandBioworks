@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
   <style>
     :root{--navy:#0D4568;--green:#3EB248;--green2:#00843D;--bg:#fff;--bg2:#F7F9FB;--dark:#082D46;--border:#E6EAF0;--text:#102A43;--muted:#627D98;--ease:cubic-bezier(.2,0,0,1);}
     *,*::before,*::after{box-sizing:border-box;}html{scroll-behavior:smooth;}
@@ -20,7 +21,7 @@
     .nav-back:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.6);}
     .nav-cta{display:inline-flex;align-items:center;padding:10px 22px;background:var(--green);color:#fff;border-radius:8px;font-size:.9rem;font-weight:600;transition:background 200ms,transform 200ms;}
     .nav-cta:hover{background:var(--green2);transform:translateY(-1px);}
-    .prog-hero{position:relative;padding:150px 0 90px;background:linear-gradient(155deg,#054A24 0%,#00843D 50%,#065A2E 100%);overflow:hidden;}
+    .prog-hero{position:relative;padding:56px 0 80px;background:linear-gradient(155deg,#054A24 0%,#00843D 50%,#065A2E 100%);overflow:hidden;}
     .prog-hero::before{content:'';position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1559839697-5d2f7af76e3c?w=1600&q=75');background-size:cover;background-position:center;opacity:.1;}
     .prog-hero::after{content:'';position:absolute;top:-100px;right:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);pointer-events:none;}
     .hero-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:100px;font-size:.76rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px;}
@@ -83,14 +84,8 @@
     @media(max-width:768px){.section{padding:64px 0;}.cta-box{padding:44px 28px;}}
   </style>
 </head>
-<body>
-<nav class="nav">
-  <div class="container nav-inner">
-    <a href="index.html" class="nav-logo"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" /></a>
-    <a href="programs.html" class="nav-back">← All Programs</a>
-    <a href="#cta" class="nav-cta">Connect with a Mentor</a>
-  </div>
-</nav>
+<body data-page="programs" data-breadcrumb="Programs > BioLaunch">
+<div id="hb-header"></div>
 
 <section class="prog-hero">
   <div class="container">
@@ -99,10 +94,10 @@
     <p class="lead">BioLaunch accelerates biotech startups from lab to market through mentorship, strategic funding connections, CDMO introductions, and Indiana's innovation network.</p>
     <a href="#cta" class="hero-cta">Connect with a Mentor →</a>
     <div class="hero-metrics">
-      <div class="hm-item"><div class="hm-num">42+</div><div class="hm-label">Companies supported</div></div>
-      <div class="hm-item"><div class="hm-num">$38M</div><div class="hm-label">Capital facilitated</div></div>
-      <div class="hm-item"><div class="hm-num">120+</div><div class="hm-label">Expert mentors</div></div>
-      <div class="hm-item"><div class="hm-num">78%</div><div class="hm-label">Survival rate at 3 years</div></div>
+      <div class="hm-item"><div class="hm-num"><em>BioStart</em></div><div class="hm-label">Peer founder mentorship</div></div>
+      <div class="hm-item"><div class="hm-num"><em>SBIR/STTR</em></div><div class="hm-label">Funding navigation</div></div>
+      <div class="hm-item"><div class="hm-num"><em>CDMO</em></div><div class="hm-label">Access via BioCAN</div></div>
+      <div class="hm-item"><div class="hm-num"><em>Idea→Market</em></div><div class="hm-label">End-to-end support</div></div>
     </div>
   </div>
 </section>
@@ -148,12 +143,12 @@
 
 <section class="section section-dark" id="impact">
   <div class="container">
-    <div class="slabel">Impact</div>
-    <h2 class="stitle" style="margin-bottom:44px;">By the Numbers</h2>
+    <div class="slabel">Why It Matters</div>
+    <h2 class="stitle" style="margin-bottom:44px;">Built on Indiana's Strengths</h2>
     <div class="metrics-grid reveal">
-      <div class="metric-item"><div class="metric-n"><em>$38M</em></div><div class="metric-l">Capital Facilitated</div><div class="metric-d">For BioLaunch portfolio companies</div></div>
-      <div class="metric-item"><div class="metric-n"><em>42+</em></div><div class="metric-l">Companies Supported</div><div class="metric-d">Active and graduated portfolio</div></div>
-      <div class="metric-item"><div class="metric-n"><em>78%</em></div><div class="metric-l">3-Year Survival Rate</div><div class="metric-d">vs. 50% national biotech average</div></div>
+      <div class="metric-item"><div class="metric-n"><em>$51M</em></div><div class="metric-l">Federal Tech Hub Investment</div><div class="metric-d">EDA implementation funding powering Indiana's biomanufacturing build-out</div></div>
+      <div class="metric-item"><div class="metric-n"><em>Top 3</em></div><div class="metric-l">Life Sciences Exports</div><div class="metric-d">Among the top three U.S. states for life sciences exports</div></div>
+      <div class="metric-item"><div class="metric-n"><em>BioStart</em></div><div class="metric-l">Founder Mentorship</div><div class="metric-d">Peer-to-peer mentorship and startup support under BioLaunch</div></div>
     </div>
   </div>
 </section>
@@ -163,7 +158,7 @@
     <div class="slabel">Programs</div>
     <h2 class="stitle">How We Support Companies</h2>
     <div class="program-cards">
-      <div class="prog-card reveal"><div class="prog-card-ico">🧠</div><h3>Mentorship Network</h3><p>Access 120+ mentors — serial founders, pharma executives, regulatory experts, and investors — matched to your company's specific needs.</p><a href="#cta" class="prog-card-link">Connect with a Mentor →</a></div>
+      <div class="prog-card reveal"><div class="prog-card-ico">🧠</div><h3>Mentorship Network</h3><p>Access a growing mentor network — serial founders, pharma executives, regulatory experts, and investors — matched to your company's specific needs.</p><a href="#cta" class="prog-card-link">Connect with a Mentor →</a></div>
       <div class="prog-card reveal"><div class="prog-card-ico">💰</div><h3>Funding Navigation</h3><p>Expert guidance on SBIR/STTR applications, state and federal grant programs, venture capital introductions, and strategic investor outreach.</p><a href="#cta" class="prog-card-link">Explore Funding →</a></div>
       <div class="prog-card reveal"><div class="prog-card-ico">🏭</div><h3>CDMO Access</h3><p>Pre-negotiated access to Indiana's CDMO network through BioCAN, enabling faster process development and scale-up without the usual barriers.</p><a href="#" class="prog-card-link">View CDMOs →</a></div>
       <div class="prog-card reveal"><div class="prog-card-ico">🚀</div><h3>Accelerator Program</h3><p>12-week cohort-based program for early-stage companies. Includes curriculum, dedicated mentorship, demo day, and investor introductions.</p><a href="#cta" class="prog-card-link">Apply Now →</a></div>
@@ -183,7 +178,7 @@
   </div>
 </section>
 
-<section class="section" id="cta">
+<span id="contact"></span><section class="section" id="cta">
   <div class="container">
     <div class="cta-box reveal">
       <h2>Ready to Launch?</h2>
@@ -193,9 +188,7 @@
   </div>
 </section>
 
-<footer style="background:#050E18;padding:32px 0;text-align:center;font-size:.82rem;color:rgba(255,255,255,.3);">
-  <div class="container"><a href="index.html" style="display:inline-block;margin-bottom:14px;"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" style="height:34px;opacity:.65;margin:0 auto;" /></a><p>© 2026 Heartland BioWorks. All rights reserved.</p></div>
-</footer>
+<div id="hb-footer"></div>
 
 <script>
 document.querySelectorAll('.faq-q').forEach(q=>{function t(){const i=q.parentElement,o=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>{x.classList.remove('open');x.querySelector('.faq-a').style.maxHeight='0';x.querySelector('.faq-q').setAttribute('aria-expanded','false');});if(!o){i.classList.add('open');i.querySelector('.faq-a').style.maxHeight=i.querySelector('.faq-a-inner').scrollHeight+'px';q.setAttribute('aria-expanded','true');}}q.addEventListener('click',t);q.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t();}});});
@@ -205,5 +198,6 @@ function postH(){window.parent.postMessage({type:'resize',height:Math.max(docume
 if('ResizeObserver' in window) new ResizeObserver(postH).observe(document.body);
 window.addEventListener('load',postH);window.addEventListener('resize',postH);setTimeout(postH,300);setTimeout(postH,900);
 </script>
+<script src="assets/site.js" defer></script>
 </body>
 </html>

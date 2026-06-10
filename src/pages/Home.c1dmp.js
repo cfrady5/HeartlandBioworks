@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
   <style>
     :root {
       --navy:#0D4568;--green:#3EB248;--green2:#00843D;
@@ -21,31 +22,9 @@
     p{margin:0;}a{color:inherit;text-decoration:none;}img{display:block;max-width:100%;}
     .container{width:min(calc(100% - 48px),1280px);margin:0 auto;}
 
-    /* ── NAV ── */
     /* NOTE: Remove the default Wix "Business Name" header in the Wix Editor
-       under Settings > Header & Footer to eliminate the duplicate navbar. */
-    .nav{position:fixed;top:0;left:0;right:0;z-index:200;height:90px;display:flex;align-items:center;background:var(--dark);box-shadow:0 1px 0 rgba(255,255,255,.08),0 2px 12px rgba(8,24,40,.3);}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;}
-    .nav-logo{display:flex;align-items:center;flex-shrink:0;}
-    .nav-logo img{height:52px;width:auto;}
-    .nav-links{display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0;}
-    .nav-links>li{position:relative;}
-    .nav-link{display:flex;align-items:center;gap:5px;padding:9px 14px;font-size:.9375rem;font-weight:500;color:rgba(255,255,255,.88);border-radius:8px;transition:color 180ms,background 180ms;cursor:pointer;user-select:none;}
-    .nav-link:hover{background:rgba(255,255,255,.12);color:#fff;}
-    .nav-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;transition:transform 200ms var(--ease);}
-    .nav-links>li:hover .nav-link svg{transform:rotate(180deg);}
-    .nav-drop{position:absolute;top:calc(100% + 10px);left:0;min-width:210px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 20px 60px rgba(13,69,104,.16);padding:6px;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity 200ms var(--ease),transform 200ms var(--ease);}
-    .nav-links>li:hover .nav-drop{opacity:1;transform:translateY(0);pointer-events:auto;}
-    .nav-drop a{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:.88rem;font-weight:500;color:var(--text);border-radius:8px;transition:background 140ms,color 140ms;}
-    .nav-drop a:hover{background:var(--bg2);color:var(--navy);}
-    .dd-ico{width:28px;height:28px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
-    .nav-cta{display:inline-flex;align-items:center;padding:10px 22px;background:var(--green);color:#fff;border-radius:8px;font-size:.9rem;font-weight:600;transition:background 200ms,transform 200ms,box-shadow 200ms;flex-shrink:0;}
-    .nav-cta:hover{background:var(--green2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(62,178,72,.3);}
-    .nav-hamburger{display:none;background:none;border:none;padding:8px;cursor:pointer;color:rgba(255,255,255,.9);}
-    .nav-mobile{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 16px 40px rgba(13,69,104,.16);padding:10px 24px 18px;flex-direction:column;}
-    .nav-mobile.open{display:flex;}
-    .nav-mobile a{padding:13px 4px;font-size:1rem;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);}
-    .nav-mobile a:last-child{border-bottom:0;}
+       under Settings > Header & Footer to eliminate the duplicate navbar.
+       The site navbar + footer are injected from assets/site.js. */
 
     /* ── HERO ── */
     .hero{
@@ -195,27 +174,6 @@
     .btn-sub:hover{background:var(--green2);transform:translateY(-1px);}
     .form-note{font-size:.74rem;color:rgba(255,255,255,.25);text-align:center;margin-top:10px;}
 
-    /* ── FOOTER ── */
-    .footer{background:#050E18;padding:64px 0 32px;}
-    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:28px;}
-    .f-brand img{height:44px;margin-bottom:16px;}
-    .f-brand p{font-size:.88rem;line-height:1.7;color:rgba(255,255,255,.38);max-width:280px;margin-bottom:20px;}
-    .f-contact{display:flex;flex-direction:column;gap:8px;}
-    .f-contact a{font-size:.85rem;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:6px;transition:color 140ms;}
-    .f-contact a:hover{color:rgba(255,255,255,.82);}
-    .f-col h4{font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:14px;}
-    .f-col ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px;}
-    .f-col a{font-size:.88rem;color:rgba(255,255,255,.4);transition:color 140ms;}
-    .f-col a:hover{color:rgba(255,255,255,.88);}
-    .footer-bot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.8rem;color:rgba(255,255,255,.3);}
-    .footer-bot-links{display:flex;gap:20px;}
-    .footer-bot-links a{color:rgba(255,255,255,.3);transition:color 140ms;}
-    .footer-bot-links a:hover{color:rgba(255,255,255,.7);}
-    .f-social{display:flex;gap:10px;}
-    .f-social a{width:34px;height:34px;border-radius:7px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;transition:background 180ms,border-color 180ms;}
-    .f-social a:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);}
-    .f-social svg{width:15px;height:15px;fill:rgba(255,255,255,.55);}
-
     /* ── SCROLL REVEAL ── */
     .reveal{opacity:0;transform:translateY(22px);transition:opacity 600ms var(--ease),transform 600ms var(--ease);}
     .reveal.vis{opacity:1;transform:translateY(0);}
@@ -248,60 +206,41 @@
       .hero-trust{gap:16px;}
       .htrust-divider{display:none;}
     }
+
+    /* ── HERO STAT CARDS ── */
+    .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px;max-width:760px;}
+    .hstat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px 18px 16px;}
+    .hstat-num{font-family:'Manrope',system-ui,sans-serif;font-size:1.7rem;font-weight:800;letter-spacing:-.03em;color:#fff;line-height:1;margin-bottom:6px;}
+    .hstat-num em{font-style:normal;color:var(--green);}
+    .hstat-lbl{font-size:.8rem;line-height:1.4;color:rgba(255,255,255,.7);}
+    .hero-fn{margin-top:18px;font-size:.74rem;line-height:1.6;color:rgba(255,255,255,.4);max-width:640px;}
+    @media(max-width:760px){.hero-stats{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:420px){.hero-stats{grid-template-columns:1fr;}}
+
+    /* ── PARTNERS INTRO ── */
+    .partners-intro{text-align:center;max-width:660px;margin:0 auto 24px;font-size:.95rem;line-height:1.6;color:var(--text);font-weight:600;}
+
+    /* ── ACCORDION AFFORDANCE / ARCHITECTURE ── */
+    .program-head:hover{background:rgba(255,255,255,.07);}
+    .program-row.open .program-head{background:rgba(255,255,255,.05);}
+    .program-head:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:-3px;}
+    .program-toggle{width:42px;height:42px;}
+    .program-toggle svg{width:22px;height:22px;stroke-width:2.6;}
+    .program-row[data-p="hq"]{background:linear-gradient(120deg,#114a73 0%,#0a3350 100%);}
+    .program-row[data-p="governance"]{background:linear-gradient(120deg,#243b52 0%,#0d2235 100%);}
+    .program-cat.future{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.22);color:rgba(255,255,255,.7);}
+
+    /* ── MAP SECTION INTRO ── */
+    .map-intro{max-width:760px;}
+    .map-intro .ssub{max-width:760px;}
+    .map-support{margin-top:14px;font-size:.95rem;line-height:1.7;color:var(--muted);max-width:760px;}
+    .section-dark .map-support{color:rgba(255,255,255,.6);}
   </style>
 </head>
-<body>
+<body data-page="home">
 
-<!-- ══ NAV ══ -->
-<nav class="nav" id="nav">
-  <div class="container nav-inner">
-    <a href="#home" class="nav-logo" aria-label="Heartland BioWorks – Home">
-      <img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" />
-    </a>
-    <ul class="nav-links" aria-label="Site navigation">
-      <li>
-        <a href="programs.html" class="nav-link" aria-haspopup="true">Programs <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></a>
-        <div class="nav-drop" role="menu">
-          <a href="programs.html" role="menuitem"><div class="dd-ico">🗂️</div> All Programs</a>
-          <a href="biotrain.html" role="menuitem"><div class="dd-ico">🧬</div> BioTrain</a>
-          <a href="biolaunch.html" role="menuitem"><div class="dd-ico">🚀</div> BioLaunch</a>
-          <a href="biocan.html" role="menuitem"><div class="dd-ico">⚗️</div> BioCAN</a>
-          <a href="biodefense.html" role="menuitem"><div class="dd-ico">🛡️</div> BioDefense</a>
-        </div>
-      </li>
-      <li>
-        <div class="nav-link" tabindex="0" role="button" aria-haspopup="true">Resources <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-        <div class="nav-drop" role="menu">
-          <a href="#" role="menuitem"><div class="dd-ico">📅</div> Upcoming Events</a>
-          <a href="#" role="menuitem"><div class="dd-ico">📚</div> Educational Library</a>
-        </div>
-      </li>
-      <li>
-        <div class="nav-link" tabindex="0" role="button" aria-haspopup="true">About <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-        <div class="nav-drop" role="menu">
-          <a href="#" role="menuitem"><div class="dd-ico">👥</div> Team</a>
-          <a href="#" role="menuitem"><div class="dd-ico">❓</div> FAQs</a>
-          <a href="#connect" role="menuitem"><div class="dd-ico">✉️</div> Contact Us</a>
-        </div>
-      </li>
-    </ul>
-    <a href="#connect" class="nav-cta">Contact Us</a>
-    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-    </button>
-  </div>
-  <div class="nav-mobile" id="mobileMenu">
-    <a href="#home">Home</a>
-    <a href="programs.html">All Programs</a>
-    <a href="biotrain.html">BioTrain</a>
-    <a href="biolaunch.html">BioLaunch</a>
-    <a href="biocan.html">BioCAN</a>
-    <a href="biodefense.html">BioDefense</a>
-    <a href="#connect">Contact Us</a>
-  </div>
-</nav>
+<!-- Global navbar (injected from assets/site.js) -->
+<div id="hb-header"></div>
 
 
 <!-- ══ HERO ══ -->
@@ -311,22 +250,20 @@
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="container">
     <div class="hero-content">
-      <div class="hero-badge fu">Indiana's Federally Designated Regional Tech Hub</div>
-      <h1 class="fu">Indiana Is Building America's<br><em>Biomanufacturing</em> Future</h1>
-      <p class="hero-sub fu">The integrated ecosystem for biotech workforce development, commercialization, CDMO network access, and national biosecurity — all from one hub.</p>
+      <div class="hero-badge fu">Indiana's Federally Designated Biomanufacturing Tech Hub · Powered by ARI</div>
+      <h1 class="fu">Advancing Biomanufacturing and <em>Biotechnology</em> Innovation in Indiana</h1>
+      <p class="hero-sub fu">Heartland BioWorks connects Indiana's workforce, manufacturing, research, and commercialization assets to accelerate biotechnology growth, strengthen national biosecurity, and expand economic opportunity across the state.</p>
       <div class="hero-btns fu">
-        <a href="#ecosystem" class="btn-primary">Find Funding &amp; Programs →</a>
-        <a href="#who-we-serve" class="btn-outline">Who We Serve</a>
+        <a href="#ecosystem" class="btn-primary">Explore the Programs →</a>
+        <a href="#ecosystem-map" class="btn-outline">View the Ecosystem Map</a>
       </div>
-      <div class="hero-trust fu">
-        <div class="htrust-item"><strong>#1</strong> Pharma Export State</div>
-        <div class="htrust-divider"></div>
-        <div class="htrust-item"><strong>$3.2B+</strong> Life Science Exports</div>
-        <div class="htrust-divider"></div>
-        <div class="htrust-item"><strong>Federally</strong> Designated RTH</div>
-        <div class="htrust-divider"></div>
-        <div class="htrust-item"><strong>BARDA</strong> Partnership</div>
+      <div class="hero-stats fu">
+        <div class="hstat"><div class="hstat-num"><em>$</em>51M</div><div class="hstat-lbl">Federal Tech Hub Investment</div></div>
+        <div class="hstat"><div class="hstat-num">1 of <em>12</em></div><div class="hstat-lbl">Implementation-Funded Tech Hubs</div></div>
+        <div class="hstat"><div class="hstat-num">27,000<span style="font-size:1rem"> ft²</span></div><div class="hstat-lbl">Planned Training Facility</div></div>
+        <div class="hstat"><div class="hstat-num"><em>#</em>1</div><div class="hstat-lbl">State for Pharmaceutical Exports</div></div>
       </div>
+      <p class="hero-fn fu">Sources: U.S. Economic Development Administration Tech Hubs program, 2023–2024 (1 of 31 designated, 1 of 12 funded for implementation, $51M award); planned Heartland BioWorks HQ at the 16 Tech Innovation District; U.S. International Trade Administration pharmaceutical export data.</p>
     </div>
   </div>
 </section>
@@ -334,6 +271,7 @@
 
 <!-- ══ PARTNERS ══ -->
 <div class="partners-bar" aria-label="Partners">
+  <p class="partners-intro">Built with Indiana's leading research universities, government agencies, industry partners, and ecosystem organizations.</p>
   <p class="partners-lbl">Indiana's innovation ecosystem</p>
   <div class="marquee-wrap">
     <div class="marquee-track" aria-hidden="true">
@@ -395,13 +333,13 @@
 </section>
 
 
-<!-- ══ ECOSYSTEM ══ -->
+<!-- ══ ECOSYSTEM / PROGRAMS ══ -->
 <section class="section" id="ecosystem" aria-label="Explore the Ecosystem">
   <div class="container">
     <div class="eco-header">
       <div class="slabel">Explore the Ecosystem</div>
-      <h2 class="stitle" style="margin:0 auto;">Four Programs. One Mission.</h2>
-      <p class="ssub">Click any program to explore. Indiana's integrated biomanufacturing infrastructure — from workforce to national defense.</p>
+      <h2 class="stitle" style="margin:0 auto;">The Programs Powering Indiana's Bioeconomy</h2>
+      <p class="ssub">Click any program to expand it. Heartland BioWorks coordinates workforce development, commercialization, resource access, and the infrastructure that ties them together.</p>
     </div>
     <div class="program-stack" id="programStack">
 
@@ -409,13 +347,13 @@
         <h3 class="program-h"><button class="program-head" type="button" aria-expanded="true" aria-controls="program-biotrain">
           <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
           <span class="program-name">BioTrain</span>
-          <span class="program-cat">Workforce</span>
+          <span class="program-cat">Workforce Development</span>
           <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
         </button></h3>
         <div class="program-body" id="program-biotrain">
           <div>
             <div class="program-detail">
-              <p>Hands-on training, credentialing, and job placement that move Hoosiers into biomanufacturing careers — no four-year degree required.</p>
+              <p>Workforce development through stackable credentials, employer upskilling and reskilling, and statewide training pathways that move Hoosiers into biomanufacturing careers.</p>
               <div class="program-sublinks">
                 <a class="program-sublink" href="biotrain.html#programs">Training Pathways</a>
                 <a class="program-sublink" href="biotrain.html#impact">Outcomes &amp; Impact</a>
@@ -432,16 +370,16 @@
         <h3 class="program-h"><button class="program-head" type="button" aria-expanded="false" aria-controls="program-biolaunch">
           <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
           <span class="program-name">BioLaunch</span>
-          <span class="program-cat">Commercialization</span>
+          <span class="program-cat">Commercialization &amp; Innovation</span>
           <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
         </button></h3>
         <div class="program-body" id="program-biolaunch">
           <div>
             <div class="program-detail">
-              <p>Commercialization support, pilot-scale resources, and expert guidance that help innovators take bioproducts from lab bench to market.</p>
+              <p>Commercialization and innovation support for biotechnology and biomanufacturing solutions — including <strong>BioStart</strong>, peer-to-peer mentorship and startup support that helps founders move from idea to company.</p>
               <div class="program-sublinks">
-                <a class="program-sublink" href="biolaunch.html#pathway">From Idea to Market</a>
-                <a class="program-sublink" href="biolaunch.html#programs">How We Support Companies</a>
+                <a class="program-sublink" href="biolaunch.html#programs">Commercialization Support</a>
+                <a class="program-sublink" href="biolaunch.html#cta">BioStart Mentorship</a>
                 <a class="program-sublink" href="biolaunch.html#faq">Common Questions</a>
                 <a class="program-sublink" href="biolaunch.html#cta">Get Started</a>
               </div>
@@ -455,20 +393,62 @@
         <h3 class="program-h"><button class="program-head" type="button" aria-expanded="false" aria-controls="program-biocan">
           <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span>
           <span class="program-name">BioCAN</span>
-          <span class="program-cat">CDMO &amp; Funding</span>
+          <span class="program-cat">Resource Coordination</span>
           <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
         </button></h3>
         <div class="program-body" id="program-biocan">
           <div>
             <div class="program-detail">
-              <p>Contract development, manufacturing capacity, and capital access that give companies the resources and funding to scale production in Indiana.</p>
+              <p>The BioResource Coordination and Access Network connects innovators with Indiana's CDMOs, labs, and scale-up resources — so companies can find the manufacturing and analytical capacity they need in-state.</p>
               <div class="program-sublinks">
-                <a class="program-sublink" href="biocan.html#cdmos">Manufacturing Partners</a>
+                <a class="program-sublink" href="biocan.html#cdmos">CDMO &amp; Lab Network</a>
+                <a class="program-sublink" href="#ecosystem-map">Ecosystem Map</a>
                 <a class="program-sublink" href="biocan.html#funding">Capital Access</a>
-                <a class="program-sublink" href="biocan.html#faq">Common Questions</a>
-                <a class="program-sublink" href="biocan.html#cta">Apply for Funding</a>
+                <a class="program-sublink" href="biocan.html#cta">Connect with BioCAN</a>
               </div>
               <a href="biocan.html" class="program-link">Explore BioCAN <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="program-row" data-p="hq">
+        <h3 class="program-h"><button class="program-head" type="button" aria-expanded="false" aria-controls="program-hq">
+          <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></span>
+          <span class="program-name">Heartland BioWorks HQ</span>
+          <span class="program-cat">Facility</span>
+          <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button></h3>
+        <div class="program-body" id="program-hq">
+          <div>
+            <div class="program-detail">
+              <p>A planned 27,000 sq. ft. headquarters and hands-on biomanufacturing training facility in the 16 Tech Innovation District — the physical anchor where workforce, industry, and research converge.</p>
+              <div class="program-sublinks">
+                <a class="program-sublink" href="#ecosystem-map">16 Tech on the Map</a>
+                <a class="program-sublink" href="#contact">Get Involved</a>
+              </div>
+              <a href="programs.html" class="program-link">See How It Fits <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="program-row" data-p="governance">
+        <h3 class="program-h"><button class="program-head" type="button" aria-expanded="false" aria-controls="program-governance">
+          <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <span class="program-name">Governance</span>
+          <span class="program-cat">Ecosystem Coordination</span>
+          <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button></h3>
+        <div class="program-body" id="program-governance">
+          <div>
+            <div class="program-detail">
+              <p>Ecosystem coordination, project oversight, and stakeholder alignment across workforce partners, research institutions, manufacturers, and government — keeping Indiana's biomanufacturing strategy moving as one.</p>
+              <div class="program-sublinks">
+                <a class="program-sublink" href="#contact">Partner With Us</a>
+                <a class="program-sublink" href="programs.html">How It Works</a>
+              </div>
+              <a href="programs.html" class="program-link">About the Initiative <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
         </div>
@@ -478,17 +458,16 @@
         <h3 class="program-h"><button class="program-head" type="button" aria-expanded="false" aria-controls="program-biodefense">
           <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
           <span class="program-name">BioDefense</span>
-          <span class="program-cat">National Security</span>
+          <span class="program-cat future">Ecosystem Initiative</span>
           <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
         </button></h3>
         <div class="program-body" id="program-biodefense">
           <div>
             <div class="program-detail">
-              <p>Strengthening domestic production of critical medicines and countermeasures to secure America's biomanufacturing supply chain.</p>
+              <p>A future-facing ecosystem initiative exploring how Indiana's biomanufacturing base can strengthen domestic production of critical medicines and countermeasures and support national biosecurity.</p>
               <div class="program-sublinks">
-                <a class="program-sublink" href="biodefense.html#pillars">The BioDefense Framework</a>
+                <a class="program-sublink" href="biodefense.html#pillars">The Framework</a>
                 <a class="program-sublink" href="biodefense.html#partners">Agency Partnerships</a>
-                <a class="program-sublink" href="biodefense.html#faq">Common Questions</a>
                 <a class="program-sublink" href="biodefense.html#cta">Get Involved</a>
               </div>
               <a href="biodefense.html" class="program-link">Explore BioDefense <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -506,58 +485,60 @@
 <section class="section section-dark" id="why-indiana" aria-label="Why Indiana">
   <div class="container">
     <div class="slabel">Why Indiana</div>
-    <h2 class="stitle" style="margin-bottom:52px;">The Numbers Tell the Story</h2>
-    <div class="indiana-grid">
-      <div class="stats-col">
-        <div class="stat-card reveal">
-          <div class="stat-num"><em>#</em><span class="cnt" data-t="1">1</span></div>
-          <div class="stat-lbl">Pharmaceutical Exports State</div>
-          <div class="stat-detail">Leading the nation in pharmaceutical manufacturing output</div>
-          <div class="stat-source">Source: U.S. International Trade Administration, 2024</div>
-        </div>
-        <div class="stat-card reveal">
-          <div class="stat-num">Top <em><span class="cnt" data-t="3">3</span></em></div>
-          <div class="stat-lbl">Life Science Export State</div>
-          <div class="stat-detail">Among America's top three states for life science exports</div>
-          <div class="stat-source">Source: Indiana Economic Development Corporation, 2024</div>
-        </div>
-        <div class="stat-card reveal">
-          <div class="stat-num"><span class="cnt" data-t="31">0</span></div>
-          <div class="stat-lbl">Regional Tech Hubs</div>
-          <div class="stat-detail">Federally designated technology hubs — including Heartland BioWorks</div>
-          <div class="stat-source">Source: U.S. Economic Development Administration, 2024</div>
-        </div>
+    <h2 class="stitle" style="margin-bottom:14px;">The Numbers Tell the Story</h2>
+    <p class="ssub" style="margin-bottom:44px;">Heartland BioWorks is one of just 31 federally designated Tech Hubs nationally — and one of only 12 selected for implementation funding.</p>
+    <div class="stats-col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div class="stat-card reveal">
+        <div class="stat-num"><em>$</em><span class="cnt" data-t="51">0</span>M</div>
+        <div class="stat-lbl">EDA Implementation Funding</div>
+        <div class="stat-detail">Awarded to accelerate Indiana's biomanufacturing build-out</div>
+        <div class="stat-source">Source: U.S. Economic Development Administration, Tech Hubs program, 2024</div>
       </div>
-      <div class="map-col">
-        <div class="map-wrap">
-          <svg viewBox="0 0 240 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indiana state map with biomanufacturing network nodes">
-            <path d="M42 22 L52 15 L80 12 L120 10 L160 12 L188 15 L200 22 L204 42 L205 65 L207 90 L207 115 L207 140 L207 165 L205 188 L204 208 L202 225 L198 242 L192 258 L183 270 L170 280 L156 288 L145 295 L136 306 L130 318 L125 330 L120 340 L115 330 L110 318 L104 306 L94 295 L82 285 L68 272 L56 256 L46 238 L38 218 L34 196 L32 172 L33 148 L34 124 L34 100 L36 76 L38 52 L42 22 Z" fill="rgba(62,178,72,0.09)" stroke="rgba(62,178,72,0.45)" stroke-width="1.5" stroke-linejoin="round"/>
-            <path d="M42 22 L38 10 L52 8 L52 15 L42 22Z" fill="rgba(62,178,72,0.05)" stroke="rgba(62,178,72,0.35)" stroke-width="1"/>
-            <circle cx="120" cy="155" r="5" fill="#3EB248" opacity=".95"><animate attributeName="r" values="5;7;5" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".95;.6;.95" dur="3s" repeatCount="indefinite"/></circle>
-            <circle cx="80" cy="120" r="3.5" fill="#3EB248" opacity=".75"/>
-            <circle cx="160" cy="120" r="3.5" fill="#3EB248" opacity=".75"/>
-            <circle cx="95" cy="190" r="3.5" fill="#3EB248" opacity=".7"/>
-            <circle cx="148" cy="195" r="3.5" fill="#3EB248" opacity=".7"/>
-            <circle cx="60" cy="165" r="3" fill="#3EB248" opacity=".55"/>
-            <circle cx="178" cy="162" r="3" fill="#3EB248" opacity=".55"/>
-            <circle cx="120" cy="235" r="3.5" fill="#3EB248" opacity=".65"/>
-            <line x1="120" y1="155" x2="80" y2="120" stroke="rgba(62,178,72,.22)" stroke-width="1"/>
-            <line x1="120" y1="155" x2="160" y2="120" stroke="rgba(62,178,72,.22)" stroke-width="1"/>
-            <line x1="120" y1="155" x2="95" y2="190" stroke="rgba(62,178,72,.22)" stroke-width="1"/>
-            <line x1="120" y1="155" x2="148" y2="195" stroke="rgba(62,178,72,.22)" stroke-width="1"/>
-            <line x1="80" y1="120" x2="60" y2="165" stroke="rgba(62,178,72,.14)" stroke-width="1"/>
-            <line x1="160" y1="120" x2="178" y2="162" stroke="rgba(62,178,72,.14)" stroke-width="1"/>
-            <line x1="95" y1="190" x2="120" y2="235" stroke="rgba(62,178,72,.16)" stroke-width="1"/>
-            <line x1="148" y1="195" x2="120" y2="235" stroke="rgba(62,178,72,.16)" stroke-width="1"/>
-            <text x="128" y="152" fill="rgba(255,255,255,.65)" font-size="8.5" font-family="Inter,sans-serif" font-weight="600">Indianapolis</text>
-            <text x="38" y="118" fill="rgba(255,255,255,.4)" font-size="7.5" font-family="Inter,sans-serif">Lafayette</text>
-            <text x="163" y="118" fill="rgba(255,255,255,.4)" font-size="7.5" font-family="Inter,sans-serif">Muncie</text>
-            <text x="30" y="162" fill="rgba(255,255,255,.35)" font-size="7" font-family="Inter,sans-serif">Terre Haute</text>
-            <text x="138" y="240" fill="rgba(255,255,255,.38)" font-size="7.5" font-family="Inter,sans-serif">Bloomington</text>
-          </svg>
-        </div>
+      <div class="stat-card reveal">
+        <div class="stat-num">1 of <em><span class="cnt" data-t="31">0</span></em></div>
+        <div class="stat-lbl">Federally Designated Tech Hubs</div>
+        <div class="stat-detail">One of 31 hubs designated nationally — and 1 of 12 funded for implementation</div>
+        <div class="stat-source">Source: U.S. Economic Development Administration, 2023–2024</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num"><span class="cnt" data-t="27">0</span>K<span style="font-size:1.2rem"> ft²</span></div>
+        <div class="stat-lbl">Planned HQ &amp; Training Facility</div>
+        <div class="stat-detail">A hands-on biomanufacturing training facility in the 16 Tech Innovation District</div>
+        <div class="stat-source">Planned Heartland BioWorks headquarters, 16 Tech, Indianapolis</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num"><em>#</em>1</div>
+        <div class="stat-lbl">State for Pharmaceutical Exports</div>
+        <div class="stat-detail">Indiana leads the nation in pharmaceutical exports</div>
+        <div class="stat-source">Source: U.S. International Trade Administration</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num">Top <em>3</em></div>
+        <div class="stat-lbl">State for Life Sciences Exports</div>
+        <div class="stat-detail">Among the top three U.S. states for life sciences exports</div>
+        <div class="stat-source">Source: Indiana Economic Development Corporation</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num">All <em>3</em></div>
+        <div class="stat-lbl">COVID-19 Vaccines Manufactured</div>
+        <div class="stat-detail">The only state that manufactures all three COVID-19 vaccines</div>
+        <div class="stat-source">Source: Indiana Economic Development Corporation</div>
       </div>
     </div>
+  </div>
+</section>
+
+
+<!-- ══ INTERACTIVE ECOSYSTEM MAP ══ -->
+<section class="section section-light" id="ecosystem-map-section" aria-label="Indiana Biomanufacturing Ecosystem Map">
+  <div class="container">
+    <div class="map-intro">
+      <div class="slabel">Indiana's Ecosystem</div>
+      <h2 class="stitle" style="margin-bottom:14px;">Explore Indiana's Biomanufacturing Ecosystem</h2>
+      <p class="ssub">Meet some of Indiana's CDMO and lab resources. Our network continues to grow, so check back soon as we add more resources to the list.</p>
+      <p class="map-support">Explore Indiana's biomanufacturing infrastructure by capability area — from drug product manufacturing and gene therapy to precision fermentation, radiopharmaceuticals, and clinical lab services.</p>
+    </div>
+    <div id="ecosystem-map"></div>
   </div>
 </section>
 
@@ -570,34 +551,34 @@
         <div class="slabel">Latest Opportunities</div>
         <h2 class="stitle">Funding. Training. Partnerships.</h2>
       </div>
-      <a href="#" class="view-all-btn">View All Opportunities →</a>
+      <a href="#contact" class="view-all-btn">View All Opportunities →</a>
     </div>
     <div class="grid-3">
       <div class="opp-card reveal">
-        <div class="tag">Grant Opportunity</div>
-        <h3>BARDA BioIndustrial Manufacturing Initiative</h3>
-        <p>Federal funding for scaling domestic biomanufacturing capacity for medical countermeasures and critical biodefense applications.</p>
-        <div class="opp-foot">
-          <span>Deadline: Rolling</span>
-          <a href="#" class="opp-cta">Apply Now →</a>
-        </div>
-      </div>
-      <div class="opp-card reveal">
         <div class="tag">Training Program</div>
-        <h3>Biomanufacturing Technician Certification</h3>
-        <p>Ivy Tech and Purdue partnered program providing hands-on training for biomanufacturing technician roles at Indiana facilities.</p>
+        <h3>Biomanufacturing Technician Credential</h3>
+        <p>Stackable, hands-on training that prepares Hoosiers for biomanufacturing technician roles at Indiana facilities — delivered through BioTrain and Ivy Tech.</p>
         <div class="opp-foot">
-          <span>Next cohort: Fall 2026</span>
-          <a href="#" class="opp-cta">Register →</a>
+          <span>Status: Enrolling</span>
+          <a href="biotrain.html" class="opp-cta">Learn More →</a>
         </div>
       </div>
       <div class="opp-card reveal">
-        <div class="tag">Industry Partnership</div>
-        <h3>CDMO Network Expansion Partner</h3>
-        <p>Join the BioCAN network of contract development and manufacturing organizations supporting Indiana's biotech ecosystem.</p>
+        <div class="tag">Mentorship</div>
+        <h3>BioStart Founder Mentorship</h3>
+        <p>Peer-to-peer mentorship and startup support under BioLaunch, connecting biotech founders with experienced operators and Indiana's innovation network.</p>
         <div class="opp-foot">
-          <span>Applications open</span>
-          <a href="#" class="opp-cta">Learn More →</a>
+          <span>Status: Rolling</span>
+          <a href="biolaunch.html" class="opp-cta">Learn More →</a>
+        </div>
+      </div>
+      <div class="opp-card reveal">
+        <div class="tag">Resource Access</div>
+        <h3>BioCAN CDMO &amp; Lab Network</h3>
+        <p>Connect with Indiana's CDMOs, labs, and scale-up resources through the BioResource Coordination and Access Network.</p>
+        <div class="opp-foot">
+          <span>Status: Open</span>
+          <a href="biocan.html" class="opp-cta">Learn More →</a>
         </div>
       </div>
     </div>
@@ -607,21 +588,22 @@
 
 <!-- ══ STAY CONNECTED ══ -->
 <section class="section section-dark" id="connect" aria-label="Stay Connected">
+  <span id="contact"></span>
   <div class="container connect-inner">
     <div>
       <div class="slabel">Stay Connected</div>
       <h2 class="stitle" style="margin-bottom:14px;font-size:clamp(1.8rem,2.7vw,2.3rem);">Be Part of Indiana's Bioeconomy</h2>
-      <p class="ssub">Join 2,400+ biotech leaders, researchers, and government partners receiving Indiana's biomanufacturing briefing — delivered monthly.</p>
+      <p class="ssub">Monthly updates on funding opportunities, training programs, ecosystem resources, BioCAN announcements, and Heartland BioWorks news. No spam.</p>
       <div class="connect-perks">
-        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> New funding announcements and grant deadlines</div>
-        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> Upcoming training cohorts and industry events</div>
-        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> CDMO capacity alerts and partnership opportunities</div>
-        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> Federal program updates and policy news</div>
+        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> New funding opportunities and grant deadlines</div>
+        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> Upcoming training programs and cohorts</div>
+        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> New ecosystem resources and BioCAN announcements</div>
+        <div class="perk"><div class="perk-ico" aria-hidden="true">✓</div> Heartland BioWorks news and program updates</div>
       </div>
     </div>
     <div class="form-box">
       <h3>Subscribe to the Briefing</h3>
-      <p class="form-sub">Monthly. No spam. Unsubscribe anytime.</p>
+      <p class="form-sub">Monthly updates on funding, training, ecosystem resources, and BioCAN. No spam.</p>
       <form id="subscribeForm" novalidate>
         <div class="form-row full">
           <div class="fg">
@@ -642,78 +624,20 @@
           </div>
         </div>
         <button type="submit" class="btn-sub" id="subBtn">Subscribe →</button>
-        <p class="form-note">Joining 2,400+ biotech and government leaders.</p>
+        <p class="form-note">Funding, training, and ecosystem updates — straight to your inbox.</p>
       </form>
     </div>
   </div>
 </section>
 
 
-<!-- ══ FOOTER ══ -->
-<footer class="footer" aria-label="Site footer">
-  <div class="container">
-    <div class="footer-top">
-      <div class="f-brand">
-        <a href="#home" aria-label="Heartland BioWorks – return to homepage">
-          <img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" />
-        </a>
-        <p>Indiana's Federally Designated Regional Tech Hub powering the future of biomanufacturing — from workforce development to national security.</p>
-        <div class="f-contact">
-          <a href="mailto:info@heartlandbioworks.org">✉ info@heartlandbioworks.org</a>
-          <a href="#">📍 Indianapolis, Indiana</a>
-        </div>
-      </div>
-      <div class="f-col">
-        <h4>Programs</h4>
-        <ul>
-          <li><a href="programs.html">All Programs</a></li>
-          <li><a href="biotrain.html">BioTrain</a></li>
-          <li><a href="biolaunch.html">BioLaunch</a></li>
-          <li><a href="biocan.html">BioCAN</a></li>
-          <li><a href="biodefense.html">BioDefense</a></li>
-        </ul>
-      </div>
-      <div class="f-col">
-        <h4>Resources</h4>
-        <ul>
-          <li><a href="#">News &amp; Media</a></li>
-          <li><a href="#">Upcoming Events</a></li>
-          <li><a href="#">Educational Library</a></li>
-        </ul>
-      </div>
-      <div class="f-col">
-        <h4>About</h4>
-        <ul>
-          <li><a href="#">Team</a></li>
-          <li><a href="#">FAQs</a></li>
-          <li><a href="#connect">Contact Us</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Use</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bot">
-      <span>© 2026 Heartland BioWorks. All rights reserved. Federally Designated Regional Tech Hub.</span>
-      <div class="f-social">
-        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
-        <a href="#" aria-label="X / Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg></a>
-        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
-      </div>
-    </div>
-  </div>
-</footer>
+<!-- Global footer (injected from assets/site.js) -->
+<div id="hb-footer"></div>
 
 
+<script src="assets/site.js" defer></script>
+<script src="assets/ecosystem-map.js" defer></script>
 <script>
-// ── MOBILE MENU ──
-const hamburger=document.getElementById('hamburger');
-const mobileMenu=document.getElementById('mobileMenu');
-hamburger.addEventListener('click',()=>{
-  const open=mobileMenu.classList.toggle('open');
-  hamburger.setAttribute('aria-expanded',String(open));
-});
-mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobileMenu.classList.remove('open');hamburger.setAttribute('aria-expanded','false');}));
-
 // ── PROGRAM ACCORDION ──
 // One row open at a time; clicking the open row collapses it.
 const stack = document.getElementById('programStack');
@@ -760,12 +684,7 @@ document.getElementById('subscribeForm').addEventListener('submit',function(e){
   btn.textContent='Subscribed! ✓';btn.style.background='#00843D';btn.disabled=true;
   window.parent.postMessage({type:'formSubmit',formType:'newsletter',data:{fullName:fn.value,email:em.value,organization:org.value}},'*');
 });
-
-// ── IFRAME RESIZE ──
-function postH(){window.parent.postMessage({type:'resize',height:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},'*');}
-if('ResizeObserver' in window) new ResizeObserver(postH).observe(document.body);
-window.addEventListener('load',postH);window.addEventListener('resize',postH);
-setTimeout(postH,300);setTimeout(postH,900);
+// iframe auto-resize is handled centrally in assets/site.js
 </script>
 </body>
 </html>

@@ -5,6 +5,7 @@
   <title>BioDefense – National Security | Heartland BioWorks</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
   <style>
     :root{--navy:#0D4568;--green:#3EB248;--green2:#00843D;--bg:#fff;--bg2:#F7F9FB;--dark:#082D46;--darker:#050E18;--border:#E6EAF0;--text:#102A43;--muted:#627D98;--ease:cubic-bezier(.2,0,0,1);}
     *,*::before,*::after{box-sizing:border-box;}html{scroll-behavior:smooth;}
@@ -15,7 +16,7 @@
     .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;}
     .nav-logo img{height:44px;}.nav-back{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1.5px solid rgba(255,255,255,.35);border-radius:8px;font-size:.88rem;font-weight:600;color:#fff;transition:background 180ms,border-color 180ms;}.nav-back:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.6);}
     .nav-cta{display:inline-flex;align-items:center;padding:10px 22px;background:var(--green);color:#fff;border-radius:8px;font-size:.9rem;font-weight:600;transition:background 200ms,transform 200ms;}.nav-cta:hover{background:var(--green2);transform:translateY(-1px);}
-    .prog-hero{position:relative;padding:150px 0 90px;background:linear-gradient(155deg,#050E18 0%,#0D1F35 50%,#082D46 100%);overflow:hidden;}
+    .prog-hero{position:relative;padding:56px 0 80px;background:linear-gradient(155deg,#050E18 0%,#0D1F35 50%,#082D46 100%);overflow:hidden;}
     .prog-hero::before{content:'';position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=75');background-size:cover;background-position:center;opacity:.08;}
     .prog-hero::after{content:'';position:absolute;top:-100px;right:-80px;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(62,178,72,.1) 0%,transparent 70%);pointer-events:none;}
     .hero-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;background:rgba(62,178,72,.12);border:1px solid rgba(62,178,72,.28);border-radius:100px;font-size:.76rem;font-weight:700;color:#7DD580;letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px;}
@@ -63,20 +64,19 @@
     @media(max-width:768px){.section{padding:64px 0;}.cta-box{padding:44px 28px;}}
   </style>
 </head>
-<body>
-<nav class="nav"><div class="container nav-inner"><a href="index.html" class="nav-logo"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" /></a><a href="programs.html" class="nav-back">← All Programs</a><a href="#cta" class="nav-cta">Explore BioDefense</a></div></nav>
+<body data-page="programs" data-breadcrumb="Programs > BioDefense">
+<div id="hb-header"></div>
 
 <section class="prog-hero">
   <div class="container">
-    <div class="hero-tag">National Security &amp; Defense</div>
-    <h1>Securing America's<br>Bioeconomy</h1>
-    <p class="lead">BioDefense strengthens national biosecurity through strategic biotechnology partnerships, domestic supply chain resilience, and defense-aligned biomanufacturing capabilities in Indiana.</p>
-    <a href="#cta" class="hero-cta">Explore BioDefense Initiatives →</a>
+    <div class="hero-tag">Ecosystem Initiative · Future-Facing</div>
+    <h1>Biosecurity for<br>America's Bioeconomy</h1>
+    <p class="lead">BioDefense is a future-facing ecosystem initiative — exploring how Indiana's biomanufacturing base can strengthen domestic production of critical medicines and countermeasures and support national biosecurity. It is an ecosystem initiative, not one of the four core EDA-funded Heartland BioWorks projects (BioTrain, BioLaunch, BioCAN, and the planned HQ).</p>
+    <a href="#cta" class="hero-cta">Get Involved →</a>
     <div class="hero-metrics">
-      <div class="hm-item"><div class="hm-num"><em>12</em></div><div class="hm-label">Federal agency partners</div></div>
-      <div class="hm-item"><div class="hm-num"><em>$85M</em></div><div class="hm-label">Defense contracts supported</div></div>
-      <div class="hm-item"><div class="hm-num"><em>30+</em></div><div class="hm-label">Active projects</div></div>
-      <div class="hm-item"><div class="hm-num"><em>MCM</em></div><div class="hm-label">Countermeasure focus</div></div>
+      <div class="hm-item"><div class="hm-num"><em>#1</em></div><div class="hm-label">U.S. state for pharmaceutical exports</div></div>
+      <div class="hm-item"><div class="hm-num"><em>All 3</em></div><div class="hm-label">COVID-19 vaccines made in Indiana</div></div>
+      <div class="hm-item"><div class="hm-num"><em>Future</em></div><div class="hm-label">Ecosystem initiative</div></div>
     </div>
   </div>
 </section>
@@ -121,12 +121,12 @@
 
 <section class="section" id="impact">
   <div class="container">
-    <div class="slabel">Impact</div>
-    <h2 class="stitle" style="margin-bottom:44px;">By the Numbers</h2>
+    <div class="slabel">Why It Matters</div>
+    <h2 class="stitle" style="margin-bottom:44px;">Why Indiana for Biosecurity</h2>
     <div class="metrics-grid reveal">
-      <div class="metric-item"><div class="metric-n"><em>$85M</em></div><div class="metric-l">Defense Contracts</div><div class="metric-d">Supported for Indiana companies through BioDefense partnerships</div></div>
-      <div class="metric-item"><div class="metric-n"><em>12</em></div><div class="metric-l">Federal Partners</div><div class="metric-d">BARDA, DoD, DARPA, DHS, and interagency programs</div></div>
-      <div class="metric-item"><div class="metric-n"><em>30+</em></div><div class="metric-l">Active Projects</div><div class="metric-d">Ongoing biodefense-related research and manufacturing projects</div></div>
+      <div class="metric-item"><div class="metric-n"><em>#1</em></div><div class="metric-l">Pharmaceutical Exports</div><div class="metric-d">Indiana leads the nation — a foundation for domestic medicine production</div></div>
+      <div class="metric-item"><div class="metric-n"><em>All 3</em></div><div class="metric-l">COVID-19 Vaccines</div><div class="metric-d">The only state that manufactures all three COVID-19 vaccines</div></div>
+      <div class="metric-item"><div class="metric-n"><em>Top 3</em></div><div class="metric-l">Life Sciences Exports</div><div class="metric-d">Among the top three U.S. states for life sciences exports</div></div>
     </div>
   </div>
 </section>
@@ -158,7 +158,7 @@
   </div>
 </section>
 
-<section class="section" id="cta">
+<span id="contact"></span><section class="section" id="cta">
   <div class="container">
     <div class="cta-box reveal">
       <h2>Explore BioDefense Initiatives</h2>
@@ -168,9 +168,7 @@
   </div>
 </section>
 
-<footer style="background:#050E18;padding:32px 0;text-align:center;font-size:.82rem;color:rgba(255,255,255,.3);">
-  <div class="container"><a href="index.html" style="display:inline-block;margin-bottom:14px;"><img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" style="height:34px;opacity:.65;margin:0 auto;" /></a><p>© 2026 Heartland BioWorks. All rights reserved.</p></div>
-</footer>
+<div id="hb-footer"></div>
 <script>
 document.querySelectorAll('.faq-q').forEach(q=>{function t(){const i=q.parentElement,o=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>{x.classList.remove('open');x.querySelector('.faq-a').style.maxHeight='0';x.querySelector('.faq-q').setAttribute('aria-expanded','false');});if(!o){i.classList.add('open');i.querySelector('.faq-a').style.maxHeight=i.querySelector('.faq-a-inner').scrollHeight+'px';q.setAttribute('aria-expanded','true');}}q.addEventListener('click',t);q.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t();}});});
 const obs=new IntersectionObserver(e=>e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('vis');obs.unobserve(en.target);}}),{threshold:.15});
@@ -179,5 +177,6 @@ function postH(){window.parent.postMessage({type:'resize',height:Math.max(docume
 if('ResizeObserver' in window) new ResizeObserver(postH).observe(document.body);
 window.addEventListener('load',postH);window.addEventListener('resize',postH);setTimeout(postH,300);setTimeout(postH,900);
 </script>
+<script src="assets/site.js" defer></script>
 </body>
 </html>

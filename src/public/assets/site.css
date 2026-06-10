@@ -1,0 +1,147 @@
+/* ============================================================
+   Heartland BioWorks — shared site chrome (navbar, breadcrumbs,
+   footer). Loaded by every page; the markup is injected from a
+   single definition in site.js.
+   ============================================================ */
+
+:root{
+  --hb-navy:#0D4568;--hb-green:#3EB248;--hb-green2:#00843D;
+  --hb-bg2:#F7F9FB;--hb-dark:#082D46;--hb-border:#E6EAF0;
+  --hb-text:#102A43;--hb-muted:#627D98;
+  --hb-ease:cubic-bezier(.2,0,0,1);
+}
+
+/* ── NAVBAR ── */
+.hb-nav{position:fixed;top:0;left:0;right:0;z-index:300;height:90px;display:flex;align-items:center;background:var(--hb-dark);box-shadow:0 1px 0 rgba(255,255,255,.08),0 2px 12px rgba(8,24,40,.3);}
+.hb-nav-inner{width:min(calc(100% - 48px),1280px);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.hb-logo{display:flex;align-items:center;flex-shrink:0;}
+.hb-logo img{height:50px;width:auto;}
+.hb-links{display:flex;align-items:center;gap:2px;list-style:none;margin:0;padding:0;}
+.hb-links>li{position:relative;}
+.hb-link{display:inline-flex;align-items:center;gap:5px;padding:9px 14px;font:600 .9375rem/1 'Inter',system-ui,sans-serif;color:rgba(255,255,255,.85);background:none;border:0;border-radius:8px;cursor:pointer;transition:color 160ms,background 160ms;text-decoration:none;}
+.hb-link:hover,.hb-link:focus-visible{background:rgba(255,255,255,.12);color:#fff;outline:none;}
+.hb-link.is-active{color:#fff;background:rgba(62,178,72,.18);}
+.hb-link[aria-current="page"]{color:#fff;}
+.hb-link svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4;transition:transform 200ms var(--hb-ease);}
+.hb-has-drop.open>.hb-link svg,.hb-has-drop:hover>.hb-link svg{transform:rotate(180deg);}
+.hb-drop{position:absolute;top:calc(100% + 8px);left:0;min-width:230px;background:#fff;border:1px solid var(--hb-border);border-radius:14px;box-shadow:0 20px 60px rgba(13,69,104,.18);padding:6px;margin:0;list-style:none;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity 180ms var(--hb-ease),transform 180ms var(--hb-ease);}
+.hb-has-drop:hover>.hb-drop,.hb-has-drop.open>.hb-drop{opacity:1;transform:translateY(0);pointer-events:auto;}
+.hb-drop a{display:flex;align-items:center;gap:10px;padding:9px 12px;font:500 .88rem/1.3 'Inter',system-ui,sans-serif;color:var(--hb-text);border-radius:8px;transition:background 140ms,color 140ms;}
+.hb-drop a:hover,.hb-drop a:focus-visible{background:var(--hb-bg2);color:var(--hb-navy);outline:none;}
+.hb-drop a.is-active{background:var(--hb-bg2);color:var(--hb-navy);}
+.hb-dd-ico{width:28px;height:28px;border-radius:7px;background:var(--hb-bg2);display:flex;align-items:center;justify-content:center;font-size:.92rem;flex-shrink:0;}
+.hb-cta{display:inline-flex;align-items:center;padding:10px 22px;background:var(--hb-green);color:#fff;border-radius:8px;font:600 .9rem/1 'Inter',system-ui,sans-serif;transition:background 200ms,transform 200ms,box-shadow 200ms;flex-shrink:0;}
+.hb-cta:hover{background:var(--hb-green2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(62,178,72,.3);}
+.hb-burger{display:none;background:none;border:0;padding:8px;cursor:pointer;color:#fff;}
+.hb-burger svg{width:26px;height:26px;}
+
+/* mobile drawer */
+.hb-mobile{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--hb-border);box-shadow:0 16px 40px rgba(13,69,104,.16);padding:8px 24px 16px;flex-direction:column;max-height:80vh;overflow-y:auto;}
+.hb-mobile.open{display:flex;}
+.hb-mobile a{padding:13px 4px;font:600 1rem/1.2 'Inter',system-ui,sans-serif;color:var(--hb-text);border-bottom:1px solid var(--hb-border);}
+.hb-mobile a.hb-sub{padding-left:18px;font-weight:500;font-size:.92rem;color:var(--hb-muted);}
+.hb-mobile a:last-child{border-bottom:0;}
+.hb-mobile .hb-mgroup{font:700 .72rem/1 'Inter',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--hb-green2);padding:16px 4px 6px;}
+
+/* ── BREADCRUMB ── */
+.hb-breadcrumb{background:var(--hb-bg2);border-bottom:1px solid var(--hb-border);margin-top:90px;}
+.hb-breadcrumb ol{width:min(calc(100% - 48px),1280px);margin:0 auto;padding:14px 0;list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font:500 .82rem/1 'Inter',system-ui,sans-serif;}
+.hb-breadcrumb li{display:flex;align-items:center;gap:8px;color:var(--hb-muted);}
+.hb-breadcrumb a{color:var(--hb-muted);transition:color 140ms;}
+.hb-breadcrumb a:hover{color:var(--hb-navy);}
+.hb-breadcrumb li[aria-current="page"]{color:var(--hb-navy);font-weight:700;}
+.hb-breadcrumb .hb-sep{color:var(--hb-border);}
+
+/* spacer so fixed nav doesn't overlap content where a page opts in */
+.hb-nav-spacer{height:90px;}
+
+/* ── FOOTER ── */
+.hb-footer{background:#050E18;padding:64px 0 30px;color:#fff;}
+.hb-footer-inner{width:min(calc(100% - 48px),1280px);margin:0 auto;}
+.hb-footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.07);}
+.hb-fbrand img{height:44px;margin-bottom:16px;}
+.hb-fbrand p{font:400 .88rem/1.7 'Inter',system-ui,sans-serif;color:rgba(255,255,255,.42);max-width:300px;margin:0 0 18px;}
+.hb-fcontact{display:flex;flex-direction:column;gap:8px;}
+.hb-fcontact a{font:400 .85rem/1.4 'Inter',system-ui,sans-serif;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:7px;transition:color 140ms;}
+.hb-fcontact a:hover{color:#fff;}
+.hb-fcol h4{font:700 .76rem/1 'Inter',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.78);margin:0 0 14px;}
+.hb-fcol ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px;}
+.hb-fcol a{font:400 .88rem/1.3 'Inter',system-ui,sans-serif;color:rgba(255,255,255,.45);transition:color 140ms;}
+.hb-fcol a:hover{color:#fff;}
+.hb-fnews{margin-top:18px;}
+.hb-fnews p{font:400 .82rem/1.6 'Inter',system-ui,sans-serif;color:rgba(255,255,255,.42);margin:0 0 10px;}
+.hb-fnews-row{display:flex;gap:8px;}
+.hb-fnews-row input{flex:1;min-width:0;padding:10px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:8px;color:#fff;font:400 .85rem 'Inter',system-ui,sans-serif;}
+.hb-fnews-row input::placeholder{color:rgba(255,255,255,.32);}
+.hb-fnews-row button{padding:10px 16px;background:var(--hb-green);color:#fff;border:0;border-radius:8px;font:600 .85rem 'Inter',system-ui,sans-serif;cursor:pointer;transition:background 180ms;white-space:nowrap;}
+.hb-fnews-row button:hover{background:var(--hb-green2);}
+.hb-footer-bot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:26px;font:400 .8rem/1.5 'Inter',system-ui,sans-serif;color:rgba(255,255,255,.32);}
+.hb-fbot-links{display:flex;gap:18px;flex-wrap:wrap;}
+.hb-fbot-links a{color:rgba(255,255,255,.32);transition:color 140ms;}
+.hb-fbot-links a:hover{color:#fff;}
+.hb-fsocial{display:flex;gap:10px;}
+.hb-fsocial a{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;transition:background 180ms,border-color 180ms;}
+.hb-fsocial a:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.25);}
+.hb-fsocial svg{width:15px;height:15px;fill:rgba(255,255,255,.6);}
+
+@media(max-width:1000px){
+  .hb-links,.hb-cta{display:none;}
+  .hb-burger{display:inline-flex;}
+  .hb-footer-top{grid-template-columns:1fr 1fr;gap:32px;}
+  .hb-fbrand{grid-column:1/-1;}
+}
+@media(max-width:600px){
+  .hb-footer-top{grid-template-columns:1fr;}
+}
+
+/* ============================================================
+   Interactive Indiana ecosystem map (mounts into #ecosystem-map)
+   ============================================================ */
+.eco-map{margin-top:40px;}
+.eco-filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;}
+.eco-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1.5px solid var(--hb-border);background:#fff;border-radius:100px;font:600 .85rem/1 'Inter',system-ui,sans-serif;color:var(--hb-navy);cursor:pointer;transition:background 160ms,border-color 160ms,color 160ms;}
+.eco-chip:hover{border-color:var(--hb-navy);background:var(--hb-bg2);}
+.eco-chip:focus-visible{outline:2px solid var(--hb-green);outline-offset:2px;}
+.eco-chip.active{background:var(--hb-navy);border-color:var(--hb-navy);color:#fff;}
+.eco-chip .eco-chip-n{font-weight:700;opacity:.7;font-size:.78rem;}
+.eco-chip.active .eco-chip-n{opacity:.85;}
+
+.eco-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:start;}
+.eco-mapwrap{position:relative;background:linear-gradient(160deg,#0d2942,#082135);border:1px solid rgba(62,178,72,.16);border-radius:20px;padding:18px;}
+.eco-mapwrap svg{width:100%;height:auto;display:block;overflow:visible;}
+.eco-state{fill:rgba(62,178,72,.07);stroke:rgba(62,178,72,.5);stroke-width:1.6;stroke-linejoin:round;}
+.eco-pin{cursor:pointer;}
+.eco-pin-dot{fill:var(--hb-green);stroke:#fff;stroke-width:1.4;transition:r 160ms,fill 160ms;transform-box:fill-box;transform-origin:center;animation:ecoPop 360ms var(--hb-ease) both;}
+.eco-pin:hover .eco-pin-dot,.eco-pin:focus-visible .eco-pin-dot{fill:#7DD580;}
+.eco-pin:focus-visible{outline:none;}
+.eco-pin:focus-visible .eco-pin-ring{opacity:1;}
+.eco-pin-ring{fill:none;stroke:#7DD580;stroke-width:1.5;opacity:0;}
+.eco-pin-count{fill:#fff;font:700 11px 'Inter',system-ui,sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none;}
+@keyframes ecoPop{from{opacity:0;transform:scale(.2);}to{opacity:1;transform:scale(1);}}
+.eco-citylabel{fill:rgba(255,255,255,.5);font:600 9px 'Inter',system-ui,sans-serif;pointer-events:none;}
+
+.eco-tip{position:absolute;z-index:5;min-width:180px;max-width:240px;background:#fff;border:1px solid var(--hb-border);border-radius:12px;box-shadow:0 16px 40px rgba(8,24,40,.28);padding:12px 14px;font-family:'Inter',system-ui,sans-serif;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity 140ms,transform 140ms;}
+.eco-tip.show{opacity:1;transform:translateY(0);}
+.eco-tip h5{margin:0 0 3px;font:700 .9rem/1.25 'Manrope',system-ui,sans-serif;color:var(--hb-text);}
+.eco-tip .eco-tip-meta{font-size:.74rem;color:var(--hb-green2);font-weight:700;margin-bottom:5px;}
+.eco-tip p{margin:0;font-size:.78rem;line-height:1.5;color:var(--hb-muted);}
+
+.eco-panel{display:flex;flex-direction:column;gap:0;}
+.eco-panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.eco-panel-head h3{margin:0;font:800 1.15rem/1.2 'Manrope',system-ui,sans-serif;color:var(--hb-text);}
+.eco-count{font:700 .82rem/1 'Inter',system-ui,sans-serif;color:var(--hb-green2);}
+.eco-list{display:flex;flex-direction:column;gap:10px;max-height:520px;overflow-y:auto;padding-right:6px;}
+.eco-item{border:1px solid var(--hb-border);border-radius:12px;padding:14px 16px;background:#fff;transition:border-color 160ms,box-shadow 160ms;}
+.eco-item:hover,.eco-item.hl{border-color:var(--hb-navy);box-shadow:0 6px 20px rgba(13,69,104,.1);}
+.eco-item h4{margin:0 0 3px;font:700 .95rem/1.3 'Inter',system-ui,sans-serif;color:var(--hb-text);}
+.eco-item .eco-loc{font-size:.8rem;color:var(--hb-muted);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.eco-item .eco-cat{display:inline-block;font:700 .68rem/1 'Inter',system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--hb-green2);background:rgba(62,178,72,.1);padding:4px 9px;border-radius:100px;margin-bottom:8px;}
+.eco-item p{margin:0;font-size:.82rem;line-height:1.55;color:var(--hb-muted);}
+.eco-item.out-of-state{background:var(--hb-bg2);border-style:dashed;}
+.eco-item .eco-oos{font-size:.72rem;font-weight:700;color:var(--hb-muted);text-transform:uppercase;letter-spacing:.05em;}
+.eco-empty{padding:30px;text-align:center;color:var(--hb-muted);font-size:.9rem;}
+
+@media(max-width:900px){
+  .eco-grid{grid-template-columns:1fr;gap:24px;}
+  .eco-list{max-height:none;}
+}

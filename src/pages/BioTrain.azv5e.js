@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
   <style>
     :root {
       --navy:#0D4568;--green:#3EB248;--green2:#00843D;
@@ -31,7 +32,7 @@
     .nav-cta:hover{background:var(--green2);transform:translateY(-1px);}
 
     /* HERO */
-    .prog-hero{position:relative;padding:150px 0 90px;background:linear-gradient(155deg,#082D46 0%,#0D4568 60%,#0a3a58 100%);overflow:hidden;}
+    .prog-hero{position:relative;padding:56px 0 80px;background:linear-gradient(155deg,#082D46 0%,#0D4568 60%,#0a3a58 100%);overflow:hidden;}
     .prog-hero::before{content:'';position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1600&q=75');background-size:cover;background-position:center;opacity:.12;}
     .prog-hero::after{content:'';position:absolute;top:-150px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(62,178,72,.15) 0%,transparent 70%);pointer-events:none;}
     .hero-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;background:rgba(62,178,72,.15);border:1px solid rgba(62,178,72,.3);border-radius:100px;font-size:.76rem;font-weight:700;color:#7DD580;letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px;}
@@ -99,6 +100,10 @@
     .cta-box::before{content:'';position:absolute;top:-80px;left:-80px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(62,178,72,.15) 0%,transparent 70%);pointer-events:none;}
     .cta-box h2{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:16px;}
     .cta-box p{font-size:1.02rem;line-height:1.7;color:rgba(255,255,255,.62);max-width:500px;margin:0 auto 32px;}
+    .cta-split{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+    .cta-alt{background:#fff;color:var(--navy);}
+    .cta-alt:hover{background:#eef3f8;}
+    @media(max-width:480px){.cta-split{flex-direction:column;}.cta-split .hero-cta{width:100%;justify-content:center;}}
 
     /* REVEAL */
     .reveal{opacity:0;transform:translateY(20px);transition:opacity 550ms var(--ease),transform 550ms var(--ease);}
@@ -108,17 +113,9 @@
     @media(max-width:768px){.section{padding:64px 0;}.hero-metrics{gap:24px;}.cta-box{padding:44px 28px;}}
   </style>
 </head>
-<body>
+<body data-page="programs" data-breadcrumb="Programs > BioTrain">
 
-<nav class="nav">
-  <div class="container nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Heartland BioWorks Home">
-      <img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" />
-    </a>
-    <a href="programs.html" class="nav-back">← All Programs</a>
-    <a href="#cta" class="nav-cta">Join the Workforce Network</a>
-  </div>
-</nav>
+<div id="hb-header"></div>
 
 <!-- HERO -->
 <section class="prog-hero">
@@ -128,10 +125,10 @@
     <p class="lead">BioTrain connects employers, educators, and job seekers to build the skilled biomanufacturing workforce Indiana's growing bioeconomy demands.</p>
     <a href="#cta" class="hero-cta">Join the Workforce Network →</a>
     <div class="hero-metrics">
-      <div class="hm-item"><div class="hm-num"><em>2,400+</em></div><div class="hm-label">Workers trained</div></div>
-      <div class="hm-item"><div class="hm-num"><em>85+</em></div><div class="hm-label">Employer partners</div></div>
-      <div class="hm-item"><div class="hm-num"><em>18</em></div><div class="hm-label">Training programs</div></div>
-      <div class="hm-item"><div class="hm-num"><em>94%</em></div><div class="hm-label">Job placement rate</div></div>
+      <div class="hm-item"><div class="hm-num"><em>Stackable</em></div><div class="hm-label">Industry credentials</div></div>
+      <div class="hm-item"><div class="hm-num"><em>No degree</em></div><div class="hm-label">Four-year degree not required</div></div>
+      <div class="hm-item"><div class="hm-num"><em>Statewide</em></div><div class="hm-label">Training pathways</div></div>
+      <div class="hm-item"><div class="hm-num"><em>Employer-led</em></div><div class="hm-label">Upskilling &amp; reskilling</div></div>
     </div>
   </div>
 </section>
@@ -165,23 +162,23 @@
 <!-- IMPACT METRICS -->
 <section class="section section-dark" id="impact">
   <div class="container">
-    <div class="slabel">Impact</div>
-    <h2 class="stitle" style="margin-bottom:44px;">Measurable Outcomes</h2>
+    <div class="slabel">Why It Matters</div>
+    <h2 class="stitle" style="margin-bottom:44px;">Indiana's Biomanufacturing Momentum</h2>
     <div class="metrics-grid reveal">
       <div class="metric-item">
-        <div class="metric-n"><em>94%</em></div>
-        <div class="metric-l">Job Placement Rate</div>
-        <div class="metric-d">Within 6 months of program completion</div>
+        <div class="metric-n"><em>#1</em></div>
+        <div class="metric-l">Pharmaceutical Exports</div>
+        <div class="metric-d">Indiana leads the nation — driving demand for skilled biomanufacturing talent</div>
       </div>
       <div class="metric-item">
-        <div class="metric-n"><em>$52K</em></div>
-        <div class="metric-l">Average Starting Salary</div>
-        <div class="metric-d">For BioTrain program graduates</div>
+        <div class="metric-n"><em>All 3</em></div>
+        <div class="metric-l">COVID-19 Vaccines</div>
+        <div class="metric-d">The only state that manufactures all three COVID-19 vaccines</div>
       </div>
       <div class="metric-item">
-        <div class="metric-n"><em>85+</em></div>
-        <div class="metric-l">Employer Partners</div>
-        <div class="metric-d">Hiring from BioTrain pipelines</div>
+        <div class="metric-n"><em>Top 3</em></div>
+        <div class="metric-l">Life Sciences Exports</div>
+        <div class="metric-d">Among the top three U.S. states for life sciences exports</div>
       </div>
     </div>
   </div>
@@ -261,24 +258,20 @@
 </section>
 
 <!-- CTA -->
-<section class="section" id="cta">
+<span id="contact"></span><section class="section" id="cta">
   <div class="container">
     <div class="cta-box reveal">
       <h2>Join the Workforce Network</h2>
       <p>Whether you're an employer seeking talent or a job seeker ready to launch a biotech career — BioTrain connects you to Indiana's biomanufacturing ecosystem.</p>
-      <a href="#" class="hero-cta">Get Started Today →</a>
+      <div class="cta-split">
+        <a href="#contact" class="hero-cta">I'm looking for work →</a>
+        <a href="#contact" class="hero-cta cta-alt">I'm an employer →</a>
+      </div>
     </div>
   </div>
 </section>
 
-<footer style="background:#050E18;padding:32px 0;text-align:center;font-size:.82rem;color:rgba(255,255,255,.3);">
-  <div class="container">
-    <a href="index.html" style="display:inline-block;margin-bottom:14px;">
-      <img src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png" alt="Heartland BioWorks" style="height:34px;opacity:.65;margin:0 auto;" />
-    </a>
-    <p>© 2026 Heartland BioWorks. All rights reserved.</p>
-  </div>
-</footer>
+<div id="hb-footer"></div>
 
 <script>
 // FAQ accordion
@@ -311,5 +304,6 @@ if('ResizeObserver' in window) new ResizeObserver(postH).observe(document.body);
 window.addEventListener('load',postH); window.addEventListener('resize',postH);
 setTimeout(postH,300); setTimeout(postH,900);
 </script>
+<script src="assets/site.js" defer></script>
 </body>
 </html>
