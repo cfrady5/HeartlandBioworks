@@ -90,3 +90,6 @@ create policy "staff delete" on public.media_assets for delete to authenticated 
 create index news_items_status_date on public.news_items (status, publish_date desc);
 create index events_status_date on public.events (status, event_date asc);
 create index media_assets_status on public.media_assets (status);
+
+-- security hardening: pin search_path on the trigger function
+alter function public.set_updated_at() set search_path = '';
