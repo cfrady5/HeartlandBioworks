@@ -110,6 +110,7 @@
 .eco-mapwrap{position:relative;background:linear-gradient(160deg,#0d2942,#082135);border:1px solid rgba(62,178,72,.16);border-radius:20px;padding:18px;}
 .eco-mapwrap svg{width:100%;height:auto;display:block;overflow:visible;}
 .eco-state{fill:rgba(62,178,72,.07);stroke:rgba(62,178,72,.5);stroke-width:1.6;stroke-linejoin:round;}
+.eco-county{fill:rgba(62,178,72,.10);stroke:rgba(120,200,140,.32);stroke-width:.6;vector-effect:non-scaling-stroke;stroke-linejoin:round;transition:fill 160ms;}
 .eco-pin{cursor:pointer;}
 .eco-pin-dot{fill:var(--hb-green);stroke:#fff;stroke-width:1.4;transition:r 160ms,fill 160ms;transform-box:fill-box;transform-origin:center;animation:ecoPop 360ms var(--hb-ease) both;}
 .eco-pin:hover .eco-pin-dot,.eco-pin:focus-visible .eco-pin-dot{fill:#7DD580;}
