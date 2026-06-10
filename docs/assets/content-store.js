@@ -31,17 +31,17 @@
     news: {
       table: "news_items",
       seed: function () { return window.HB_SEED_NEWS || []; },
-      fields: { title: "title", slug: "slug", type: "type", publishDate: "publish_date", author: "author", excerpt: "excerpt", body: "body", featuredImage: "featured_image", externalUrl: "external_url", tags: "tags", status: "status" }
+      fields: { title: "title", slug: "slug", type: "type", publishDate: "publish_date", author: "author", excerpt: "excerpt", body: "body", featuredImageUrl: "featured_image_url", featuredImagePath: "featured_image_path", attachmentUrl: "attachment_url", attachmentPath: "attachment_path", attachmentName: "attachment_name", attachmentType: "attachment_type", externalUrl: "external_url", tags: "tags", status: "status" }
     },
     events: {
       table: "events",
       seed: function () { return window.HB_SEED_EVENTS || []; },
-      fields: { title: "title", eventDate: "event_date", startTime: "start_time", endTime: "end_time", location: "location", eventType: "event_type", description: "description", registrationUrl: "registration_url", hostOrganization: "host_organization", tags: "tags", status: "status" }
+      fields: { title: "title", eventDate: "event_date", startTime: "start_time", endTime: "end_time", location: "location", eventType: "event_type", description: "description", registrationUrl: "registration_url", hostOrganization: "host_organization", thumbnailUrl: "thumbnail_url", thumbnailPath: "thumbnail_path", attachmentUrl: "attachment_url", attachmentPath: "attachment_path", attachmentName: "attachment_name", attachmentType: "attachment_type", tags: "tags", status: "status" }
     },
     media: {
       table: "media_assets",
       seed: function () { return window.HB_SEED_MEDIA || []; },
-      fields: { title: "title", assetType: "asset_type", description: "description", fileUrl: "file_url", thumbnailUrl: "thumbnail_url", uploadDate: "upload_date", tags: "tags", status: "status" }
+      fields: { title: "title", assetType: "asset_type", description: "description", fileUrl: "file_url", filePath: "file_path", fileName: "file_name", fileType: "file_type", fileSize: "file_size", thumbnailUrl: "thumbnail_url", thumbnailPath: "thumbnail_path", embedUrl: "embed_url", duration: "duration", isVideo: "is_video", uploadDate: "upload_date", tags: "tags", status: "status" }
     }
   };
 
@@ -57,7 +57,7 @@
     var c = cfg(type), out = { id: row.id };
     Object.keys(c.fields).forEach(function (k) {
       var v = row[c.fields[k]];
-      out[k] = v == null ? (k === "tags" ? [] : "") : v;
+      out[k] = v == null ? (k === "tags" ? [] : (k === "isVideo" ? false : "")) : v;
     });
     return out;
   }

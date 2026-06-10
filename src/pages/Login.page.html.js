@@ -16,8 +16,8 @@
     <h1>Staff Login</h1>
     <p class="hbl-sub">Sign in to manage News, Events, and the Media Library.</p>
     <form id="loginForm" novalidate>
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" autocomplete="username" placeholder="you@heartlandbioworks.org" required />
+      <label for="email">Email or username</label>
+      <input type="text" id="email" name="email" autocomplete="username" placeholder="you@heartlandbioworks.org or username" required />
       <label for="password">Password</label>
       <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••" required />
       <div class="hbl-err" id="loginErr" role="alert"></div>

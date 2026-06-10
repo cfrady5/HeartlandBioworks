@@ -14,7 +14,7 @@
 <section class="hb-pagehero">
   <div class="hb-pagehero-inner">
     <h1>Media Library</h1>
-    <p>Logos, photos, reports, one-pagers, and brand materials for partners, press, and the public.</p>
+    <p>Explore educational videos, webinars, training resources, reports, and other Heartland BioWorks content.</p>
   </div>
 </section>
 

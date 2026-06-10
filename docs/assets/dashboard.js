@@ -39,7 +39,12 @@
         { k: "excerpt", label: "Excerpt (shown on cards)", type: "textarea", required: true },
         { k: "body", label: "Body (used when there is no external link)", type: "textarea", rows: 6 },
         { k: "externalUrl", label: "External URL (optional — card links out if set)", type: "url" },
-        { k: "featuredImage", label: "Featured image URL", type: "url" },
+        { k: "featuredImageUrl", label: "Featured image (news graphic, screenshot)", type: "file", bucket: "news-media", accept: "image/*", imgPreview: true, pathKey: "featuredImagePath" },
+        { k: "featuredImagePath", type: "hidden" },
+        { k: "attachmentUrl", label: "Attachment (press release PDF, report)", type: "file", bucket: "news-media", pathKey: "attachmentPath", nameKey: "attachmentName", typeKey: "attachmentType" },
+        { k: "attachmentPath", type: "hidden" },
+        { k: "attachmentName", type: "hidden" },
+        { k: "attachmentType", type: "hidden" },
         { k: "tags", label: "Tags (comma-separated)", type: "tags" },
         { k: "status", label: "Status", type: "select", required: true, options: ["Draft", "Published"] }
       ]
@@ -58,6 +63,12 @@
         { k: "description", label: "Description", type: "textarea", required: true },
         { k: "registrationUrl", label: "Registration URL", type: "url" },
         { k: "hostOrganization", label: "Host organization", type: "text" },
+        { k: "thumbnailUrl", label: "Event graphic / thumbnail (flyer image)", type: "file", bucket: "event-media", accept: "image/*", imgPreview: true, pathKey: "thumbnailPath" },
+        { k: "thumbnailPath", type: "hidden" },
+        { k: "attachmentUrl", label: "Attachment (agenda or flyer PDF)", type: "file", bucket: "event-media", pathKey: "attachmentPath", nameKey: "attachmentName", typeKey: "attachmentType" },
+        { k: "attachmentPath", type: "hidden" },
+        { k: "attachmentName", type: "hidden" },
+        { k: "attachmentType", type: "hidden" },
         { k: "tags", label: "Tags (comma-separated)", type: "tags" },
         { k: "status", label: "Status", type: "select", required: true, options: ["Draft", "Published"] }
       ]
@@ -65,13 +76,22 @@
     media: {
       label: "Media Library",
       dateField: "uploadDate",
+      hint: "Use this section to upload and publish educational videos, webinar recordings, training content, reports, one-pagers, brand assets, and other resources for the public media library.",
       columns: [["title", "Title"], ["assetType", "Type"], ["uploadDate", "Date"], ["status", "Status"]],
       fields: [
         { k: "title", label: "Title", type: "text", required: true },
-        { k: "assetType", label: "Asset type", type: "select", required: true, options: ["Logo", "Photo", "Report", "One-Pager", "Brand Asset", "Video", "Other"] },
+        { k: "assetType", label: "Asset type", type: "select", required: true, options: ["Educational Video", "Webinar Recording", "Training Resource", "Report", "One-Pager", "Brand Asset", "Photo", "Logo", "External Video", "Other"] },
         { k: "description", label: "Description", type: "textarea", required: true },
-        { k: "fileUrl", label: "File / link URL (required to publish)", type: "url" },
-        { k: "thumbnailUrl", label: "Thumbnail URL", type: "url" },
+        { k: "fileUrl", label: "Primary media file (video, PDF, image — required to publish unless an embed URL is set)", type: "file", bucket: "media-library", pathKey: "filePath", nameKey: "fileName", typeKey: "fileType", sizeKey: "fileSize" },
+        { k: "filePath", type: "hidden" },
+        { k: "fileName", type: "hidden" },
+        { k: "fileType", type: "hidden" },
+        { k: "fileSize", type: "hidden" },
+        { k: "embedUrl", label: "External video / embed URL (YouTube, Vimeo — alternative to uploading)", type: "url" },
+        { k: "thumbnailUrl", label: "Thumbnail image", type: "file", bucket: "media-library", accept: "image/*", imgPreview: true, pathKey: "thumbnailPath" },
+        { k: "thumbnailPath", type: "hidden" },
+        { k: "duration", label: "Duration (videos — e.g. 12:45)", type: "text", placeholder: "12:45" },
+        { k: "isVideo", label: "This is a video (shows a player on the public page)", type: "checkbox" },
         { k: "uploadDate", label: "Upload date", type: "date", required: true },
         { k: "tags", label: "Tags (comma-separated)", type: "tags" },
         { k: "status", label: "Status", type: "select", required: true, options: ["Draft", "Published"] }
@@ -121,6 +141,7 @@
     }).join("");
     return '<div class="hbd-head"><h2>' + esc(cfg.label) + '</h2>' +
       '<button type="button" class="hbd-create" data-create>+ Create New</button></div>' +
+      (cfg.hint ? '<p class="hbd-sectionhint">' + esc(cfg.hint) + "</p>" : "") +
       (state.notice ? '<div class="hbd-notice ' + state.notice.kind + '">' + esc(state.notice.msg) + "</div>" : "") +
       (items.length
         ? '<div class="hbd-tablewrap"><table class="hbd-table"><thead>' + head + "</thead><tbody>" + rows + "</tbody></table></div>"
@@ -129,10 +150,39 @@
   }
 
   /* ---------- ContentForm ---------- */
-  function fieldHtml(f, val) {
+  function fieldHtml(f, val, it) {
     var req = f.required ? ' <span class="hbd-req" aria-hidden="true">*</span>' : "";
     var common = ' id="f-' + f.k + '" name="' + f.k + '"' + (f.required ? " required" : "") + (f.placeholder ? ' placeholder="' + esc(f.placeholder) + '"' : "");
     var control;
+    if (f.type === "hidden") {
+      return '<input type="hidden" name="' + f.k + '" value="' + esc(val) + '" />';
+    }
+    if (f.type === "checkbox") {
+      return '<div class="hbd-field hbd-check"><label><input type="checkbox" name="' + f.k + '" id="f-' + f.k + '"' +
+        (val ? " checked" : "") + ' /> ' + esc(f.label) + "</label>" +
+        '<div class="hbd-field-err" data-err="' + f.k + '"></div></div>';
+    }
+    if (f.type === "file") {
+      // Upload component: pick a file (uploads to Supabase Storage) OR paste a URL.
+      var existingName = f.nameKey && it && it[f.nameKey] ? it[f.nameKey] : "";
+      var preview = "";
+      if (val && f.imgPreview) preview = '<img src="' + esc(val) + '" alt="Current file preview" />';
+      else if (val) preview = '<span class="hbd-upfile">📎 ' + esc(existingName || val.split("/").pop()) + "</span>";
+      return '<div class="hbd-field hbd-upfield"><label for="file-' + f.k + '">' + esc(f.label) + req + "</label>" +
+        '<div class="hbd-upload" data-upload data-bucket="' + f.bucket + '" data-urlkey="' + f.k + '"' +
+          (f.pathKey ? ' data-pathkey="' + f.pathKey + '"' : "") +
+          (f.nameKey ? ' data-namekey="' + f.nameKey + '"' : "") +
+          (f.typeKey ? ' data-typekey="' + f.typeKey + '"' : "") +
+          (f.sizeKey ? ' data-sizekey="' + f.sizeKey + '"' : "") +
+          (f.imgPreview ? ' data-imgpreview="1"' : "") + ">" +
+          '<input type="file" id="file-' + f.k + '"' + (f.accept ? ' accept="' + f.accept + '"' : "") + " />" +
+          '<span class="hbd-upstatus" data-upstatus role="status"></span>' +
+        "</div>" +
+        '<div class="hbd-uppreview" data-uppreview>' + preview + "</div>" +
+        '<label class="hbd-orurl" for="f-' + f.k + '">…or paste a URL</label>' +
+        '<input type="url"' + common + ' value="' + esc(val) + '" />' +
+        '<div class="hbd-field-err" data-err="' + f.k + '"></div></div>';
+    }
     if (f.type === "select") {
       control = "<select" + common + ">" + f.options.map(function (o) {
         return '<option value="' + esc(o) + '"' + (o === val ? " selected" : "") + ">" + esc(o) + "</option>";
@@ -155,7 +205,7 @@
       '<button type="button" class="hbd-back" data-back>← Back to list</button></div>' +
       '<form class="hbd-form" novalidate>' +
         '<p class="hbd-reqnote"><span class="hbd-req">*</span> Required — items can\'t be Published with required fields missing.</p>' +
-        cfg.fields.map(function (f) { return fieldHtml(f, it[f.k]); }).join("") +
+        cfg.fields.map(function (f) { return fieldHtml(f, it[f.k], it); }).join("") +
         '<div class="hbd-form-actions"><button type="submit" class="hbd-create">Save</button>' +
         '<button type="button" class="hbd-back" data-back>Cancel</button></div>' +
       "</form>";
@@ -169,7 +219,7 @@
     });
     // publishing gates: cannot publish without required fields
     if (values.status === "Published") {
-      if (state.section === "media" && !String(values.fileUrl || "").trim()) errs.fileUrl = "A file/link URL is required to publish.";
+      if (state.section === "media" && !String(values.fileUrl || "").trim() && !String(values.embedUrl || "").trim()) errs.fileUrl = "Upload a file or provide an external video/embed URL before publishing.";
       if (state.section === "news" && !String(values.externalUrl || "").trim() && !String(values.body || "").trim()) errs.body = "Provide a body or an external URL before publishing.";
     }
     return errs;
@@ -221,6 +271,51 @@
     await refresh();
   });
 
+  // ---- file uploads (Supabase Storage via HBUploads) ----
+  mount.addEventListener("change", async function (ev) {
+    var input = ev.target;
+    if (input.type !== "file" || !input.closest("[data-upload]")) return;
+    var box = input.closest("[data-upload]");
+    var formEl = input.closest("form");
+    var status = box.querySelector("[data-upstatus]");
+    var field = box.closest(".hbd-upfield");
+    var preview = field.querySelector("[data-uppreview]");
+    var file = input.files && input.files[0];
+    if (!file) return;
+    function setVal(key, v) {
+      if (!key) return;
+      var el = formEl.querySelector('[name="' + key + '"]');
+      if (el) el.value = v;
+    }
+    var saveBtn = formEl.querySelector('button[type="submit"]');
+    status.className = "hbd-upstatus busy"; status.textContent = "Uploading " + file.name + "…";
+    if (saveBtn) saveBtn.disabled = true;
+    input.disabled = true;
+    try {
+      var up = await HBUploads.uploadFile(file, box.getAttribute("data-bucket"));
+      setVal(box.getAttribute("data-urlkey"), up.url);
+      setVal(box.getAttribute("data-pathkey"), up.path);
+      setVal(box.getAttribute("data-namekey"), up.fileName);
+      setVal(box.getAttribute("data-typekey"), up.fileType);
+      setVal(box.getAttribute("data-sizekey"), String(up.size));
+      status.className = "hbd-upstatus ok"; status.textContent = "Uploaded ✓ (" + Math.round(up.size / 1024) + " KB)";
+      if (box.hasAttribute("data-imgpreview") && /^image\//.test(up.fileType)) {
+        preview.innerHTML = '<img src="' + up.url.replace(/"/g, "&quot;") + '" alt="Uploaded image preview" />';
+      } else {
+        preview.innerHTML = '<span class="hbd-upfile">📎 ' + esc(up.fileName) + (up.fileType ? " · " + esc(up.fileType) : "") + "</span>";
+      }
+      // uploading a video into the media library auto-marks it as a video
+      if (/^video\//.test(up.fileType)) {
+        var vid = formEl.querySelector('[name="isVideo"]');
+        if (vid) vid.checked = true;
+      }
+    } catch (e) {
+      status.className = "hbd-upstatus err"; status.textContent = e.message || "Upload failed — nothing was stored.";
+    }
+    input.disabled = false;
+    if (saveBtn) saveBtn.disabled = false;
+  });
+
   mount.addEventListener("submit", function (ev) {
     var f = ev.target.closest(".hbd-form");
     if (!f) return;
@@ -229,7 +324,9 @@
     var values = {};
     cfg.fields.forEach(function (fd) {
       var el = f.querySelector('[name="' + fd.k + '"]');
+      if (fd.type === "checkbox") { values[fd.k] = !!(el && el.checked); return; }
       var v = el ? el.value : "";
+      if (fd.k === "fileSize") { values[fd.k] = v ? parseInt(v, 10) || null : null; return; }
       values[fd.k] = fd.type === "tags"
         ? v.split(",").map(function (s) { return s.trim(); }).filter(Boolean)
         : v;

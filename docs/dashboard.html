@@ -30,6 +30,7 @@
 <script src="assets/supabase-config.js"></script>
 <script src="assets/auth.js"></script>
 <script src="assets/content-store.js"></script>
+<script src="assets/uploads.js"></script>
 <script src="assets/site.js" defer></script>
 <script src="assets/dashboard.js" defer></script>
 </body>

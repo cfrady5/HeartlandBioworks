@@ -27,10 +27,23 @@ then update `supabase-config.js`.
   users get full CRUD
 - `set_updated_at` trigger + indexes for the public queries
 
+## File uploads (Supabase Storage)
+
+`migrations/0002_file_uploads.sql` adds file-metadata columns to all
+three content tables and creates three **public** storage buckets:
+`news-media`, `event-media`, `media-library`. Storage RLS lets anyone
+read objects in these buckets (they back public pages) while only
+authenticated staff can upload, replace, or delete. The dashboard
+uploads via `docs/assets/uploads.js` (`HBUploads.uploadFile`), which
+fails loudly if Supabase is unreachable — uploads are never faked.
+
 ## Staff accounts
 
 Staff users live in Supabase Auth (Dashboard → Authentication → Users →
-"Add user"). Keep public sign-ups disabled (Authentication → Providers →
+"Add user"). The login form accepts a username or an email — bare
+usernames map to `<username>@heartlandbioworks.test` (e.g. the dev/test
+account `tyoder` → `tyoder@heartlandbioworks.test`, password
+`BioWorksTest` — DEV ONLY; remove or rotate before production). Keep public sign-ups disabled (Authentication → Providers →
 Email → disable "Allow new users to sign up") so only invited staff can
 log in. Any authenticated user can manage content; if you later need
 finer roles, add a `profiles` table keyed to `auth.users` and tighten

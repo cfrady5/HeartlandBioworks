@@ -23,8 +23,13 @@
 
   async function login(email, password) {
     email = (email || "").trim();
+    // Username support: "tyoder" -> "tyoder@heartlandbioworks.test".
+    // Full email addresses are used as-is.
+    if (email && email.indexOf("@") === -1) {
+      email = email.toLowerCase() + "@heartlandbioworks.test";
+    }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-      return { ok: false, error: "Enter a valid email address." };
+      return { ok: false, error: "Enter a valid email address or username." };
     }
     if (!password) {
       return { ok: false, error: "Enter your password." };

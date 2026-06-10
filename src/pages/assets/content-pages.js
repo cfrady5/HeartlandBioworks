@@ -28,6 +28,10 @@
     return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
   }
   function isExternal(u) { return /^https?:\/\//i.test(u || ""); }
+  function attachmentCta(url, label) {
+    if (!url) return "";
+    return '<a class="hbc-cta2" href="' + esc(url) + '"' + (isExternal(url) ? ' target="_blank" rel="noopener noreferrer"' : "") + ">" + label + ' <svg viewBox="0 0 24 24"><path d="M12 5v11M6 12l6 6 6-6M5 21h14"/></svg></a>';
+  }
   function today() { var d = new Date(); return d.toISOString().slice(0, 10); }
 
   function emptyState(msg) {
@@ -49,12 +53,14 @@
     var cta = external
       ? '<a class="hbc-cta" href="' + esc(n.externalUrl) + '" target="_blank" rel="noopener noreferrer">Read More <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>'
       : '<button class="hbc-cta" type="button" data-open="' + esc(n.id) + '">Read More <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>';
-    return '<article class="hbc-card">' +
+    var img = n.featuredImageUrl
+      ? '<div class="hbc-thumb"><img src="' + esc(n.featuredImageUrl) + '" alt="" loading="lazy" /></div>' : "";
+    return '<article class="hbc-card">' + img +
       '<div class="hbc-meta"><span class="hbc-tag">' + esc(n.type) + '</span><span class="hbc-date">' + esc(fmtDate(n.publishDate)) + "</span></div>" +
       "<h3>" + esc(n.title) + "</h3>" +
       "<p>" + esc(n.excerpt) + "</p>" +
       (n.tags && n.tags.length ? '<div class="hbc-tags">' + n.tags.map(function (t) { return '<span class="hbc-minitag">' + esc(t) + "</span>"; }).join("") + "</div>" : "") +
-      cta + "</article>";
+      '<div class="hbc-ctas">' + cta + attachmentCta(n.attachmentUrl, "Download Attachment") + "</div></article>";
   }
   function renderNews(activeType) {
     var items = CACHE
@@ -81,15 +87,17 @@
   function eventCard(e) {
     var when = fmtDate(e.eventDate) + (e.startTime ? " · " + e.startTime + (e.endTime ? "–" + e.endTime : "") : "");
     var cta = e.registrationUrl
-      ? '<a class="hbc-cta" href="' + esc(e.registrationUrl) + '"' + (isExternal(e.registrationUrl) ? ' target="_blank" rel="noopener noreferrer"' : "") + ">Register / Learn More <svg viewBox=\"0 0 24 24\"><path d=\"M7 17L17 7M17 7H8M17 7v9\"/></svg></a>"
+      ? '<a class="hbc-cta" href="' + esc(e.registrationUrl) + '"' + (isExternal(e.registrationUrl) ? ' target="_blank" rel="noopener noreferrer"' : "") + ">Register <svg viewBox=\"0 0 24 24\"><path d=\"M7 17L17 7M17 7H8M17 7v9\"/></svg></a>"
       : "";
-    return '<article class="hbc-card">' +
+    var img = e.thumbnailUrl
+      ? '<div class="hbc-thumb"><img src="' + esc(e.thumbnailUrl) + '" alt="" loading="lazy" /></div>' : "";
+    return '<article class="hbc-card">' + img +
       '<div class="hbc-meta"><span class="hbc-tag">' + esc(e.eventType) + '</span><span class="hbc-date">' + esc(when) + "</span></div>" +
       "<h3>" + esc(e.title) + "</h3>" +
       '<div class="hbc-loc">📍 ' + esc(e.location || "Location TBA") + "</div>" +
       "<p>" + esc(e.description) + "</p>" +
       (e.hostOrganization ? '<div class="hbc-host">Hosted by ' + esc(e.hostOrganization) + "</div>" : "") +
-      cta + "</article>";
+      '<div class="hbc-ctas">' + cta + attachmentCta(e.attachmentUrl, "Download Agenda / Flyer") + "</div></article>";
   }
   function renderEvents(activeType) {
     var t = today();
@@ -102,18 +110,40 @@
                     : emptyState("No upcoming events are currently listed. Check back soon."));
   }
 
-  /* ---------- MEDIA LIBRARY ---------- */
-  var MEDIA_TYPES = ["All", "Logo", "Photo", "Report", "One-Pager", "Brand Asset", "Video", "Other"];
-  var TYPE_ICON = { Logo: "🅻", Photo: "🖼️", Report: "📄", "One-Pager": "📃", "Brand Asset": "🎨", Video: "🎬", Other: "📦" };
+  /* ---------- MEDIA LIBRARY (educational video & content library) ---------- */
+  var MEDIA_TYPES = ["All", "Educational Video", "Webinar Recording", "Training Resource", "Report", "One-Pager", "Brand Asset", "Photo", "Logo", "External Video", "Other"];
+  var TYPE_ICON = { "Educational Video": "🎬", "Webinar Recording": "🎥", "Training Resource": "🎓", Report: "📄", "One-Pager": "📃", "Brand Asset": "🎨", Photo: "🖼️", Logo: "🅻", "External Video": "▶️", Other: "📦" };
+  function isVideoItem(m) {
+    return m.isVideo === true ||
+      ["Educational Video", "Webinar Recording", "External Video"].indexOf(m.assetType) !== -1 ||
+      /^video\//.test(m.fileType || "");
+  }
+  function isImageFile(m) {
+    return /^image\//.test(m.fileType || "") || /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(m.fileUrl || "");
+  }
   function mediaCard(m) {
-    var thumb = m.thumbnailUrl
-      ? '<div class="hbc-thumb"><img src="' + esc(m.thumbnailUrl) + '" alt="" loading="lazy" /></div>'
-      : '<div class="hbc-thumb hbc-thumb-ico" aria-hidden="true">' + (TYPE_ICON[m.assetType] || "📦") + "</div>";
-    var cta = m.fileUrl
-      ? '<a class="hbc-cta" href="' + esc(m.fileUrl) + '"' + (isExternal(m.fileUrl) ? ' target="_blank" rel="noopener noreferrer"' : "") + ">Download / View <svg viewBox=\"0 0 24 24\"><path d=\"M12 5v11M6 12l6 6 6-6M5 21h14\"/></svg></a>"
-      : "";
-    return '<article class="hbc-card hbc-media">' + thumb +
-      '<div class="hbc-meta"><span class="hbc-tag">' + esc(m.assetType) + "</span></div>" +
+    var video = isVideoItem(m);
+    var media, cta = "";
+    if (video && m.fileUrl && /^video\//.test(m.fileType || "")) {
+      // uploaded video file -> inline HTML5 player
+      media = '<div class="hbc-video"><video controls preload="metadata"' +
+        (m.thumbnailUrl ? ' poster="' + esc(m.thumbnailUrl) + '"' : "") +
+        ' src="' + esc(m.fileUrl) + '"></video></div>';
+    } else {
+      media = m.thumbnailUrl
+        ? '<div class="hbc-thumb"><img src="' + esc(m.thumbnailUrl) + '" alt="" loading="lazy" /></div>'
+        : '<div class="hbc-thumb hbc-thumb-ico" aria-hidden="true">' + (TYPE_ICON[m.assetType] || "📦") + "</div>";
+      var link = m.embedUrl || m.fileUrl;
+      if (video && link) {
+        cta = '<a class="hbc-cta" href="' + esc(link) + '"' + (isExternal(link) ? ' target="_blank" rel="noopener noreferrer"' : "") + '>Watch Video <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg></a>';
+      } else if (m.fileUrl) {
+        var label = isImageFile(m) ? "View" : "Download";
+        cta = '<a class="hbc-cta" href="' + esc(m.fileUrl) + '"' + (isExternal(m.fileUrl) ? ' target="_blank" rel="noopener noreferrer"' : "") + ">" + label + ' <svg viewBox="0 0 24 24"><path d="M12 5v11M6 12l6 6 6-6M5 21h14"/></svg></a>';
+      }
+    }
+    return '<article class="hbc-card hbc-media">' + media +
+      '<div class="hbc-meta"><span class="hbc-tag">' + esc(m.assetType) + "</span>" +
+      (m.duration ? '<span class="hbc-date">⏱ ' + esc(m.duration) + "</span>" : "") + "</div>" +
       "<h3>" + esc(m.title) + "</h3>" +
       "<p>" + esc(m.description) + "</p>" + cta + "</article>";
   }
