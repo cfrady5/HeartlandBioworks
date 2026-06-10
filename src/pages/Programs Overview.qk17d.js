@@ -112,7 +112,7 @@
           <div class="prog-link">Explore BioCAN →</div>
         </div>
       </a>
-      <a href="index.html#ecosystem-map" class="prog-card reveal" data-p="biocan">
+      <a href="biocan.html#ecosystem-map" class="prog-card reveal" data-p="biocan">
         <div class="prog-card-bg"></div>
         <div class="prog-card-content">
           <div class="prog-ico">🏛️</div>

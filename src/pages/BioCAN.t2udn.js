@@ -120,6 +120,17 @@
   </div>
 </section>
 
+<section class="section" id="ecosystem-map-section">
+  <span id="ecosystem-map-anchor"></span>
+  <div class="container">
+    <div class="slabel">Indiana's Ecosystem</div>
+    <h2 class="stitle">Explore Indiana's Biomanufacturing Ecosystem</h2>
+    <p class="ssub" style="max-width:720px;">Meet some of Indiana's CDMO and lab resources. Our network continues to grow, so check back soon as we add more resources to the list.</p>
+    <p style="margin-top:14px;font-size:.95rem;line-height:1.7;color:var(--muted);max-width:720px;">Explore Indiana's biomanufacturing infrastructure by capability area — from drug product manufacturing and gene therapy to precision fermentation, radiopharmaceuticals, and clinical lab services.</p>
+    <div id="ecosystem-map"></div>
+  </div>
+</section>
+
 <section class="section section-dark" id="funding">
   <div class="container">
     <div class="slabel">Funding Programs</div>
@@ -177,5 +188,6 @@ if('ResizeObserver' in window) new ResizeObserver(postH).observe(document.body);
 window.addEventListener('load',postH);window.addEventListener('resize',postH);setTimeout(postH,300);setTimeout(postH,900);
 </script>
 <script src="assets/site.js" defer></script>
+<script src="assets/ecosystem-map.js" defer></script>
 </body>
 </html>

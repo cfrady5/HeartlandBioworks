@@ -120,7 +120,7 @@
           '<li><a href="#">News &amp; Media</a></li>' +
           '<li><a href="#">Upcoming Events</a></li>' +
           '<li><a href="#">Educational Library</a></li>' +
-          '<li><a href="index.html#ecosystem-map">Ecosystem Map</a></li>' +
+          '<li><a href="biocan.html#ecosystem-map">Ecosystem Map</a></li>' +
         '</ul></div>' +
         '<div class="hb-fcol"><h4>About</h4><ul>' +
           '<li><a href="#">Team</a></li>' +
