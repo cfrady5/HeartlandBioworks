@@ -30,6 +30,7 @@
     ]},
     { key: "about", label: "About", href: "about.html", children: [
       { key: "about", label: "About Us", href: "about.html", ico: "🏛️" },
+      { key: "team", label: "Meet the Team", href: "team.html", ico: "👥" },
       { key: "faqs", label: "FAQs", href: "faqs.html", ico: "❓" }
     ]}
   ];
@@ -66,7 +67,7 @@
         out += '<a class="hb-sub" href="' + c.href + '"' + (c.key === page ? ' aria-current="page"' : '') + '>' + c.label + '</a>';
       });
     });
-    out += '<a href="#contact">Contact Us</a>';
+    out += '<a href="contact.html"' + (page === "contact" ? ' aria-current="page"' : '') + '>Contact Us</a>';
     return out;
   }
 
@@ -76,7 +77,7 @@
         '<a class="hb-logo" href="index.html" aria-label="Heartland BioWorks — Home">' +
           '<img src="' + LOGO + '" alt="Heartland BioWorks" /></a>' +
         '<ul class="hb-links">' + NAV.map(navItemHtml).join("") + '</ul>' +
-        '<a class="hb-cta" href="#contact">Contact Us</a>' +
+        '<a class="hb-cta" href="contact.html">Contact Us</a>' +
         '<button class="hb-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="hb-mobile">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>' +
         '</button>' +
@@ -107,8 +108,8 @@
           '<a href="index.html" aria-label="Heartland BioWorks — home"><img src="' + LOGO + '" alt="Heartland BioWorks" /></a>' +
           '<p>Indiana’s federally designated biomanufacturing Regional Tech Hub, powered by the Applied Research Institute — connecting workforce, research, industry, and government to grow the state’s bioeconomy.</p>' +
           '<div class="hb-fcontact">' +
-            '<a href="mailto:info@heartlandbioworks.org">✉ info@heartlandbioworks.org</a>' +
-            '<a href="#contact">📍 16 Tech Innovation District, Indianapolis, IN</a>' +
+            '<a href="mailto:heartlandbioworks@theari.us">✉ heartlandbioworks@theari.us</a>' +
+            '<a href="contact.html">📍 16 Tech Innovation District, Indianapolis, IN</a>' +
           '</div>' +
         '</div>' +
         '<div class="hb-fcol"><h4>Programs</h4><ul>' +
@@ -126,8 +127,9 @@
         '</ul></div>' +
         '<div class="hb-fcol"><h4>About</h4><ul>' +
           '<li><a href="about.html">About Us</a></li>' +
+          '<li><a href="team.html">Meet the Team</a></li>' +
           '<li><a href="faqs.html">FAQs</a></li>' +
-          '<li><a href="#contact">Contact Us</a></li>' +
+          '<li><a href="contact.html">Contact Us</a></li>' +
           '<div class="hb-fnews">' +
             '<p>Monthly funding, training, and BioCAN updates. No spam.</p>' +
             '<form class="hb-fnews-row" data-hb-news novalidate>' +
@@ -219,12 +221,26 @@
 
   // footer newsletter -> hand off to the Wix parent like the main form
   document.querySelectorAll("[data-hb-news]").forEach(function (form) {
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
       var input = form.querySelector("input[name=email]");
       var btn = form.querySelector("button");
-      if (window.parent) window.parent.postMessage({ type: "formSubmit", formType: "newsletter", data: { email: input ? input.value : "" } }, "*");
-      if (btn) { btn.textContent = "Subscribed ✓"; btn.disabled = true; }
+      var email = input ? input.value.trim() : "";
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        if (btn) { btn.textContent = "Enter a valid email"; setTimeout(function () { btn.textContent = "Subscribe"; }, 2200); }
+        return;
+      }
+      if (btn) { btn.disabled = true; btn.textContent = "Subscribing…"; }
+      try {
+        if (window.HBStore && HBStore.addSubscriber) {
+          await HBStore.addSubscriber({ email: email, source: "Newsletter", consent: true, status: "Active" });
+        } else if (window.parent) {
+          window.parent.postMessage({ type: "formSubmit", formType: "newsletter", data: { email: email } }, "*");
+        }
+        if (btn) btn.textContent = "Subscribed ✓";
+      } catch (err) {
+        if (btn) { btn.disabled = false; btn.textContent = "Try again"; }
+      }
     });
   });
 

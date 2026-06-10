@@ -130,12 +130,83 @@
     return update(type, id, { status: current.status === "Published" ? "Draft" : "Published" });
   }
 
+  /* ---------- contact submissions + newsletter (Supabase only) ----------
+     Public visitors may INSERT (with consent) but never read; staff
+     read/manage via RLS. No seed fallback — these are private records. */
+  var CONTACT_FIELDS = { firstName: "first_name", lastName: "last_name", jobTitle: "job_title", email: "email", country: "country", phone: "phone", organizationName: "organization_name", organizationType: "organization_type", interests: "interests", message: "message", consent: "consent", status: "status", internalNotes: "internal_notes", createdAt: "created_at" };
+  var SUB_FIELDS = { firstName: "first_name", lastName: "last_name", email: "email", organization: "organization", jobTitle: "job_title", source: "source", consent: "consent", status: "status", createdAt: "created_at" };
+
+  function mapFrom(fields, row) {
+    var out = { id: row.id };
+    Object.keys(fields).forEach(function (k) {
+      var v = row[fields[k]];
+      out[k] = v == null ? (k === "interests" ? [] : (k === "consent" ? false : "")) : v;
+    });
+    return out;
+  }
+  function mapTo(fields, item) {
+    var out = {};
+    Object.keys(fields).forEach(function (k) {
+      if (k !== "createdAt" && item[k] !== undefined) out[fields[k]] = item[k];
+    });
+    return out;
+  }
+
+  async function submitContact(payload) {
+    var sb = client();
+    if (!sb) throw new Error("The contact service is unavailable right now. Please email heartlandbioworks@theari.us instead.");
+    var res = await sb.from("contact_submissions").insert(mapTo(CONTACT_FIELDS, payload));
+    if (res.error) throw fail("send your message", res.error);
+    return true;
+  }
+  async function getContacts() {
+    var sb = client();
+    if (!sb) throw new Error("Contact service unavailable. Check your connection and reload.");
+    var res = await sb.from("contact_submissions").select("*");
+    if (res.error) throw fail("load contact requests", res.error);
+    return (res.data || []).map(function (r) { return mapFrom(CONTACT_FIELDS, r); });
+  }
+  async function updateContact(id, patch) {
+    var sb = client();
+    if (!sb) throw new Error("Contact service unavailable — nothing was saved.");
+    var res = await sb.from("contact_submissions").update(mapTo(CONTACT_FIELDS, patch)).eq("id", id).select().single();
+    if (res.error) throw fail("save contact changes", res.error);
+    return mapFrom(CONTACT_FIELDS, res.data);
+  }
+  async function addSubscriber(payload) {
+    var sb = client();
+    if (!sb) throw new Error("Subscription service unavailable. Please email heartlandbioworks@theari.us to subscribe.");
+    var res = await sb.from("newsletter_subscribers").insert(mapTo(SUB_FIELDS, payload));
+    if (res.error) throw fail("subscribe", res.error);
+    return true;
+  }
+  async function getSubscribers() {
+    var sb = client();
+    if (!sb) throw new Error("Subscriber service unavailable. Check your connection and reload.");
+    var res = await sb.from("newsletter_subscribers").select("*");
+    if (res.error) throw fail("load subscribers", res.error);
+    return (res.data || []).map(function (r) { return mapFrom(SUB_FIELDS, r); });
+  }
+  async function updateSubscriber(id, patch) {
+    var sb = client();
+    if (!sb) throw new Error("Subscriber service unavailable — nothing was saved.");
+    var res = await sb.from("newsletter_subscribers").update(mapTo(SUB_FIELDS, patch)).eq("id", id).select().single();
+    if (res.error) throw fail("save subscriber changes", res.error);
+    return mapFrom(SUB_FIELDS, res.data);
+  }
+
   window.HBStore = {
     getPublished: getPublished,
     getAll: getAll,
     create: create,
     update: update,
     remove: remove,
-    toggleStatus: toggleStatus
+    toggleStatus: toggleStatus,
+    submitContact: submitContact,
+    getContacts: getContacts,
+    updateContact: updateContact,
+    addSubscriber: addSubscriber,
+    getSubscribers: getSubscribers,
+    updateSubscriber: updateSubscriber
   };
 })();

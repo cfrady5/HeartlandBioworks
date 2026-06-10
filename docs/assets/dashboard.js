@@ -99,7 +99,12 @@
     }
   };
 
-  var state = { section: "news", editing: null, notice: null, items: [], loading: false };
+  var SECTIONS = ["news", "events", "media", "contacts", "users"];
+  var SECTION_LABELS = { contacts: "Contact Requests", users: "Users / Email List" };
+  var initial = (window.location.hash || "").replace("#", "");
+  var state = { section: SECTIONS.indexOf(initial) !== -1 ? initial : "news",
+    editing: null, notice: null, items: [], loading: false,
+    q: "", statusFilter: "All", sourceFilter: "All", contactOpen: null };
 
   /* ---------- DashboardLayout ---------- */
   function layout(inner) {
@@ -107,8 +112,9 @@
     return '<div class="hbd">' +
       '<aside class="hbd-side">' +
         '<div class="hbd-side-title">Content</div>' +
-        ["news", "events", "media"].map(function (k) {
-          return '<button type="button" class="hbd-nav' + (state.section === k ? " active" : "") + '" data-section="' + k + '">' + CONFIG[k].label + "</button>";
+        SECTIONS.map(function (k) {
+          var lbl = CONFIG[k] ? CONFIG[k].label : SECTION_LABELS[k];
+          return '<button type="button" class="hbd-nav' + (state.section === k ? " active" : "") + '" data-section="' + k + '">' + lbl + "</button>";
         }).join("") +
         '<div class="hbd-side-foot">' +
           '<div class="hbd-user" title="' + esc(user ? user.email : "") + '">' + esc(user ? user.email : "") + "</div>" +
@@ -225,19 +231,140 @@
     return errs;
   }
 
+  /* ---------- contacts + users (email list) ---------- */
+  function fmtDT(iso) { return iso ? String(iso).slice(0, 10) : ""; }
+  function csvCell(v) { v = String(v == null ? "" : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function downloadCsv(filename, header, rows) {
+    var csv = header.join(",") + "\n" + rows.map(function (r) { return r.map(csvCell).join(","); }).join("\n");
+    try {
+      var blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+    } catch (e) { state.notice = { kind: "err", msg: "CSV download is not supported in this browser." }; paint(); }
+  }
+  function searchBox(placeholder) {
+    return '<input type="search" class="hbd-search" data-search placeholder="' + placeholder + '" value="' + esc(state.q) + '" aria-label="Search" />';
+  }
+  function filterSelect(attr, label, options, current) {
+    return '<label class="hbd-filter">' + label + ' <select data-' + attr + '>' +
+      options.map(function (o) { return '<option' + (o === current ? " selected" : "") + ">" + o + "</option>"; }).join("") +
+      "</select></label>";
+  }
+
+  function filteredContacts() {
+    var q = state.q.toLowerCase();
+    return state.items.filter(function (c) {
+      if (state.statusFilter !== "All" && c.status !== state.statusFilter) return false;
+      if (!q) return true;
+      return (c.firstName + " " + c.lastName + " " + c.email + " " + c.organizationName + " " + c.jobTitle + " " + c.message)
+        .toLowerCase().indexOf(q) !== -1;
+    }).sort(function (a, b) { return (b.createdAt || "").localeCompare(a.createdAt || ""); });
+  }
+  function contactsView() {
+    if (state.contactOpen) return contactDetail();
+    var rows = filteredContacts();
+    return '<div class="hbd-head"><h2>Contact Requests</h2>' +
+      '<button type="button" class="hbd-back" data-export-contacts>Export CSV</button></div>' +
+      (state.notice ? '<div class="hbd-notice ' + state.notice.kind + '">' + esc(state.notice.msg) + "</div>" : "") +
+      '<div class="hbd-toolbar">' + searchBox("Search contact requests…") +
+        filterSelect("status-filter", "Status", ["All", "New", "Contacted", "Closed"], state.statusFilter) + "</div>" +
+      (rows.length
+        ? '<div class="hbd-tablewrap"><table class="hbd-table"><thead><tr><th>Name</th><th>Email</th><th>Organization</th><th>Status</th><th>Received</th><th></th></tr></thead><tbody>' +
+          rows.map(function (c) {
+            return "<tr><td>" + esc(c.firstName + " " + c.lastName) + "</td><td>" + esc(c.email) + "</td><td>" + esc(c.organizationName) + "</td>" +
+              '<td><span class="hbd-status ' + (c.status === "New" ? "pub" : "draft") + '">' + esc(c.status) + "</span></td>" +
+              "<td>" + esc(fmtDT(c.createdAt)) + "</td>" +
+              '<td class="hbd-actions"><button type="button" data-open-contact="' + esc(c.id) + '">Open</button></td></tr>';
+          }).join("") + "</tbody></table></div>"
+        : '<div class="hbc-empty">No contact requests' + (state.q || state.statusFilter !== "All" ? " match your search." : " yet.") + "</div>");
+  }
+  function contactDetail() {
+    var c = state.items.filter(function (x) { return String(x.id) === String(state.contactOpen); })[0];
+    if (!c) { state.contactOpen = null; return contactsView(); }
+    function row(l, v) { return v ? '<div class="hbd-crow"><span>' + l + "</span><div>" + esc(v) + "</div></div>" : ""; }
+    return '<div class="hbd-head"><h2>' + esc(c.firstName + " " + c.lastName) + '</h2>' +
+      '<button type="button" class="hbd-back" data-back-contacts>← All requests</button></div>' +
+      (state.notice ? '<div class="hbd-notice ' + state.notice.kind + '">' + esc(state.notice.msg) + "</div>" : "") +
+      '<div class="hbd-form" style="max-width:760px;">' +
+        row("Email", c.email) + row("Job title", c.jobTitle) + row("Phone", c.phone) + row("Country", c.country) +
+        row("Organization", c.organizationName + (c.organizationType ? " (" + c.organizationType + ")" : "")) +
+        row("Interests", (c.interests || []).join(", ")) +
+        row("Received", fmtDT(c.createdAt)) +
+        '<div class="hbd-crow"><span>Message</span><div>' + esc(c.message) + "</div></div>" +
+        '<div class="hbd-field" style="margin-top:18px;"><label for="c-status">Status</label>' +
+          '<select id="c-status" name="contactStatus">' + ["New", "Contacted", "Closed"].map(function (o) {
+            return '<option' + (o === c.status ? " selected" : "") + ">" + o + "</option>";
+          }).join("") + "</select></div>" +
+        '<div class="hbd-field"><label for="c-notes">Internal notes (never exported)</label>' +
+          '<textarea id="c-notes" name="contactNotes" rows="4">' + esc(c.internalNotes) + "</textarea></div>" +
+        '<div class="hbd-form-actions"><button type="button" class="hbd-create" data-save-contact="' + esc(c.id) + '">Save</button></div>' +
+      "</div>";
+  }
+
+  function userRows() {
+    // merged opt-in contact database: contact submissions + newsletter signups
+    var rows = [];
+    (state.items.contacts || []).forEach(function (c) {
+      rows.push({ firstName: c.firstName, lastName: c.lastName, email: c.email, organization: c.organizationName,
+        jobTitle: c.jobTitle, source: "Contact Form", consentStatus: c.consent ? "Active" : "No Consent", createdAt: c.createdAt });
+    });
+    (state.items.subscribers || []).forEach(function (u) {
+      rows.push({ firstName: u.firstName, lastName: u.lastName, email: u.email, organization: u.organization,
+        jobTitle: u.jobTitle, source: u.source || "Newsletter", consentStatus: u.consent ? (u.status || "Active") : "No Consent", createdAt: u.createdAt });
+    });
+    return rows.sort(function (a, b) { return (b.createdAt || "").localeCompare(a.createdAt || ""); });
+  }
+  function filteredUsers() {
+    var q = state.q.toLowerCase();
+    return userRows().filter(function (r) {
+      if (state.sourceFilter !== "All" && r.source !== state.sourceFilter) return false;
+      if (state.statusFilter !== "All" && r.consentStatus !== state.statusFilter) return false;
+      if (!q) return true;
+      return ((r.firstName || "") + " " + (r.lastName || "") + " " + (r.email || "") + " " + (r.organization || "") + " " + (r.jobTitle || ""))
+        .toLowerCase().indexOf(q) !== -1;
+    });
+  }
+  function usersView() {
+    var rows = filteredUsers();
+    return '<div class="hbd-head"><h2>Users / Email List</h2>' +
+      '<button type="button" class="hbd-create" data-export-users>Export Email List CSV</button></div>' +
+      '<p class="hbd-sectionhint">The Heartland BioWorks contact database — contact form submissions and newsletter signups, with consent status. Exports include only valid, consenting email records and never include internal notes.</p>' +
+      (state.notice ? '<div class="hbd-notice ' + state.notice.kind + '">' + esc(state.notice.msg) + "</div>" : "") +
+      '<div class="hbd-toolbar">' + searchBox("Search name, email, organization…") +
+        filterSelect("source-filter", "Source", ["All", "Contact Form", "Newsletter", "Event Signup", "Other"], state.sourceFilter) +
+        filterSelect("status-filter", "Status", ["All", "Active", "Unsubscribed", "Bounced", "No Consent"], state.statusFilter) + "</div>" +
+      (rows.length
+        ? '<div class="hbd-tablewrap"><table class="hbd-table"><thead><tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Organization</th><th>Job Title</th><th>Source</th><th>Consent Status</th><th>Created</th></tr></thead><tbody>' +
+          rows.map(function (r) {
+            return "<tr><td>" + esc(r.firstName) + "</td><td>" + esc(r.lastName) + "</td><td>" + esc(r.email) + "</td><td>" + esc(r.organization) + "</td><td>" + esc(r.jobTitle) + "</td><td>" + esc(r.source) + "</td>" +
+              '<td><span class="hbd-status ' + (r.consentStatus === "Active" ? "pub" : "draft") + '">' + esc(r.consentStatus) + "</span></td>" +
+              "<td>" + esc(fmtDT(r.createdAt)) + "</td></tr>";
+          }).join("") + "</tbody></table></div>"
+        : '<div class="hbc-empty">No contacts match the current search/filters.</div>');
+  }
+
   /* ---------- paint + async data ---------- */
   function paint() {
-    var inner = state.loading
-      ? '<div class="hbc-empty" aria-busy="true">Loading ' + CONFIG[state.section].label + "…</div>"
-      : (state.editing ? form() : table());
+    var label = CONFIG[state.section] ? CONFIG[state.section].label : SECTION_LABELS[state.section];
+    var inner;
+    if (state.loading) inner = '<div class="hbc-empty" aria-busy="true">Loading ' + label + "…</div>";
+    else if (state.section === "contacts") inner = contactsView();
+    else if (state.section === "users") inner = usersView();
+    else inner = state.editing ? form() : table();
     mount.innerHTML = layout(inner);
   }
   async function refresh() {
     state.loading = true; paint();
     try {
-      state.items = await HBStore.getAll(state.section);
+      if (state.section === "contacts") state.items = await HBStore.getContacts();
+      else if (state.section === "users") {
+        var pair = await Promise.all([HBStore.getContacts(), HBStore.getSubscribers()]);
+        state.items = { contacts: pair[0], subscribers: pair[1] };
+      } else state.items = await HBStore.getAll(state.section);
     } catch (e) {
-      state.items = [];
+      state.items = state.section === "users" ? { contacts: [], subscribers: [] } : [];
       state.notice = { kind: "err", msg: e.message || "Could not load content." };
     }
     state.loading = false; paint();
@@ -247,7 +374,44 @@
   mount.addEventListener("click", async function (ev) {
     var t = ev.target;
     var sec = t.closest("[data-section]");
-    if (sec) { state.section = sec.getAttribute("data-section"); state.editing = null; state.notice = null; await refresh(); return; }
+    if (sec) {
+      state.section = sec.getAttribute("data-section");
+      state.editing = null; state.notice = null; state.contactOpen = null;
+      state.q = ""; state.statusFilter = "All"; state.sourceFilter = "All";
+      try { history.replaceState(null, "", "#" + state.section); } catch (e) {}
+      await refresh(); return;
+    }
+    if (t.closest("[data-open-contact]")) { state.contactOpen = t.closest("[data-open-contact]").getAttribute("data-open-contact"); state.notice = null; paint(); return; }
+    if (t.closest("[data-back-contacts]")) { state.contactOpen = null; state.notice = null; paint(); return; }
+    if (t.closest("[data-save-contact]")) {
+      var cid = t.closest("[data-save-contact]").getAttribute("data-save-contact");
+      var st = mount.querySelector('[name="contactStatus"]').value;
+      var notes = mount.querySelector('[name="contactNotes"]').value;
+      t.closest("[data-save-contact]").disabled = true;
+      try {
+        var updated = await HBStore.updateContact(cid, { status: st, internalNotes: notes });
+        state.items = state.items.map(function (x) { return String(x.id) === String(cid) ? updated : x; });
+        state.notice = { kind: "ok", msg: "Contact request updated." };
+      } catch (e2) { state.notice = { kind: "err", msg: e2.message || "Save failed." }; }
+      paint(); return;
+    }
+    if (t.closest("[data-export-contacts]")) {
+      // internal notes intentionally excluded from exports
+      var cs = filteredContacts();
+      downloadCsv("heartland-bioworks-contact-requests-" + new Date().toISOString().slice(0, 10) + ".csv",
+        ["first_name", "last_name", "email", "job_title", "country", "phone", "organization_name", "organization_type", "interests", "message", "status", "created_at"],
+        cs.map(function (c) { return [c.firstName, c.lastName, c.email, c.jobTitle, c.country, c.phone, c.organizationName, c.organizationType, (c.interests || []).join("; "), c.message, c.status, c.createdAt]; }));
+      return;
+    }
+    if (t.closest("[data-export-users]")) {
+      var us = filteredUsers().filter(function (r) {
+        return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(r.email || "") && r.consentStatus !== "No Consent";
+      });
+      downloadCsv("heartland-bioworks-email-list-" + new Date().toISOString().slice(0, 10) + ".csv",
+        ["first_name", "last_name", "email", "organization", "job_title", "source", "consent_status", "created_at"],
+        us.map(function (r) { return [r.firstName, r.lastName, r.email, r.organization, r.jobTitle, r.source, r.consentStatus, r.createdAt]; }));
+      return;
+    }
     if (t.closest("[data-logout]")) { await HBAuth.logout(); window.location.replace("login.html"); return; }
     if (t.closest("[data-create]") && !t.closest("form")) { state.editing = "new"; state.notice = null; paint(); return; }
     if (t.closest("[data-back]")) { state.editing = null; paint(); return; }
@@ -314,6 +478,20 @@
     }
     input.disabled = false;
     if (saveBtn) saveBtn.disabled = false;
+  });
+
+  mount.addEventListener("input", function (ev) {
+    var sb = ev.target.closest("[data-search]");
+    if (!sb) return;
+    state.q = sb.value;
+    paint();
+    var nb = mount.querySelector("[data-search]");
+    if (nb) { nb.focus(); nb.setSelectionRange(nb.value.length, nb.value.length); }
+  });
+  mount.addEventListener("change", function (ev) {
+    var t = ev.target;
+    if (t.closest("[data-status-filter]")) { state.statusFilter = t.value; paint(); return; }
+    if (t.closest("[data-source-filter]")) { state.sourceFilter = t.value; paint(); return; }
   });
 
   mount.addEventListener("submit", function (ev) {

@@ -37,6 +37,16 @@ authenticated staff can upload, replace, or delete. The dashboard
 uploads via `docs/assets/uploads.js` (`HBUploads.uploadFile`), which
 fails loudly if Supabase is unreachable — uploads are never faked.
 
+## Contact requests + email list
+
+`migrations/0003_contacts_and_newsletter.sql` adds `contact_submissions`
+(the Connect With the Hub form) and `newsletter_subscribers` (footer
+signups; contact-form submitters are also added with source "Contact
+Form"). RLS: the public can INSERT only — and only with consent=true —
+and can never read these tables; staff read and manage them from the
+dashboard's Contact Requests and Users / Email List sections, which can
+export CSVs (internal notes are never exported).
+
 ## Staff accounts
 
 Staff users live in Supabase Auth (Dashboard → Authentication → Users →
