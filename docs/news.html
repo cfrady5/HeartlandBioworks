@@ -29,6 +29,8 @@
 <span id="contact"></span>
 <div id="hb-footer"></div>
 <script src="data/news.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-config.js"></script>
 <script src="assets/content-store.js"></script>
 <script src="assets/site.js" defer></script>
 <script src="assets/content-pages.js" defer></script>

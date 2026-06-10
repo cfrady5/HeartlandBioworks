@@ -1,126 +1,141 @@
 /* ============================================================
-   Heartland BioWorks — content store (data abstraction layer).
+   Heartland BioWorks — content store (Supabase-backed).
 
-   Single read/write API used by BOTH the public pages and the
-   dashboard, so public pages never hardcode content:
+   Single async read/write API used by BOTH the public pages and
+   the dashboard:
 
-     HBStore.getAll("news" | "events" | "media")      -> all items
-     HBStore.getPublished(type)                       -> Published only
-     HBStore.create(type, item)                       -> item (id assigned)
-     HBStore.update(type, id, patch)                  -> item | null
-     HBStore.remove(type, id)                         -> boolean
-     HBStore.toggleStatus(type, id)                   -> item | null
-     HBStore.reset(type)                              -> restore seeds
+     HBStore.getPublished(type) -> Promise<items>   (public pages)
+     HBStore.getAll(type)       -> Promise<items>   (dashboard; RLS
+                                   returns drafts only when signed in)
+     HBStore.create(type, item) -> Promise<item>
+     HBStore.update(type, id, patch) -> Promise<item>
+     HBStore.remove(type, id)   -> Promise<true>
+     HBStore.toggleStatus(type, id) -> Promise<item>
 
-   STORAGE MODEL (static-host / mock mode):
-   - Seeds ship in /data/news.js, /data/events.js, /data/media.js.
-   - Dashboard edits are persisted to localStorage and merged over
-     the seeds (edits win; deletions tombstoned).
-   - LIMITATION: on a static host, localStorage edits are visible
-     only in the browser where they were made. They demonstrate the
-     full workflow but are not site-wide publishing.
+   type is "news" | "events" | "media".
 
-   CONNECTING A REAL BACKEND LATER:
-   - Wix CMS:    replace load()/persist() with wixData.query/insert/
-                 update/remove against News/Events/Media collections.
-   - Supabase:   replace with supabase.from("news").select()/upsert()/
-                 delete(); gate writes with Row Level Security.
-   - Firebase:   replace with Firestore collection reads/writes.
-   Only this file needs to change — pages and dashboard use HBStore.
+   Access control lives in Postgres Row Level Security:
+   anonymous visitors can SELECT Published rows only; writes and
+   draft reads require a signed-in staff session (Supabase Auth).
+
+   RESILIENCE: if Supabase is unreachable (offline, CDN blocked),
+   public reads fall back to the version-controlled seeds in
+   /data/*.js so the public site never renders empty. Writes never
+   fall back — they fail loudly so staff know nothing was saved.
    ============================================================ */
 (function () {
   "use strict";
 
-  var LS_KEY = "hb-content-v1";
-
-  var SEEDS = {
-    news: (window.HB_SEED_NEWS || []),
-    events: (window.HB_SEED_EVENTS || []),
-    media: (window.HB_SEED_MEDIA || [])
+  // table + camelCase<->snake_case field maps per content type
+  var TYPES = {
+    news: {
+      table: "news_items",
+      seed: function () { return window.HB_SEED_NEWS || []; },
+      fields: { title: "title", slug: "slug", type: "type", publishDate: "publish_date", author: "author", excerpt: "excerpt", body: "body", featuredImage: "featured_image", externalUrl: "external_url", tags: "tags", status: "status" }
+    },
+    events: {
+      table: "events",
+      seed: function () { return window.HB_SEED_EVENTS || []; },
+      fields: { title: "title", eventDate: "event_date", startTime: "start_time", endTime: "end_time", location: "location", eventType: "event_type", description: "description", registrationUrl: "registration_url", hostOrganization: "host_organization", tags: "tags", status: "status" }
+    },
+    media: {
+      table: "media_assets",
+      seed: function () { return window.HB_SEED_MEDIA || []; },
+      fields: { title: "title", assetType: "asset_type", description: "description", fileUrl: "file_url", thumbnailUrl: "thumbnail_url", uploadDate: "upload_date", tags: "tags", status: "status" }
+    }
   };
 
-  function loadOverrides() {
-    try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }
-    catch (e) { return {}; }
+  function client() {
+    return window.hbSupabaseClient ? window.hbSupabaseClient() : null;
   }
-  function persistOverrides(ov) {
-    try { localStorage.setItem(LS_KEY, JSON.stringify(ov)); } catch (e) { /* storage unavailable */ }
+  function cfg(type) {
+    var c = TYPES[type];
+    if (!c) throw new Error("Unknown content type: " + type);
+    return c;
   }
-  // overrides shape: { news: { edited: {id: item}, deleted: [id], created: [item] }, ... }
-  function bucket(ov, type) {
-    ov[type] = ov[type] || { edited: {}, deleted: [], created: [] };
-    return ov[type];
-  }
-
-  function getAll(type) {
-    var ov = loadOverrides();
-    var b = bucket(ov, type);
-    var out = [];
-    (SEEDS[type] || []).forEach(function (seed) {
-      if (b.deleted.indexOf(seed.id) !== -1) return;
-      out.push(b.edited[seed.id] ? b.edited[seed.id] : seed);
+  function fromDb(type, row) {
+    var c = cfg(type), out = { id: row.id };
+    Object.keys(c.fields).forEach(function (k) {
+      var v = row[c.fields[k]];
+      out[k] = v == null ? (k === "tags" ? [] : "") : v;
     });
-    b.created.forEach(function (item) {
-      if (b.deleted.indexOf(item.id) !== -1) return;
-      out.push(b.edited[item.id] ? b.edited[item.id] : item);
+    return out;
+  }
+  function toDb(type, item) {
+    var c = cfg(type), out = {};
+    Object.keys(c.fields).forEach(function (k) {
+      if (item[k] !== undefined) out[c.fields[k]] = item[k];
     });
-    return out.map(function (i) { return JSON.parse(JSON.stringify(i)); });
+    return out;
+  }
+  function fail(action, error) {
+    var msg = error && error.message ? error.message : "Unknown error";
+    var e = new Error("Could not " + action + ": " + msg);
+    e.cause = error;
+    return e;
   }
 
-  function getPublished(type) {
-    return getAll(type).filter(function (i) { return i.status === "Published"; });
+  async function getPublished(type) {
+    var c = cfg(type);
+    var sb = client();
+    if (sb) {
+      try {
+        var res = await sb.from(c.table).select("*").eq("status", "Published");
+        if (!res.error) return (res.data || []).map(function (r) { return fromDb(type, r); });
+      } catch (e) { /* fall through to seeds */ }
+    }
+    // Fallback: version-controlled seeds keep the public site rendering
+    // even if Supabase is unreachable. (Read-only — no writes here.)
+    return c.seed().filter(function (i) { return i.status === "Published"; })
+      .map(function (i) { return JSON.parse(JSON.stringify(i)); });
   }
 
-  function create(type, item) {
-    var ov = loadOverrides();
-    var b = bucket(ov, type);
-    item = JSON.parse(JSON.stringify(item));
-    item.id = item.id || (type + "-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7));
-    b.created.push(item);
-    persistOverrides(ov);
-    return item;
+  async function getAll(type) {
+    var c = cfg(type);
+    var sb = client();
+    if (!sb) throw new Error("Content service unavailable. Check your connection and reload.");
+    var res = await sb.from(c.table).select("*");
+    if (res.error) throw fail("load " + type, res.error);
+    return (res.data || []).map(function (r) { return fromDb(type, r); });
   }
 
-  function update(type, id, patch) {
-    var current = getAll(type).filter(function (i) { return i.id === id; })[0];
-    if (!current) return null;
-    var next = Object.assign({}, current, patch, { id: id });
-    var ov = loadOverrides();
-    var b = bucket(ov, type);
-    b.edited[id] = next;
-    persistOverrides(ov);
-    return next;
+  async function create(type, item) {
+    var sb = client();
+    if (!sb) throw new Error("Content service unavailable — nothing was saved.");
+    var res = await sb.from(cfg(type).table).insert(toDb(type, item)).select().single();
+    if (res.error) throw fail("create item", res.error);
+    return fromDb(type, res.data);
   }
 
-  function remove(type, id) {
-    var ov = loadOverrides();
-    var b = bucket(ov, type);
-    if (b.deleted.indexOf(id) === -1) b.deleted.push(id);
-    delete b.edited[id];
-    b.created = b.created.filter(function (i) { return i.id !== id; });
-    persistOverrides(ov);
+  async function update(type, id, patch) {
+    var sb = client();
+    if (!sb) throw new Error("Content service unavailable — nothing was saved.");
+    var res = await sb.from(cfg(type).table).update(toDb(type, patch)).eq("id", id).select().single();
+    if (res.error) throw fail("save changes", res.error);
+    return fromDb(type, res.data);
+  }
+
+  async function remove(type, id) {
+    var sb = client();
+    if (!sb) throw new Error("Content service unavailable — nothing was deleted.");
+    var res = await sb.from(cfg(type).table).delete().eq("id", id);
+    if (res.error) throw fail("delete item", res.error);
     return true;
   }
 
-  function toggleStatus(type, id) {
-    var current = getAll(type).filter(function (i) { return i.id === id; })[0];
-    if (!current) return null;
+  async function toggleStatus(type, id) {
+    var items = await getAll(type);
+    var current = items.filter(function (i) { return i.id === id; })[0];
+    if (!current) throw new Error("Item not found.");
     return update(type, id, { status: current.status === "Published" ? "Draft" : "Published" });
   }
 
-  function reset(type) {
-    var ov = loadOverrides();
-    if (type) { delete ov[type]; persistOverrides(ov); }
-    else { try { localStorage.removeItem(LS_KEY); } catch (e) {} }
-  }
-
   window.HBStore = {
-    getAll: getAll,
     getPublished: getPublished,
+    getAll: getAll,
     create: create,
     update: update,
     remove: remove,
-    toggleStatus: toggleStatus,
-    reset: reset
+    toggleStatus: toggleStatus
   };
 })();

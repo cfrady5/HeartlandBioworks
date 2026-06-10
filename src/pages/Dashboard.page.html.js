@@ -26,6 +26,8 @@
 <script src="data/news.js"></script>
 <script src="data/events.js"></script>
 <script src="data/media.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-config.js"></script>
 <script src="assets/auth.js"></script>
 <script src="assets/content-store.js"></script>
 <script src="assets/site.js" defer></script>

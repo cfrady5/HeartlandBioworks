@@ -57,7 +57,8 @@
       cta + "</article>";
   }
   function renderNews(activeType) {
-    var items = HBStore.getPublished("news")
+    var items = CACHE
+      .slice()
       .sort(function (a, b) { return (b.publishDate || "").localeCompare(a.publishDate || ""); })
       .filter(function (n) { return activeType === "All" || n.type === activeType; });
     return filterBar(NEWS_TYPES, activeType) +
@@ -92,7 +93,7 @@
   }
   function renderEvents(activeType) {
     var t = today();
-    var items = HBStore.getPublished("events")
+    var items = CACHE
       .filter(function (e) { return (e.eventDate || "") >= t; })             // upcoming only
       .sort(function (a, b) { return (a.eventDate || "").localeCompare(b.eventDate || ""); }) // soonest first
       .filter(function (e) { return activeType === "All" || e.eventType === activeType; });
@@ -117,7 +118,7 @@
       "<p>" + esc(m.description) + "</p>" + cta + "</article>";
   }
   function renderMedia(activeType) {
-    var items = HBStore.getPublished("media")
+    var items = CACHE
       .filter(function (m) { return activeType === "All" || m.assetType === activeType; });
     return filterBar(MEDIA_TYPES, activeType) +
       (items.length ? '<div class="hbc-grid">' + items.map(mediaCard).join("") + "</div>"
@@ -127,8 +128,18 @@
   /* ---------- mount + interactions ---------- */
   var renderers = { news: renderNews, events: renderEvents, media: renderMedia };
   var active = "All";
+  var CACHE = [];
   function paint() { mount.innerHTML = renderers[TYPE](active); }
-  paint();
+
+  // Published content comes from the shared store (Supabase; falls back
+  // to the /data seeds if the service is unreachable).
+  mount.innerHTML = '<div class="hbc-empty" aria-busy="true">Loading…</div>';
+  HBStore.getPublished(TYPE).then(function (items) {
+    CACHE = items || [];
+    paint();
+  }).catch(function () {
+    mount.innerHTML = '<div class="hbc-empty">Content is temporarily unavailable. Please refresh, or check back soon.</div>';
+  });
 
   mount.addEventListener("click", function (ev) {
     var chip = ev.target.closest("[data-filter]");
@@ -136,7 +147,7 @@
     var open = ev.target.closest("[data-open]");
     if (open) {
       var id = open.getAttribute("data-open");
-      var item = HBStore.getPublished("news").filter(function (n) { return n.id === id; })[0];
+      var item = CACHE.filter(function (n) { return String(n.id) === String(id); })[0];
       if (!item) return;
       var wrap = document.createElement("div");
       wrap.innerHTML = newsModal(item);

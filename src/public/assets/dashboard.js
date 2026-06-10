@@ -9,11 +9,14 @@
      table()        -> "DashboardTable"
      form()         -> "ContentForm" (validated create/edit)
    ============================================================ */
-(function () {
+(async function () {
   "use strict";
-  if (!window.HBAuth || !HBAuth.requireAuth()) return;
+  if (!window.HBAuth) return;
   var mount = document.getElementById("hb-dashboard");
   if (!mount || !window.HBStore) return;
+  mount.innerHTML = '<div class="hbc-empty" aria-busy="true" style="margin:40px;">Checking sign-in…</div>';
+  if (!(await HBAuth.requireAuth())) return;   // redirects to login.html
+  var USER = await HBAuth.getUser();
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -76,11 +79,11 @@
     }
   };
 
-  var state = { section: "news", editing: null, notice: null };
+  var state = { section: "news", editing: null, notice: null, items: [], loading: false };
 
   /* ---------- DashboardLayout ---------- */
   function layout(inner) {
-    var user = HBAuth.currentUser();
+    var user = USER;
     return '<div class="hbd">' +
       '<aside class="hbd-side">' +
         '<div class="hbd-side-title">Content</div>' +
@@ -98,7 +101,8 @@
   /* ---------- DashboardTable ---------- */
   function table() {
     var cfg = CONFIG[state.section];
-    var items = HBStore.getAll(state.section)
+    var items = state.items
+      .slice()
       .sort(function (a, b) { return (b[cfg.dateField] || "").localeCompare(a[cfg.dateField] || ""); });
     var head = "<tr>" + cfg.columns.map(function (c) { return "<th>" + esc(c[1]) + "</th>"; }).join("") + '<th class="hbd-actions-col">Actions</th></tr>';
     var rows = items.map(function (it) {
@@ -121,7 +125,7 @@
       (items.length
         ? '<div class="hbd-tablewrap"><table class="hbd-table"><thead>' + head + "</thead><tbody>" + rows + "</tbody></table></div>"
         : '<div class="hbc-empty">Nothing here yet — create the first item.</div>') +
-      '<p class="hbd-hint">Public pages show <strong>Published</strong> items only. Edits here save to this browser (demo mode) — connect a CMS backend in assets/content-store.js to publish site-wide.</p>';
+      '<p class="hbd-hint">Public pages show <strong>Published</strong> items only. Changes save to Supabase and are visible to all visitors immediately.</p>';
   }
 
   /* ---------- ContentForm ---------- */
@@ -146,7 +150,7 @@
   function form() {
     var cfg = CONFIG[state.section];
     var it = state.editing === "new" ? {} :
-      HBStore.getAll(state.section).filter(function (x) { return x.id === state.editing; })[0] || {};
+      state.items.filter(function (x) { return String(x.id) === String(state.editing); })[0] || {};
     return '<div class="hbd-head"><h2>' + (state.editing === "new" ? "Create" : "Edit") + " — " + esc(cfg.label) + "</h2>" +
       '<button type="button" class="hbd-back" data-back>← Back to list</button></div>' +
       '<form class="hbd-form" novalidate>' +
@@ -171,33 +175,50 @@
     return errs;
   }
 
-  /* ---------- paint + events ---------- */
+  /* ---------- paint + async data ---------- */
   function paint() {
-    mount.innerHTML = layout(state.editing ? form() : table());
+    var inner = state.loading
+      ? '<div class="hbc-empty" aria-busy="true">Loading ' + CONFIG[state.section].label + "…</div>"
+      : (state.editing ? form() : table());
+    mount.innerHTML = layout(inner);
   }
-  paint();
+  async function refresh() {
+    state.loading = true; paint();
+    try {
+      state.items = await HBStore.getAll(state.section);
+    } catch (e) {
+      state.items = [];
+      state.notice = { kind: "err", msg: e.message || "Could not load content." };
+    }
+    state.loading = false; paint();
+  }
+  await refresh();
 
-  mount.addEventListener("click", function (ev) {
+  mount.addEventListener("click", async function (ev) {
     var t = ev.target;
     var sec = t.closest("[data-section]");
-    if (sec) { state.section = sec.getAttribute("data-section"); state.editing = null; state.notice = null; paint(); return; }
-    if (t.closest("[data-logout]")) { HBAuth.logout(); window.location.replace("login.html"); return; }
+    if (sec) { state.section = sec.getAttribute("data-section"); state.editing = null; state.notice = null; await refresh(); return; }
+    if (t.closest("[data-logout]")) { await HBAuth.logout(); window.location.replace("login.html"); return; }
     if (t.closest("[data-create]") && !t.closest("form")) { state.editing = "new"; state.notice = null; paint(); return; }
     if (t.closest("[data-back]")) { state.editing = null; paint(); return; }
     var btn = t.closest("[data-edit],[data-toggle],[data-delete]");
     if (!btn) return;
-    if (btn.hasAttribute("data-edit")) { state.editing = btn.getAttribute("data-edit"); state.notice = null; paint(); }
-    else if (btn.hasAttribute("data-toggle")) {
-      var it = HBStore.toggleStatus(state.section, btn.getAttribute("data-toggle"));
-      state.notice = { kind: "ok", msg: it ? ('"' + it.title + '" is now ' + it.status + ".") : "Item not found." };
-      paint();
-    } else if (btn.hasAttribute("data-delete")) {
-      if (window.confirm("Delete this item? This cannot be undone.")) {
-        HBStore.remove(state.section, btn.getAttribute("data-delete"));
+    if (btn.hasAttribute("data-edit")) { state.editing = btn.getAttribute("data-edit"); state.notice = null; paint(); return; }
+    try {
+      if (btn.hasAttribute("data-toggle")) {
+        btn.disabled = true;
+        var it = await HBStore.toggleStatus(state.section, btn.getAttribute("data-toggle"));
+        state.notice = { kind: "ok", msg: '"' + it.title + '" is now ' + it.status + "." };
+      } else if (btn.hasAttribute("data-delete")) {
+        if (!window.confirm("Delete this item? This cannot be undone.")) return;
+        btn.disabled = true;
+        await HBStore.remove(state.section, btn.getAttribute("data-delete"));
         state.notice = { kind: "ok", msg: "Item deleted." };
-        paint();
       }
+    } catch (e) {
+      state.notice = { kind: "err", msg: e.message || "The change was not saved." };
     }
+    await refresh();
   });
 
   mount.addEventListener("submit", function (ev) {
@@ -225,11 +246,22 @@
       return;
     }
     if (state.section === "news") values.slug = values.slug || slugify(values.title);
-    var saved;
-    if (state.editing === "new") saved = HBStore.create(state.section, values);
-    else saved = HBStore.update(state.section, state.editing, values);
-    state.editing = null;
-    state.notice = saved ? { kind: "ok", msg: '"' + saved.title + '" saved.' } : { kind: "err", msg: "Save failed." };
-    paint();
+    var submitBtn = f.querySelector('button[type="submit"]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Saving…"; }
+    (state.editing === "new"
+      ? HBStore.create(state.section, values)
+      : HBStore.update(state.section, state.editing, values)
+    ).then(function (saved) {
+      state.editing = null;
+      state.notice = { kind: "ok", msg: '"' + saved.title + '" saved.' };
+      return refresh();
+    }).catch(function (e) {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Save"; }
+      state.notice = { kind: "err", msg: e.message || "Save failed — nothing was stored." };
+      var n = document.createElement("div");
+      n.className = "hbd-notice err";
+      n.textContent = state.notice.msg;
+      f.parentNode.insertBefore(n, f);
+    });
   });
 })();

@@ -1,10 +1,10 @@
 /* ============================================================
    Heartland BioWorks — seed data: News & Media.
-   This file is the version-controlled baseline. Staff edits made
-   in the dashboard are stored as overrides (see assets/content-store.js)
-   and merged on top of these seeds. When a real backend is connected
-   (Wix CMS collection, Supabase table, Firebase collection), replace
-   the seed read in content-store.js with a fetch and delete this file.
+   FALLBACK ONLY: live content is served from Supabase (see
+   assets/content-store.js and supabase/README.md). These seeds render
+   on the public pages only if Supabase is unreachable, so the site
+   never shows empty sections. Keep them roughly in sync with the
+   important Published items.
 
    Fields: id, title, slug, type (Press Release | Announcement |
    Media Mention | Update), publishDate (YYYY-MM-DD), author, excerpt,

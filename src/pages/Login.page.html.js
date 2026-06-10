@@ -23,25 +23,30 @@
       <div class="hbl-err" id="loginErr" role="alert"></div>
       <button type="submit" class="hbl-btn">Sign In</button>
     </form>
-    <p class="hbl-note"><strong>Demo mode:</strong> this is mock authentication for previewing the staff dashboard — any valid email and any password will sign you in. Connect Wix Members, Supabase, or Firebase in <code>assets/auth.js</code> for real accounts.</p>
+    <p class="hbl-note">Staff accounts are managed in Supabase (Authentication → Users). Forgot your password or need an account? Contact the site administrator.</p>
   </div>
 </div>
 
 <div id="hb-footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-config.js"></script>
 <script src="assets/auth.js"></script>
 <script src="assets/site.js" defer></script>
 <script>
 (function () {
   // already signed in? go straight to the dashboard
-  if (window.HBAuth && HBAuth.isAuthed()) { window.location.replace("dashboard.html"); return; }
+  if (window.HBAuth) HBAuth.getUser().then(function (u) { if (u) window.location.replace("dashboard.html"); });
   var form = document.getElementById("loginForm");
   var err = document.getElementById("loginErr");
-  form.addEventListener("submit", function (e) {
+  var btn = form.querySelector(".hbl-btn");
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
     err.classList.remove("show"); err.textContent = "";
-    var res = HBAuth.login(form.email.value, form.password.value);
-    if (res.ok) { window.location.href = "dashboard.html"; }
-    else { err.textContent = res.error; err.classList.add("show"); }
+    btn.disabled = true; btn.textContent = "Signing in…";
+    var res = await HBAuth.login(document.getElementById("email").value, document.getElementById("password").value);
+    if (res.ok) { window.location.href = "dashboard.html"; return; }
+    btn.disabled = false; btn.textContent = "Sign In";
+    err.textContent = res.error; err.classList.add("show");
   });
 })();
 </script>

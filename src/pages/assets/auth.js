@@ -1,32 +1,27 @@
 /* ============================================================
-   Heartland BioWorks — auth module (MOCK).
+   Heartland BioWorks — auth module (Supabase Auth).
 
-   This is a demo/mock auth layer so the dashboard workflow can be
-   built and tested on a static host. IT IS NOT SECURITY: anything
-   client-side can be bypassed, and the mock accepts any staff
-   email + non-empty password. Do not store sensitive data behind it.
+   Real staff authentication backed by Supabase. Staff accounts are
+   created in Supabase Dashboard → Authentication → Users → Add user
+   (and public sign-ups should stay disabled so only invited staff
+   can log in). Sessions persist in the browser via supabase-js.
 
-   API (used by login.html and dashboard.html):
-     HBAuth.login(email, password) -> { ok, error }
-     HBAuth.logout()
-     HBAuth.isAuthed()             -> boolean
-     HBAuth.currentUser()          -> { email } | null
-     HBAuth.requireAuth()          -> redirects to login.html if not
-                                      authed; returns boolean
-
-   CONNECTING REAL AUTH LATER (only this file changes):
-   - Wix Members:  use wix-members-frontend authentication.login();
-                   gate the dashboard page to a "Staff" member role.
-   - Supabase:     supabase.auth.signInWithPassword(); store session;
-                   protect content tables with Row Level Security.
-   - Firebase:     firebase.auth().signInWithEmailAndPassword().
+   API (all auth-state functions are async because the session is
+   verified against Supabase):
+     HBAuth.login(email, password) -> Promise<{ ok, error }>
+     HBAuth.logout()               -> Promise<void>
+     HBAuth.getUser()              -> Promise<{ email } | null>
+     HBAuth.requireAuth()          -> Promise<boolean>; redirects to
+                                      login.html when signed out
    ============================================================ */
 (function () {
   "use strict";
 
-  var SESSION_KEY = "hb-auth-session-v1";
+  function client() {
+    return window.hbSupabaseClient ? window.hbSupabaseClient() : null;
+  }
 
-  function login(email, password) {
+  async function login(email, password) {
     email = (email || "").trim();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       return { ok: false, error: "Enter a valid email address." };
@@ -34,28 +29,41 @@
     if (!password) {
       return { ok: false, error: "Enter your password." };
     }
-    // MOCK: accept any well-formed email + non-empty password.
-    // Replace with a real credential check (see header comments).
+    var sb = client();
+    if (!sb) return { ok: false, error: "Authentication service unavailable. Check your connection and reload." };
     try {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ email: email, at: Date.now() }));
-    } catch (e) { return { ok: false, error: "Browser storage unavailable." }; }
-    return { ok: true };
+      var res = await sb.auth.signInWithPassword({ email: email, password: password });
+      if (res.error) {
+        var msg = /invalid login credentials/i.test(res.error.message)
+          ? "Incorrect email or password."
+          : res.error.message;
+        return { ok: false, error: msg };
+      }
+      return { ok: true };
+    } catch (e) {
+      return { ok: false, error: "Could not reach the authentication service. Try again." };
+    }
   }
 
-  function logout() {
-    try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+  async function logout() {
+    var sb = client();
+    if (sb) { try { await sb.auth.signOut(); } catch (e) { /* already signed out */ } }
   }
 
-  function currentUser() {
-    try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); }
-    catch (e) { return null; }
+  async function getUser() {
+    var sb = client();
+    if (!sb) return null;
+    try {
+      var res = await sb.auth.getSession();
+      var session = res.data ? res.data.session : null;
+      return session && session.user ? { email: session.user.email } : null;
+    } catch (e) { return null; }
   }
 
-  function isAuthed() { return !!currentUser(); }
-
-  // Protected-route guard: call at the top of any protected page.
-  function requireAuth() {
-    if (isAuthed()) return true;
+  // Protected-route guard: await at the top of any protected page.
+  async function requireAuth() {
+    var user = await getUser();
+    if (user) return true;
     window.location.replace("login.html");
     return false;
   }
@@ -63,8 +71,7 @@
   window.HBAuth = {
     login: login,
     logout: logout,
-    isAuthed: isAuthed,
-    currentUser: currentUser,
+    getUser: getUser,
     requireAuth: requireAuth
   };
 })();

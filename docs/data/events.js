@@ -1,8 +1,8 @@
 /* ============================================================
    Heartland BioWorks — seed data: Upcoming Events.
-   Baseline data; dashboard edits overlay these via content-store.js.
-   Replace with a real backend read (Wix CMS / Supabase / Firebase)
-   in content-store.js when available.
+   FALLBACK ONLY: live content is served from Supabase (see
+   assets/content-store.js and supabase/README.md). These seeds render
+   on the public pages only if Supabase is unreachable.
 
    NOTE FOR STAFF: these seed events are general examples — replace
    them with real dates and registration links from the dashboard.
