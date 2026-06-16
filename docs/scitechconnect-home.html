@@ -4,12 +4,17 @@
      Paste this entire block into a Higher Logic "HTML" content widget.
 
      REPLACE BEFORE PUBLISHING (search for "REPLACE"):
-       • Logo image src         -> Higher Logic file store URL
-       • Hero / feature images   -> final brand assets
-       • Intro video src + poster
-       • CTA / footer links (#) -> live page URLs
-       • LinkedIn + mailto       -> real handles
-       • Address / phone         -> verified ARI contact details
+       • Hero/feature images & links (#) -> live page URLs
+       • Intro video (currently HIDDEN until real asset is ready)
+       • LinkedIn + mailto                -> real handles
+       • Address / phone                  -> verified ARI contact details
+
+     PLATFORM-LEVEL SETTINGS (NOT controllable from this HTML block —
+     change these in the Higher Logic / ARI Pathfinder admin, see notes):
+       • "New Page" heading above this block  (best-effort hidden via JS below)
+       • Duplicate generic platform footer    (remove/hide in template)
+       • Redundant "Home" nav item            (remove in nav settings)
+       • Browser tab <title> "New Page - SciTechConnect Test"
      ============================================================ -->
 
 <section class="stc" aria-label="SciTechCONNECT home">
@@ -34,11 +39,15 @@
     --stc-font-body:"TS Qamus",Arial,Verdana,system-ui,sans-serif;
 
     display:block;
-    margin:0;
+    /* Full-bleed breakout: escape the narrow platform card so the brand
+       background fills the viewport width. Inner .stc-wrap keeps content centered. */
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
     font-family:var(--stc-font-body);
     color:var(--stc-ink);
     background:var(--stc-white);
     line-height:1.65;
+    overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
   }
@@ -63,7 +72,9 @@
     background:var(--stc-dark);
     color:var(--stc-white);
     text-align:center;
-    padding:54px 0 76px;
+    min-height:min(86vh,760px);
+    display:flex;align-items:center;justify-content:center;
+    padding:72px 0 88px;
     overflow:hidden;
   }
   /* Subtle geometric pattern via repeating linear-gradients */
@@ -82,30 +93,34 @@
     background:radial-gradient(circle,rgba(56,182,255,.16) 0%,transparent 62%);
     pointer-events:none;
   }
-  .stc-hero .stc-wrap{position:relative;z-index:1;}
-  .stc-logo{margin:0 auto 30px;width:208px;}
-  .stc-logo img{margin:0 auto;}
+  .stc-hero .stc-wrap{position:relative;z-index:1;text-align:center;}
+  .stc-logo{margin:0 auto 32px;width:268px;max-width:80%;}
+  .stc-logo svg{display:block;width:100%;height:auto;}
   .stc-hero h1{
-    font-size:clamp(2.1rem,5.4vw,3.9rem);
+    font-size:clamp(2.3rem,5.6vw,4.1rem);
     font-weight:800;
-    max-width:14ch;
-    margin:0 auto 18px;
+    color:var(--stc-white);
+    max-width:15ch;
+    margin:0 auto 20px;
+    text-shadow:0 2px 24px rgba(0,0,0,.35);
   }
   .stc-hero h1 .stc-em{color:var(--stc-accent);}
   .stc-sub{
-    font-size:clamp(1rem,1.6vw,1.18rem);
-    color:rgba(255,255,255,.78);
-    max-width:62ch;
-    margin:0 auto 34px;
+    font-size:clamp(1.02rem,1.6vw,1.2rem);
+    color:rgba(255,255,255,.85);
+    max-width:64ch;
+    margin:0 auto 38px;
+    text-align:center;
   }
   .stc-cta-row{
     display:flex;flex-wrap:wrap;gap:14px;
     justify-content:center;align-items:center;
+    width:100%;
   }
   /* Pill buttons */
   .stc-btn{
     display:inline-flex;align-items:center;gap:8px;
-    padding:14px 30px;
+    padding:15px 32px;
     border-radius:999px;
     font-family:var(--stc-font-head);
     font-weight:700;font-size:1rem;
@@ -118,10 +133,11 @@
     background:var(--stc-accent);color:var(--stc-dark);
     transform:translateY(-2px);box-shadow:0 10px 26px rgba(56,182,255,.32);
   }
-  .stc-btn--ghost{background:transparent;color:var(--stc-white);border-color:rgba(255,255,255,.4);}
+  /* High-contrast ghost buttons for dark hero */
+  .stc-btn--ghost{background:rgba(255,255,255,.06);color:var(--stc-white);border-color:var(--stc-white);}
   .stc-btn--ghost:hover,.stc-btn--ghost:focus-visible{
-    background:rgba(56,182,255,.16);border-color:var(--stc-accent);
-    color:var(--stc-white);transform:translateY(-2px);
+    background:var(--stc-accent);border-color:var(--stc-accent);
+    color:var(--stc-dark);transform:translateY(-2px);
   }
 
   /* ── SHARED SECTION ── */
@@ -136,27 +152,19 @@
 
   /* ── FEATURE (Why SciTechCONNECT) ── */
   .stc-feature{background:var(--stc-light);}
-  .stc-feature-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;
-  }
-  .stc-feature p.stc-lead{margin-top:16px;font-size:1.05rem;color:var(--stc-ink);}
-  .stc-feature ul{margin:22px 0 0;padding:0;list-style:none;display:grid;gap:12px;}
-  .stc-feature li{position:relative;padding-left:30px;color:var(--stc-muted);font-size:.98rem;}
+  .stc-feature-inner{max-width:760px;}
+  .stc-feature p.stc-lead{margin-top:16px;font-size:1.08rem;color:var(--stc-ink);max-width:64ch;}
+  .stc-feature ul{margin:24px 0 0;padding:0;list-style:none;display:grid;gap:14px;}
+  .stc-feature li{position:relative;padding-left:32px;color:var(--stc-muted);font-size:1rem;}
   .stc-feature li::before{
-    content:"";position:absolute;left:0;top:.45em;
-    width:14px;height:14px;border-radius:50%;
+    content:"";position:absolute;left:0;top:.4em;
+    width:15px;height:15px;border-radius:50%;
     background:var(--stc-accent);box-shadow:0 0 0 4px rgba(56,182,255,.18);
   }
-  .stc-video{
-    border-radius:18px;overflow:hidden;
-    box-shadow:0 24px 60px rgba(16,13,40,.18);
-    background:var(--stc-dark);
-  }
-  .stc-video video{display:block;width:100%;height:auto;}
 
   /* ── SUBWAY ROADMAP ── */
   .stc-roadmap{background:var(--stc-white);text-align:center;}
-  .stc-roadmap-head{max-width:60ch;margin:0 auto 56px;}
+  .stc-roadmap-head{max-width:62ch;margin:0 auto 56px;}
   .stc-roadmap-head .stc-sub2{margin-top:10px;color:var(--stc-muted);}
   .stc-line{
     position:relative;
@@ -169,7 +177,7 @@
     background:linear-gradient(90deg,var(--stc-blue),var(--stc-accent));
     border-radius:99px;z-index:0;
   }
-  .stc-station{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;background:transparent;border:0;cursor:default;font-family:inherit;color:inherit;padding:0;}
+  .stc-station{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;background:transparent;border:0;cursor:pointer;font-family:inherit;color:inherit;padding:0;}
   .stc-stop{
     width:84px;height:84px;border-radius:50%;
     background:var(--stc-white);
@@ -191,11 +199,11 @@
   .stc-station h3{margin:18px 0 6px;font-size:1.15rem;color:var(--stc-dark);}
   .stc-station p{font-size:.86rem;color:var(--stc-muted);max-width:22ch;}
 
-  /* ── FAQ ── */
+  /* ── FAQ (single column for natural reading order) ── */
   .stc-faq{background:var(--stc-light);}
   .stc-faq .stc-h2{color:var(--stc-accent);text-align:center;}
-  .stc-faq-sub{text-align:center;color:var(--stc-muted);max-width:54ch;margin:10px auto 48px;}
-  .stc-faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .stc-faq-sub{text-align:center;color:var(--stc-muted);max-width:72ch;margin:12px auto 48px;}
+  .stc-faq-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:860px;margin:0 auto;}
   .stc-faq details{
     background:var(--stc-white);
     border:1px solid var(--stc-border);
@@ -241,22 +249,34 @@
   /* ── JOIN THE MISSION CTA ── */
   .stc-mission{
     position:relative;background:var(--stc-dark);color:var(--stc-white);
-    text-align:center;padding:88px 0;overflow:hidden;
+    text-align:center;padding:96px 0;overflow:hidden;
   }
   .stc-mission::before{
     content:"";position:absolute;inset:0;
     background-image:repeating-linear-gradient(135deg,rgba(56,182,255,.06) 0 2px,transparent 2px 30px);
     pointer-events:none;
   }
+  .stc-mission::after{
+    content:"";position:absolute;bottom:-220px;left:50%;transform:translateX(-50%);
+    width:760px;height:480px;max-width:130%;
+    background:radial-gradient(circle,rgba(0,74,173,.45) 0%,transparent 64%);
+    pointer-events:none;
+  }
   .stc-mission .stc-wrap{position:relative;z-index:1;}
   .stc-mission h2{font-size:clamp(1.9rem,4vw,3rem);font-weight:800;max-width:18ch;margin:0 auto 16px;}
-  .stc-mission p{color:rgba(255,255,255,.76);max-width:56ch;margin:0 auto 30px;font-size:1.08rem;}
+  .stc-mission p{color:rgba(255,255,255,.82);max-width:56ch;margin:0 auto 30px;font-size:1.08rem;}
+  .stc-mission .stc-trust{
+    margin-top:22px;font-size:.9rem;color:rgba(255,255,255,.6);
+    display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;align-items:center;
+  }
+  .stc-mission .stc-trust span{display:inline-flex;align-items:center;gap:7px;}
+  .stc-mission .stc-trust span::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--stc-accent);}
 
   /* ── FOOTER ── */
   .stc-footer{
-    background:var(--stc-dark);color:rgba(255,255,255,.7);
+    background:var(--stc-dark);color:rgba(255,255,255,.78);
     border-top:2px solid var(--stc-blue2);
-    padding:54px 0 34px;font-size:.86rem;
+    padding:54px 0 34px;font-size:.88rem;
   }
   .stc-footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;}
   .stc-footer h4{
@@ -264,25 +284,26 @@
     color:var(--stc-accent);margin-bottom:16px;
   }
   .stc-footer ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;}
+  .stc-footer a{color:var(--stc-white);}
   .stc-footer a:hover{color:var(--stc-accent);text-decoration:underline;}
-  .stc-footer address{font-style:normal;line-height:1.7;color:rgba(255,255,255,.7);}
+  .stc-footer address{font-style:normal;line-height:1.7;color:var(--stc-white);}
+  .stc-footer address a{color:var(--stc-white);}
   .stc-social{display:inline-flex;align-items:center;gap:8px;}
   .stc-social svg{width:20px;height:20px;fill:currentColor;}
   .stc-footer-bottom{
     margin-top:38px;padding-top:20px;
     border-top:1px solid rgba(255,255,255,.14);
     display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;
-    font-size:.8rem;color:rgba(255,255,255,.5);
+    font-size:.8rem;color:rgba(255,255,255,.6);
   }
-  .stc-disclaimer{max-width:60ch;}
+  .stc-disclaimer{max-width:60ch;color:rgba(255,255,255,.78);}
 
-  /* ── SCROLL REVEAL ── */
-  .stc-reveal{opacity:0;transform:translateY(22px);transition:opacity .6s var(--stc-ease),transform .6s var(--stc-ease);}
-  .stc-reveal.stc-vis{opacity:1;transform:translateY(0);}
+  /* ── SCROLL REVEAL (JS-gated: visible by default if scripts are stripped) ── */
+  .stc-js .stc-reveal{opacity:0;transform:translateY(22px);transition:opacity .6s var(--stc-ease),transform .6s var(--stc-ease);}
+  .stc-js .stc-reveal.stc-vis{opacity:1;transform:translateY(0);}
 
   /* ── RESPONSIVE ── */
   @media(max-width:900px){
-    .stc-feature-grid{grid-template-columns:1fr;gap:36px;}
     .stc-faq-grid{grid-template-columns:1fr;}
     .stc-footer-grid{grid-template-columns:1fr 1fr;}
     .stc-footer .stc-foot-brand{grid-column:1/-1;}
@@ -299,6 +320,7 @@
   }
   @media(max-width:560px){
     .stc-section{padding:60px 0;}
+    .stc-hero{min-height:auto;padding:56px 0 64px;}
     .stc-cta-row{flex-direction:column;}
     .stc-btn{width:100%;justify-content:center;}
     .stc-footer-grid{grid-template-columns:1fr;}
@@ -306,17 +328,27 @@
   /* Respect reduced-motion preferences */
   @media(prefers-reduced-motion:reduce){
     .stc *{animation:none !important;transition:none !important;}
-    .stc-reveal{opacity:1;transform:none;}
+    .stc-js .stc-reveal{opacity:1;transform:none;}
   }
 </style>
 
 <!-- ══════════ HERO ══════════ -->
 <header class="stc-hero">
   <div class="stc-wrap">
-    <!-- REPLACE: logo src with Higher Logic file-store URL -->
-    <div class="stc-logo">
-      <img src="https://via.placeholder.com/416x120/100D28/38B6FF?text=SciTechCONNECT"
-           alt="SciTechCONNECT logo" loading="lazy" width="208" height="60" />
+    <!-- Inline SVG wordmark so the logo always renders (swap for the official
+         logo image when available — keep alt/aria for accessibility). -->
+    <div class="stc-logo" role="img" aria-label="SciTechCONNECT logo">
+      <svg viewBox="0 0 360 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="none" stroke="#38B6FF" stroke-width="3">
+          <circle cx="20" cy="32" r="6" fill="#38B6FF" stroke="none"/>
+          <circle cx="44" cy="16" r="5"/>
+          <circle cx="44" cy="48" r="5"/>
+          <line x1="25" y1="29" x2="40" y2="18"/>
+          <line x1="25" y1="35" x2="40" y2="46"/>
+        </g>
+        <text x="66" y="42" font-family="Mont, Arial, sans-serif" font-size="30" font-weight="800" fill="#FFFFFF">SciTech</text>
+        <text x="205" y="42" font-family="Mont, Arial, sans-serif" font-size="30" font-weight="800" fill="#38B6FF">CONNECT</text>
+      </svg>
     </div>
     <h1>From Campus Lab to <span class="stc-em">National Impact.</span></h1>
     <p class="stc-sub">
@@ -335,8 +367,8 @@
 <main>
   <!-- ══════════ WHY SciTechCONNECT (feature) ══════════ -->
   <section class="stc-section stc-feature" aria-labelledby="stc-why-title">
-    <div class="stc-wrap stc-feature-grid">
-      <div class="stc-reveal">
+    <div class="stc-wrap">
+      <div class="stc-feature-inner stc-reveal">
         <span class="stc-eyebrow">Why SciTechCONNECT</span>
         <h2 class="stc-h2" id="stc-why-title">Navigate the Department of War S&amp;T landscape with confidence.</h2>
         <p class="stc-lead">
@@ -349,16 +381,8 @@
           <li>Connect with program managers, primes, and peer institutions.</li>
           <li>Move from idea to proposal to deployed capability with guided support.</li>
         </ul>
-      </div>
-      <div class="stc-video stc-reveal">
-        <!-- REPLACE: video src + poster with final intro assets -->
-        <video controls preload="none"
-               poster="https://via.placeholder.com/720x405/100D28/38B6FF?text=Intro+Video"
-               aria-label="SciTechCONNECT introduction video">
-          <source src="REPLACE-intro-video.mp4" type="video/mp4" />
-          Your browser does not support the video tag. Please download the
-          <a href="REPLACE-intro-video.mp4">introduction video</a>.
-        </video>
+        <!-- Intro video intentionally hidden until the final asset is ready.
+             To re-enable, drop a real <video> here with a poster + .mp4 source. -->
       </div>
     </div>
   </section>
@@ -374,7 +398,7 @@
 
       <div class="stc-line" role="list">
         <!-- LEARN -->
-        <div class="stc-station stc-reveal" role="listitem" tabindex="0">
+        <button type="button" class="stc-station stc-reveal" role="listitem">
           <span class="stc-stop" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/></svg>
           </span>
@@ -382,9 +406,9 @@
             <h3>Learn</h3>
             <p>Webinars · Curriculum · Podcast</p>
           </span>
-        </div>
+        </button>
         <!-- BRIDGE -->
-        <div class="stc-station stc-reveal" role="listitem" tabindex="0">
+        <button type="button" class="stc-station stc-reveal" role="listitem">
           <span class="stc-stop" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M2 17c3 0 3-4 6-4s3 4 6 4 3-4 6-4"/><path d="M4 17V9m16 8V9"/><path d="M2 9h20"/></svg>
           </span>
@@ -392,9 +416,9 @@
             <h3>Bridge</h3>
             <p>Connect with program managers, primes &amp; peer institutions</p>
           </span>
-        </div>
+        </button>
         <!-- FUND -->
-        <div class="stc-station stc-reveal" role="listitem" tabindex="0">
+        <button type="button" class="stc-station stc-reveal" role="listitem">
           <span class="stc-stop" aria-hidden="true">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1.1 1.1-1.8 2.5-1.8s2.5.7 2.5 1.8-1.1 1.6-2.5 1.6-2.5.6-2.5 1.7 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/></svg>
           </span>
@@ -402,9 +426,9 @@
             <h3>Fund</h3>
             <p>SBIR/STTR · BAAs · Grants &amp; capital pathways</p>
           </span>
-        </div>
+        </button>
         <!-- DEPLOY -->
-        <div class="stc-station stc-reveal" role="listitem" tabindex="0">
+        <button type="button" class="stc-station stc-reveal" role="listitem">
           <span class="stc-stop" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M4.5 16.5L3 21l4.5-1.5"/><path d="M14 4s4 0 6 2 2 6 2 6l-9 5-4-4 5-9z"/><circle cx="14.5" cy="9.5" r="1.6"/></svg>
           </span>
@@ -412,7 +436,7 @@
             <h3>Deploy</h3>
             <p>Transition research into fielded DoW capability</p>
           </span>
-        </div>
+        </button>
       </div>
     </div>
   </section>
@@ -421,7 +445,7 @@
   <section class="stc-section stc-faq" id="faq" aria-labelledby="stc-faq-title">
     <div class="stc-wrap">
       <h2 class="stc-h2" id="stc-faq-title">Frequently Asked Questions</h2>
-      <p class="stc-faq-sub">Quick answers about SciTechCONNECT and how it connects campus research to Department of War missions.</p>
+      <p class="stc-faq-sub">Quick answers about SciTechCONNECT and how it connects campus research to Department of War missions. Don't see your question? Reach out using the contact details in the footer.</p>
 
       <div class="stc-faq-grid">
         <details>
@@ -475,6 +499,11 @@
       <p>Put your research on the path from campus lab to national impact. Build your Innovation Profile and plug into the Department of War science and technology ecosystem today.</p>
       <!-- REPLACE: href with live sign-up page URL -->
       <a class="stc-btn stc-btn--primary" href="#signup">Build Your Innovation Profile</a>
+      <div class="stc-trust" aria-label="Why join">
+        <span>Free for eligible institutions</span>
+        <span>Built for HBCUs, TCUs &amp; universities</span>
+        <span>Takes only a few minutes</span>
+      </div>
     </div>
   </section>
 </main>
@@ -528,13 +557,17 @@
   </div>
 </footer>
 
-<!-- ══════════ MINIMAL JS: scroll-reveal + single-open FAQ enhancement ══════════ -->
+<!-- ══════════ MINIMAL JS: reveal enhancement + FAQ + best-effort platform cleanup ══════════ -->
 <script>
 (function(){
-  var root = document.currentScript.closest('.stc') || document.querySelector('.stc');
+  var root = (document.currentScript && document.currentScript.closest('.stc')) || document.querySelector('.stc');
   if(!root) return;
 
-  // Fade-in on scroll (progressive enhancement; content is visible without JS via reduced-motion fallback)
+  // Enable JS-gated reveal only now that scripts are confirmed running.
+  // (If scripts are stripped by the CMS, content stays fully visible.)
+  root.classList.add('stc-js');
+
+  // Fade-in on scroll
   var reveals = root.querySelectorAll('.stc-reveal');
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
@@ -547,20 +580,28 @@
     reveals.forEach(function(el){ el.classList.add('stc-vis'); });
   }
 
-  // Roadmap: mark a station "active" when focused/hovered (touch-friendly tap toggle)
+  // Roadmap: tap/click toggles an active state (hover/focus already handled in CSS)
   root.querySelectorAll('.stc-station').forEach(function(st){
     st.addEventListener('click', function(){ st.classList.toggle('is-active'); });
   });
 
-  // FAQ: keep one answer open per column group for tidiness (native <details> still works without JS)
+  // FAQ: keep one answer open at a time (native <details> still works without JS)
   var allFaq = root.querySelectorAll('.stc-faq details');
   allFaq.forEach(function(d){
     d.addEventListener('toggle', function(){
-      if(d.open){
-        allFaq.forEach(function(other){ if(other !== d) other.removeAttribute('open'); });
-      }
+      if(d.open){ allFaq.forEach(function(o){ if(o!==d) o.removeAttribute('open'); }); }
     });
   });
+
+  // Best-effort: hide a stray platform-injected "New Page" heading sitting
+  // directly above this block. Exact-text match only, so it won't touch real content.
+  try{
+    document.querySelectorAll('h1,h2').forEach(function(h){
+      if(!root.contains(h) && h.textContent.trim().toLowerCase() === 'new page'){
+        h.style.display = 'none';
+      }
+    });
+  }catch(e){}
 })();
 </script>
 </section>
