@@ -216,6 +216,13 @@
     .hero-fn{margin-top:18px;font-size:.74rem;line-height:1.6;color:rgba(255,255,255,.4);max-width:640px;}
     @media(max-width:760px){.hero-stats{grid-template-columns:repeat(2,1fr);}}
     @media(max-width:420px){.hero-stats{grid-template-columns:1fr;}}
+    /* ── HERO HQ callout ── */
+    .hero-hq{margin-top:10px;max-width:560px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);}
+    .hero-hq-img{aspect-ratio:16/8;overflow:hidden;}
+    .hero-hq-img img{width:100%;height:100%;object-fit:cover;display:block;}
+    .hero-hq-cap{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;}
+    .hero-hq-badge{display:inline-flex;padding:5px 12px;border-radius:100px;background:rgba(62,178,72,.18);border:1px solid rgba(62,178,72,.4);color:#7DD580;font:800 .7rem/1 'Inter',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;}
+    .hero-hq-cap strong{font:800 1rem/1.3 'Manrope',system-ui,sans-serif;color:#fff;}
 
     /* ── PARTNERS INTRO ── */
     .partners-intro{text-align:center;max-width:660px;margin:0 auto 24px;font-size:.95rem;line-height:1.6;color:var(--text);font-weight:600;}
@@ -248,20 +255,18 @@
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="container">
     <div class="hero-content">
-      <div class="hero-badge fu">Indiana's Federally Designated Biomanufacturing Tech Hub · Powered by ARI</div>
-      <h1 class="fu">Advancing Biomanufacturing and <em>Biotechnology</em> Innovation in Indiana</h1>
-      <p class="hero-sub fu">Heartland BioWorks connects Indiana's workforce, manufacturing, research, and commercialization assets to accelerate biotechnology growth, strengthen national biosecurity, and expand economic opportunity across the state.</p>
+      <div class="hero-badge fu">Indiana's federally designated biomanufacturing EDA tech hub · powered by ARI</div>
+      <h1 class="fu">Advancing Biotechnology and <em>Biomanufacturing</em> in Indiana</h1>
+      <p class="hero-sub fu">Heartland BioWorks connects Indiana's workforce, manufacturing, research, and commercialization assets to accelerate domestic biotechnology production, strengthen national security, and expand economic opportunity across the state.</p>
       <div class="hero-btns fu">
         <a href="#ecosystem" class="btn-primary">Explore the Programs →</a>
-        <a href="biocan.html#ecosystem-map" class="btn-outline">View the Ecosystem Map</a>
+        <a href="biocan.html#ecosystem-map" class="btn-outline">View IN CDMO resources</a>
+        <a href="#" class="btn-outline" data-metrics-link title="Metrics dashboard link pending">View hub metrics</a>
       </div>
-      <div class="hero-stats fu">
-        <div class="hstat"><div class="hstat-num"><em>$</em>51M</div><div class="hstat-lbl">Federal Tech Hub Investment</div></div>
-        <div class="hstat"><div class="hstat-num">1 of <em>12</em></div><div class="hstat-lbl">Implementation-Funded Tech Hubs</div></div>
-        <div class="hstat"><div class="hstat-num">27,000<span style="font-size:1rem"> ft²</span></div><div class="hstat-lbl">Planned Training Facility</div></div>
-        <div class="hstat"><div class="hstat-num"><em>#</em>1</div><div class="hstat-lbl">State for Pharmaceutical Exports</div></div>
+      <div class="hero-hq fu">
+        <div class="hero-hq-img"><img src="assets/bioworks-hq.jpg" alt="Rendering of the planned Heartland BioWorks HQ building in downtown Indianapolis" loading="lazy" /></div>
+        <div class="hero-hq-cap"><span class="hero-hq-badge">Coming July 2027</span><strong>BioWorks HQ in downtown Indianapolis</strong></div>
       </div>
-      <p class="hero-fn fu">Sources: U.S. Economic Development Administration Tech Hubs program, 2023–2024 (1 of 31 designated, 1 of 12 funded for implementation, $51M award); planned Heartland BioWorks HQ at the 16 Tech Innovation District; U.S. International Trade Administration pharmaceutical export data.</p>
     </div>
   </div>
 </section>
@@ -310,11 +315,11 @@
         <div class="program-body" id="program-biolaunch">
           <div>
             <div class="program-detail">
-              <p>Commercialization and innovation support for biotechnology and biomanufacturing solutions — including <strong>BioStart</strong>, peer-to-peer mentorship and startup support that helps founders move from idea to company.</p>
+              <p>Commercialization and innovation support for biotechnology and biomanufacturing solutions — including <strong>BioStart</strong> peer-to-peer mentorship for founders, and <strong>BioCAN</strong> resource coordination that connects innovators with Indiana's CDMOs, labs, and scale-up capacity.</p>
               <div class="program-sublinks">
                 <a class="program-sublink" href="biolaunch.html#programs">Commercialization Support</a>
                 <a class="program-sublink" href="biolaunch.html#cta">BioStart Mentorship</a>
-                <a class="program-sublink" href="biolaunch.html#faq">Common Questions</a>
+                <a class="program-sublink" href="biocan.html#ecosystem-map">CDMO Resources &amp; Map</a>
                 <a class="program-sublink" href="biolaunch.html#cta">Get Started</a>
               </div>
               <a href="biolaunch.html" class="program-link">Explore BioLaunch <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -323,46 +328,23 @@
         </div>
       </div>
 
-      <div class="program-row" data-p="biocan">
-        <h3 class="program-h"><button class="program-head" type="button" aria-expanded="false" aria-controls="program-biocan">
-          <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span>
-          <span class="program-name">BioCAN</span>
-          <span class="program-cat">Resource Coordination</span>
-          <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
-        </button></h3>
-        <div class="program-body" id="program-biocan">
-          <div>
-            <div class="program-detail">
-              <p>The BioResource Coordination and Access Network connects innovators with Indiana's CDMOs, labs, and scale-up resources — so companies can find the manufacturing and analytical capacity they need in-state.</p>
-              <div class="program-sublinks">
-                <a class="program-sublink" href="biocan.html#cdmos">CDMO &amp; Lab Network</a>
-                <a class="program-sublink" href="biocan.html#ecosystem-map">Ecosystem Map</a>
-                <a class="program-sublink" href="biocan.html#funding">Capital Access</a>
-                <a class="program-sublink" href="biocan.html#cta">Connect with BioCAN</a>
-              </div>
-              <a href="biocan.html" class="program-link">Explore BioCAN <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="program-row" data-p="biodefense">
         <h3 class="program-h"><button class="program-head" type="button" aria-expanded="false" aria-controls="program-biodefense">
           <span class="program-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-          <span class="program-name">BioDefense</span>
+          <span class="program-name">Bio for National Security</span>
           <span class="program-cat future">Ecosystem Initiative</span>
           <span class="program-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
         </button></h3>
         <div class="program-body" id="program-biodefense">
           <div>
             <div class="program-detail">
-              <p>A future-facing ecosystem initiative exploring how Indiana's biomanufacturing base can strengthen domestic production of critical medicines and countermeasures and support national biosecurity.</p>
+              <p>A future-facing ecosystem initiative exploring how Indiana's biomanufacturing base can strengthen domestic production of critical medicines and countermeasures and support national security.</p>
               <div class="program-sublinks">
                 <a class="program-sublink" href="biodefense.html#pillars">The Framework</a>
                 <a class="program-sublink" href="biodefense.html#partners">Agency Partnerships</a>
                 <a class="program-sublink" href="biodefense.html#cta">Get Involved</a>
               </div>
-              <a href="biodefense.html" class="program-link">Explore BioDefense <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <a href="biodefense.html" class="program-link">Learn More <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
         </div>
