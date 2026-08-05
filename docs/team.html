@@ -23,6 +23,13 @@
     <input type="search" class="faqp-search" id="teamSearch" placeholder="Search team members..." aria-label="Search team members" />
     <div class="team-grid" id="teamGrid"></div>
     <div class="hbc-empty" id="teamEmpty" style="display:none;">No team members match your search.</div>
+
+    <section class="team-board" id="executive-board">
+      <h2>Executive Board</h2>
+      <p class="board-intro">The Heartland BioWorks Executive Board is comprised of key Indiana stakeholders who provide expert oversight of hub activities and guide progress. Governance of the hub is supported by two advisory boards. The Scientific Advisory Board provides expertise on technical direction, BioLaunch fund deployment, and positions the hub to leverage emerging trends in the sector. The Community Impact Advisory Board is comprised of local non-profit leaders who help ensure hub programs are responsive to community needs.</p>
+      <div class="board-grid" id="boardGrid"></div>
+      <div class="board-note" id="boardNote">Board roster coming soon — members, titles, and organizations will be listed here.</div>
+    </section>
   </div>
 </main>
 
@@ -68,6 +75,15 @@ var TEAM = [
     linkedin: "https://www.linkedin.com/in/tyler-yoder/",
     shortBio: "Tyler Yoder is the Director of BioLaunch for the Heartland BioWorks Tech Hub, facilitating innovator connections to Indiana-based biomanufacturing and drug development resources. A native Hoosier, Tyler brings startup, corporate finance, and product management experience across the life sciences.",
     fullBio: "Tyler Yoder is the Director of BioLaunch for the Heartland BioWorks Tech Hub, facilitating innovator connections to Indiana-based biomanufacturing and drug development resources. A native Hoosier, Tyler brings startup, corporate finance, and product management experience across the life sciences to help innovators reach their next commercialization milestone.\n\nHe completed his BA in Business Finance at Ball State University and his full-time MBA at Indiana University Bloomington with concentrations in Marketing, Entrepreneurship, and Corporate Innovation."
+  },
+  {
+    name: "Colin Zeh",
+    title: "",
+    photo: "assets/team/colin-zeh.jpg",
+    email: "",
+    linkedin: "",
+    shortBio: "Full profile coming soon.",
+    fullBio: ""
   }
 ];
 
@@ -85,16 +101,17 @@ var TEAM = [
     var links = "";
     if (m.email) links += '<a class="team-link" href="mailto:' + esc(m.email) + '">✉ ' + esc(m.email) + "</a>";
     if (m.linkedin) links += '<a class="team-link" href="' + esc(m.linkedin) + '" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" fill="currentColor" stroke="none"/><circle cx="4" cy="4" r="2" fill="currentColor"/></svg> LinkedIn</a>';
-    var fullPs = m.fullBio.split(/\n\n+/).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+    var hasFull = m.fullBio && m.fullBio.trim() && m.fullBio.trim() !== (m.shortBio || "").trim();
+    var fullPs = hasFull ? m.fullBio.split(/\n\n+/).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") : "";
     return '<article class="team-card" data-i="' + i + '">' +
       '<div class="team-avatar">' + avatar + "</div>" +
       '<div class="team-body">' +
         "<h3>" + esc(m.name) + "</h3>" +
-        '<div class="team-title">' + esc(m.title) + "</div>" +
-        '<div class="team-links">' + links + "</div>" +
+        (m.title ? '<div class="team-title">' + esc(m.title) + "</div>" : "") +
+        (links ? '<div class="team-links">' + links + "</div>" : "") +
         '<p class="team-short">' + esc(m.shortBio) + "</p>" +
-        '<div class="team-full" id="team-full-' + i + '" hidden>' + fullPs + "</div>" +
-        '<button type="button" class="team-more" data-toggle-bio="' + i + '" aria-expanded="false" aria-controls="team-full-' + i + '">Read Full Bio →</button>' +
+        (hasFull ? '<div class="team-full" id="team-full-' + i + '" hidden>' + fullPs + "</div>" +
+          '<button type="button" class="team-more" data-toggle-bio="' + i + '" aria-expanded="false" aria-controls="team-full-' + i + '">Read Full Bio →</button>' : "") +
       "</div></article>";
   }
 
@@ -106,6 +123,23 @@ var TEAM = [
     grid.innerHTML = shown.map(function (x) { return card(x.m, x.i); }).join("");
     empty.style.display = shown.length ? "none" : "block";
   }
+
+  // Executive Board roster — data-driven. Add members here as
+  // { name, title, org } and they render automatically (no bios needed).
+  var BOARD = [];
+  (function () {
+    var bg = document.getElementById("boardGrid");
+    var note = document.getElementById("boardNote");
+    if (!bg) return;
+    if (BOARD.length) {
+      bg.innerHTML = BOARD.map(function (m) {
+        return '<div class="board-member"><h4>' + esc(m.name) + "</h4>" +
+          (m.title ? '<div class="bm-title">' + esc(m.title) + "</div>" : "") +
+          (m.org ? '<div class="bm-org">' + esc(m.org) + "</div>" : "") + "</div>";
+      }).join("");
+      if (note) note.style.display = "none";
+    }
+  })();
 
   render("");
   search.addEventListener("input", function () { render(search.value); });
