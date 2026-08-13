@@ -216,13 +216,16 @@
     .hero-fn{margin-top:18px;font-size:.74rem;line-height:1.6;color:rgba(255,255,255,.4);max-width:640px;}
     @media(max-width:760px){.hero-stats{grid-template-columns:repeat(2,1fr);}}
     @media(max-width:420px){.hero-stats{grid-template-columns:1fr;}}
-    /* ── HERO HQ callout ── */
-    .hero-hq{margin-top:10px;max-width:560px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);}
-    .hero-hq-img{aspect-ratio:16/8;overflow:hidden;}
-    .hero-hq-img img{width:100%;height:100%;object-fit:cover;display:block;}
-    .hero-hq-cap{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;}
-    .hero-hq-badge{display:inline-flex;padding:5px 12px;border-radius:100px;background:rgba(62,178,72,.18);border:1px solid rgba(62,178,72,.4);color:#7DD580;font:800 .7rem/1 'Inter',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;}
-    .hero-hq-cap strong{font:800 1rem/1.3 'Manrope',system-ui,sans-serif;color:#fff;}
+    /* ── HQ ANNOUNCEMENT BANNER ── */
+    .hq-banner{background:linear-gradient(135deg,#00843D 0%,#3EB248 100%);padding:56px 0;}
+    .hq-banner-inner{display:flex;align-items:center;gap:44px;flex-wrap:wrap;}
+    .hq-banner-img{flex:0 0 clamp(280px,44%,500px);border-radius:16px;overflow:hidden;box-shadow:0 22px 55px rgba(8,45,70,.32);border:3px solid rgba(255,255,255,.55);}
+    .hq-banner-img img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;}
+    .hq-banner-text{flex:1;min-width:260px;}
+    .hq-banner-badge{display:inline-flex;padding:6px 14px;border-radius:100px;background:#fff;color:var(--green2);font:800 .72rem/1 'Inter',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
+    .hq-banner-text h2{margin:0;font:800 clamp(1.7rem,3vw,2.5rem)/1.15 'Manrope',system-ui,sans-serif;letter-spacing:-.025em;color:#fff;}
+    .hq-banner-text p{margin:14px 0 0;font-size:1.02rem;line-height:1.65;color:rgba(255,255,255,.92);max-width:460px;}
+    @media(max-width:768px){.hq-banner{padding:40px 0;}.hq-banner-inner{gap:26px;}}
 
     /* ── PARTNERS INTRO ── */
     .partners-intro{text-align:center;max-width:660px;margin:0 auto 24px;font-size:.95rem;line-height:1.6;color:var(--text);font-weight:600;}
@@ -263,9 +266,20 @@
         <a href="biocan.html#ecosystem-map" class="btn-outline">View IN CDMO resources</a>
         <a href="#" class="btn-outline" data-metrics-link title="Metrics dashboard link pending">View hub metrics</a>
       </div>
-      <div class="hero-hq fu">
-        <div class="hero-hq-img"><img src="assets/HBWhq.png" alt="Rendering of the planned Heartland BioWorks HQ building in downtown Indianapolis" loading="lazy" /></div>
-        <div class="hero-hq-cap"><span class="hero-hq-badge">Coming July 2027</span><strong>BioWorks HQ in downtown Indianapolis</strong></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ HQ ANNOUNCEMENT BANNER ══ -->
+<section class="hq-banner" aria-label="BioWorks HQ">
+  <div class="container">
+    <div class="hq-banner-inner">
+      <div class="hq-banner-img"><img src="assets/HBWhq.png" alt="Rendering of the planned Heartland BioWorks HQ building in downtown Indianapolis" loading="lazy" /></div>
+      <div class="hq-banner-text">
+        <span class="hq-banner-badge">Coming July 2027</span>
+        <h2>BioWorks HQ in downtown Indianapolis</h2>
+        <p>A pilot-scale biomanufacturing facility, training space, and convening hub — anchoring Indiana's bioeconomy in the heart of Indianapolis.</p>
       </div>
     </div>
   </div>
