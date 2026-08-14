@@ -60,7 +60,7 @@
     { name: "Heartland BioWorks HQ (planned)", city: "Indianapolis", state: "IN", category: "Workforce & Training", lat: 39.7684, lon: -86.1581, description: "Planned 27,000 sq. ft. headquarters and hands-on training facility at 16 Tech.", url: "https://www.heartlandbioworks.com/" },
 
     // Commercialization & Innovation
-    { name: "Applied Research Institute", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "Lead organization powering Heartland BioWorks.", url: "https://theari.us/" },
+    { name: "Applied Research Institute", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "Lead organization powering Heartland BioWorks.", url: "https://ari-for-review.vercel.app" },
     { name: "BioCrossroads", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "Indiana life sciences initiative advancing the bioeconomy.", url: "https://biocrossroads.com/" },
     { name: "16 Tech Innovation District", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7843, lon: -86.1760, description: "Innovation district and home of the planned Heartland BioWorks HQ.", url: "https://16tech.com/" },
     { name: "Heartland BioWorks BioLaunch", city: "Indianapolis", state: "IN", category: "Commercialization & Innovation", lat: 39.7684, lon: -86.1581, description: "Commercialization and innovation support for biotech solutions.", url: "https://www.heartlandbioworks.com/" },
