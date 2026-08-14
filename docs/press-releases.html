@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Press Releases – Heartland BioWorks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <style>*,*::before,*::after{box-sizing:border-box;}body{margin:0;font-family:'Inter',system-ui,sans-serif;color:var(--hb-text);background:#fff;-webkit-font-smoothing:antialiased;}a{color:inherit;text-decoration:none;}img{max-width:100%;}
+  .pr-dateline{font:700 .78rem/1.4 'Inter',system-ui,sans-serif;color:var(--hb-green2);text-transform:uppercase;letter-spacing:.05em;}
+  .hbc-modal .pr-body h2{font:800 1.2rem/1.3 'Manrope',system-ui,sans-serif;margin:18px 0 8px;}
+  .hbc-modal .pr-body h3{font:700 1.05rem/1.3 'Manrope',system-ui,sans-serif;margin:16px 0 6px;}
+  .hbc-modal .pr-body img{border-radius:10px;}
+  </style>
+</head>
+<body data-page="press" data-breadcrumb="Resources > Press Releases">
+<div id="hb-header"></div>
+
+<section class="hb-pagehero">
+  <div class="hb-pagehero-inner">
+    <h1>Press Releases</h1>
+    <p>Official announcements from Heartland BioWorks, Indiana's federally designated biomanufacturing EDA Tech Hub.</p>
+  </div>
+</section>
+
+<main class="hb-pagebody">
+  <div class="hb-pagebody-inner">
+    <div id="pr-list"><div class="hbc-empty" aria-busy="true">Loading…</div></div>
+  </div>
+</main>
+
+<div id="hb-footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="assets/supabase-config.js"></script>
+<script src="assets/site.js" defer></script>
+<script>
+(function () {
+  "use strict";
+  var mount = document.getElementById("pr-list");
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function fmt(d){ if(!d) return ""; var dt=new Date(d+(d.length===10?"T12:00:00":"")); return isNaN(dt)?"":dt.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"}); }
+
+  var sb = window.hbSupabaseClient && window.hbSupabaseClient();
+  if (!sb) { mount.innerHTML = '<div class="hbc-empty">Press releases are temporarily unavailable. Please refresh, or check back soon.</div>'; return; }
+
+  var ITEMS = [];
+  sb.from("press_releases").select("*")
+    .eq("status","published").lte("published_at", new Date().toISOString())
+    .order("release_date", { ascending:false, nullsFirst:false })
+    .then(function (r) {
+      if (r.error) { mount.innerHTML = '<div class="hbc-empty">Press releases are temporarily unavailable. Please check back soon.</div>'; return; }
+      ITEMS = r.data || [];
+      if (!ITEMS.length) { mount.innerHTML = '<div class="hbc-empty">No press releases have been published yet — check back soon.</div>'; return; }
+      mount.innerHTML = '<div class="hbc-grid">' + ITEMS.map(card).join("") + "</div>";
+    });
+
+  function card(p) {
+    var img = p.featured_image ? '<div class="hbc-thumb"><img src="' + esc(p.featured_image) + '" alt="" loading="lazy" /></div>' : "";
+    var open = p.external_url
+      ? '<a class="hbc-cta" href="' + esc(p.external_url) + '" target="_blank" rel="noopener noreferrer">Read More <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>'
+      : '<button class="hbc-cta" type="button" data-open="' + esc(p.id) + '">Read More <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>';
+    var pdf = p.pdf_url ? '<a class="hbc-cta2" href="' + esc(p.pdf_url) + '" target="_blank" rel="noopener noreferrer">Download PDF <svg viewBox="0 0 24 24"><path d="M12 5v11M6 12l6 6 6-6M5 21h14"/></svg></a>' : "";
+    return '<article class="hbc-card">' + img +
+      '<div class="hbc-meta"><span class="hbc-tag">Press Release</span><span class="hbc-date">' + esc(fmt(p.release_date || p.published_at)) + "</span></div>" +
+      "<h3>" + esc(p.headline) + "</h3>" +
+      (p.dateline ? '<div class="pr-dateline">' + esc(p.dateline) + "</div>" : "") +
+      "<p>" + esc(p.summary || "") + "</p>" +
+      '<div class="hbc-ctas">' + open + pdf + "</div></article>";
+  }
+
+  mount.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-open]"); if (!b) return;
+    var p = ITEMS.filter(function (x) { return String(x.id) === b.getAttribute("data-open"); })[0];
+    if (!p) return;
+    var wrap = document.createElement("div");
+    wrap.innerHTML =
+      '<div class="hbc-modal-back" data-close><div class="hbc-modal" role="dialog" aria-modal="true" aria-label="' + esc(p.headline) + '">' +
+      '<button class="hbc-modal-x" type="button" data-close aria-label="Close">✕</button>' +
+      '<div class="hbc-meta"><span class="hbc-tag">Press Release</span><span class="hbc-date">' + esc(fmt(p.release_date || p.published_at)) + "</span></div>" +
+      "<h3>" + esc(p.headline) + "</h3>" +
+      (p.dateline ? '<div class="pr-dateline" style="margin-bottom:10px">' + esc(p.dateline) + "</div>" : "") +
+      (p.summary ? "<p><strong>" + esc(p.summary) + "</strong></p>" : "") +
+      '<div class="pr-body">' + (p.body_html || "") + "</div>" +
+      (p.media_contact ? '<hr style="border:0;border-top:1px solid var(--hb-border);margin:18px 0"><p style="white-space:pre-wrap;color:var(--hb-muted);font-size:.85rem">' + esc(p.media_contact) + "</p>" : "") +
+      (p.pdf_url ? '<p><a class="hbc-cta2" href="' + esc(p.pdf_url) + '" target="_blank" rel="noopener noreferrer">Download PDF</a></p>' : "") +
+      "</div></div>";
+    document.body.appendChild(wrap.firstChild);
+    document.body.style.overflow = "hidden";
+  });
+  document.addEventListener("click", function (ev) {
+    if (ev.target.closest("[data-close]") && !ev.target.closest(".hbc-modal:not(:has([data-close]))")) {
+      var back = document.querySelector(".hbc-modal-back");
+      if (back && (ev.target === back || ev.target.closest(".hbc-modal-x"))) {
+        back.remove(); document.body.style.overflow = "";
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Employee Portal – Heartland BioWorks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" />
+  <link rel="stylesheet" href="assets/portal.css" />
+</head>
+<body class="portal">
+
+<!-- Login view -->
+<div id="p-login" class="pl-wrap" hidden>
+  <form class="pl-card" id="pl-form" novalidate>
+    <img src="https://static.wixstatic.com/media/9d8b6b_4a3fdba86a774002b8ad7cfb1a54a689~mv2.png" alt="Heartland BioWorks" onerror="this.style.display='none'" />
+    <h1>Employee Portal</h1>
+    <p class="pl-sub">Sign in with your Heartland BioWorks staff account.</p>
+    <label for="pl-email">Email</label>
+    <input type="email" id="pl-email" autocomplete="username" required />
+    <label for="pl-pass">Password</label>
+    <input type="password" id="pl-pass" autocomplete="current-password" required />
+    <button type="submit" class="pl-btn" id="pl-submit">Sign In</button>
+    <button type="button" class="pl-forgot" id="pl-forgot">Forgot password?</button>
+    <div class="pl-err" id="pl-err" role="alert"></div>
+    <div class="pl-ok" id="pl-ok" role="status"></div>
+  </form>
+</div>
+
+<!-- App frame -->
+<div id="p-app" class="pa" hidden>
+  <button class="pa-burger" id="pa-burger" aria-label="Toggle navigation">☰</button>
+  <aside class="pa-side" id="pa-side">
+    <div class="pa-logo">
+      <span>HEARTLAND<br/>BIOWORKS · PORTAL</span>
+    </div>
+    <nav id="pa-nav" aria-label="Portal"></nav>
+    <div class="pa-side-foot">
+      <div class="pa-user" id="pa-user"></div>
+      <div class="pa-role" id="pa-role"></div>
+      <button class="pa-logout" id="pa-logout">Sign out</button>
+    </div>
+  </aside>
+  <main class="pa-main" id="pa-main" tabindex="-1"></main>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js" defer></script>
+<script src="assets/supabase-config.js"></script>
+<script src="assets/portal.js" defer></script>
+<script src="assets/portal-inbox.js" defer></script>
+<script src="assets/portal-cms.js" defer></script>
+</body>
+</html>

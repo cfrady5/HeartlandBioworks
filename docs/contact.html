@@ -68,6 +68,11 @@
         <h2>Message</h2>
         <div class="cform-field"><label for="cf-message">How can we help? <span class="hbd-req">*</span></label><textarea id="cf-message" name="message" rows="5"></textarea><div class="hbd-field-err" data-err="message"></div></div>
 
+        <!-- honeypot: hidden from humans; bots that fill it are silently dropped server-side -->
+        <div style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true">
+          <label for="cf-website">Website</label>
+          <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
         <div class="cform-field cform-consent">
           <label><input type="checkbox" id="cf-consent" name="consent" /> I consent to receive communications from Heartland BioWorks regarding programs, opportunities, events, and updates. <span class="hbd-req">*</span></label>
           <div class="hbd-field-err" data-err="consent"></div>
@@ -124,12 +129,42 @@
     var interests = [].slice.call(document.querySelectorAll("#cf-interests input:checked")).map(function (c) { return c.value; });
     btn.disabled = true; btn.textContent = "Sending…";
     try {
-      await HBStore.submitContact({
-        firstName: val("firstName"), lastName: val("lastName"), jobTitle: val("jobTitle"),
-        email: val("email"), country: val("country"), phone: val("phone"),
-        organizationName: val("organizationName"), organizationType: val("organizationType") || null,
-        interests: interests, message: val("message"), consent: true, status: "New"
+      // Submit through the server-side RPC (validated + rate-limited in
+      // Postgres). Program/type come from the URL when a program page
+      // linked here; the RPC re-validates them against configuration.
+      var qs = new URLSearchParams(location.search);
+      var sb = window.hbSupabaseClient && window.hbSupabaseClient();
+      if (!sb) throw new Error("The contact service is unavailable right now. Please email heartlandbioworks@theari.us instead.");
+      var rpc = await sb.rpc("submit_inquiry", {
+        p_first_name: val("firstName"), p_last_name: val("lastName"),
+        p_email: val("email"), p_message: val("message"),
+        p_phone: val("phone"), p_organization: val("organizationName"),
+        p_job_title: val("jobTitle"),
+        p_program: qs.get("program") || "general",
+        p_inquiry_type: qs.get("type") || "general",
+        p_source_form: qs.get("program") ? (qs.get("program") + "_" + (qs.get("type") || "general")) : "contact",
+        p_source_page: document.referrer && document.referrer.indexOf(location.host) !== -1
+          ? document.referrer.split(location.host)[1] : location.pathname,
+        p_utm_source: qs.get("utm_source") || "", p_utm_medium: qs.get("utm_medium") || "",
+        p_utm_campaign: qs.get("utm_campaign") || "", p_referrer: document.referrer || "",
+        p_metadata: { country: val("country"), organization_type: val("organizationType") || null,
+                      interests: interests, consent: true },
+        p_website: (document.getElementById("cf-website") || { value: "" }).value
       });
+      if (rpc.error) {
+        // Portal schema not deployed yet? Fall back to the legacy table so
+        // no submission is ever dropped during rollout.
+        if (/submit_inquiry|schema cache|function/i.test(rpc.error.message || "")) {
+          await HBStore.submitContact({
+            firstName: val("firstName"), lastName: val("lastName"), jobTitle: val("jobTitle"),
+            email: val("email"), country: val("country"), phone: val("phone"),
+            organizationName: val("organizationName"), organizationType: val("organizationType") || null,
+            interests: interests, message: val("message"), consent: true, status: "New"
+          });
+        } else {
+          throw new Error(rpc.error.message);
+        }
+      }
       // consenting contacts also join the email list
       try {
         await HBStore.addSubscriber({ firstName: val("firstName"), lastName: val("lastName"), email: val("email"),

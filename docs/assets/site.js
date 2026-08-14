@@ -24,6 +24,7 @@
     ]},
     { key: "resources", label: "Resources", href: "news.html", children: [
       { key: "news", label: "News & Media", href: "news.html" },
+      { key: "press", label: "Press Releases", href: "press-releases.html" },
       { key: "events", label: "Upcoming Events", href: "events.html" },
       { key: "media", label: "Media Library", href: "media-library.html" },
       { key: "biocan", label: "CDMO Resources", href: "biocan.html#ecosystem-map" }
@@ -122,6 +123,7 @@
         '</ul></div>' +
         '<div class="hb-fcol"><h4>Resources</h4><ul>' +
           '<li><a href="news.html">News &amp; Media</a></li>' +
+          '<li><a href="press-releases.html">Press Releases</a></li>' +
           '<li><a href="events.html">Upcoming Events</a></li>' +
           '<li><a href="media-library.html">Media Library</a></li>' +
           '<li><a href="biocan.html#ecosystem-map">Ecosystem Map</a></li>' +

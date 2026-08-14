@@ -34,6 +34,8 @@
 </main>
 
 <div id="hb-footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="assets/supabase-config.js"></script>
 <script src="assets/site.js" defer></script>
 <script>
 // Team data — single source for the page; cards are rendered from this,
@@ -124,10 +126,10 @@ var TEAM = [
     empty.style.display = shown.length ? "none" : "block";
   }
 
-  // Executive Board roster — data-driven. Add members here as
-  // { name, title, org } and they render automatically (no bios needed).
+  // Executive Board roster — filled from the portal CMS (board_members);
+  // stays empty (with the "coming soon" note) until members are added.
   var BOARD = [];
-  (function () {
+  function renderBoard() {
     var bg = document.getElementById("boardGrid");
     var note = document.getElementById("boardNote");
     if (!bg) return;
@@ -139,9 +141,30 @@ var TEAM = [
       }).join("");
       if (note) note.style.display = "none";
     }
-  })();
+  }
 
-  render("");
+  // Load the roster from the portal CMS when reachable; the hard-coded
+  // TEAM array above is the resilient fallback so this page never breaks.
+  (function loadRemote() {
+    var sb = window.hbSupabaseClient && window.hbSupabaseClient();
+    if (!sb) { render(""); renderBoard(); return; }
+    Promise.all([
+      sb.from("team_members").select("*").eq("active", true).order("display_order"),
+      sb.from("board_members").select("*").eq("active", true).order("display_order")
+    ]).then(function (res) {
+      if (!res[0].error && res[0].data && res[0].data.length) {
+        TEAM = res[0].data.map(function (m) {
+          return { name: m.name, title: m.title || "", photo: m.headshot_url || "",
+            email: m.email || "", linkedin: m.linkedin_url || "",
+            shortBio: m.bio_short || "", fullBio: m.bio_full || "" };
+        });
+      }
+      if (!res[1].error && res[1].data) {
+        BOARD = res[1].data.filter(function (b) { return b.board_type === "executive"; })
+          .map(function (b) { return { name: b.name, title: b.title || "", org: b.organization || "" }; });
+      }
+    }).catch(function () {}).then(function () { render(""); renderBoard(); });
+  })();
   search.addEventListener("input", function () { render(search.value); });
   grid.addEventListener("click", function (e) {
     var btn = e.target.closest("[data-toggle-bio]");

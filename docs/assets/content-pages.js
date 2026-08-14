@@ -47,7 +47,27 @@
   }
 
   /* ---------- NEWS ---------- */
-  var NEWS_TYPES = ["All", "Press Release", "Announcement", "Media Mention", "Update"];
+  var NEWS_TYPES = ["All", "News", "Press Release", "Announcement", "Media Mention", "Update"];
+
+  // CMS-authored articles (portal → news_posts). Published + past their
+  // publish time only; scheduled posts stay invisible until due.
+  function loadNewsPosts() {
+    var sb = window.hbSupabaseClient && window.hbSupabaseClient();
+    if (!sb) return Promise.resolve([]);
+    return sb.from("news_posts").select("*")
+      .eq("status", "published").lte("published_at", new Date().toISOString())
+      .order("published_at", { ascending: false })
+      .then(function (r) {
+        if (r.error) return [];
+        return (r.data || []).map(function (p) {
+          return { id: "np-" + p.id, title: p.title, type: "News",
+            publishDate: (p.published_at || "").slice(0, 10),
+            excerpt: p.excerpt || "", bodyHtml: p.body_html || "",
+            author: p.author_name || "", featuredImageUrl: p.featured_image || "",
+            tags: p.featured ? ["Featured"] : [] };
+        });
+      }).catch(function () { return []; });
+  }
   function newsCard(n) {
     var external = isExternal(n.externalUrl);
     var cta = external
@@ -77,7 +97,8 @@
         '<button class="hbc-modal-x" type="button" data-close aria-label="Close">✕</button>' +
         '<div class="hbc-meta"><span class="hbc-tag">' + esc(n.type) + '</span><span class="hbc-date">' + esc(fmtDate(n.publishDate)) + "</span></div>" +
         "<h3>" + esc(n.title) + "</h3>" +
-        (n.body || "").split(/\n\n+/).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
+        (n.bodyHtml ? n.bodyHtml :
+          (n.body || "").split(/\n\n+/).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("")) +
         (n.author ? '<p class="hbc-author">— ' + esc(n.author) + "</p>" : "") +
       "</div></div>";
   }
@@ -164,12 +185,27 @@
   // Published content comes from the shared store (Supabase; falls back
   // to the /data seeds if the service is unreachable).
   mount.innerHTML = '<div class="hbc-empty" aria-busy="true">Loading…</div>';
+  if (TYPE === "news") {
+    // Merge legacy items with CMS-authored posts from the portal.
+    Promise.all([
+      HBStore.getPublished(TYPE).catch(function () { return []; }),
+      loadNewsPosts()
+    ]).then(function (both) {
+      CACHE = (both[1] || []).concat(both[0] || []);
+      if (!CACHE.length) {
+        mount.innerHTML = '<div class="hbc-empty">Content is temporarily unavailable. Please refresh, or check back soon.</div>';
+        return;
+      }
+      paint();
+    });
+  } else {
   HBStore.getPublished(TYPE).then(function (items) {
     CACHE = items || [];
     paint();
   }).catch(function () {
     mount.innerHTML = '<div class="hbc-empty">Content is temporarily unavailable. Please refresh, or check back soon.</div>';
   });
+  }
 
   mount.addEventListener("click", function (ev) {
     var chip = ev.target.closest("[data-filter]");
