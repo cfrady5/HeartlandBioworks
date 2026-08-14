@@ -121,11 +121,11 @@
 .eco-state{fill:rgba(62,178,72,.07);stroke:rgba(62,178,72,.5);stroke-width:1.6;stroke-linejoin:round;}
 .eco-county{fill:rgba(62,178,72,.10);stroke:rgba(120,200,140,.32);stroke-width:.6;vector-effect:non-scaling-stroke;stroke-linejoin:round;transition:fill 160ms;}
 .eco-pin{cursor:pointer;}
-.eco-pin-dot{fill:var(--hb-green);stroke:#fff;stroke-width:1.4;transition:r 160ms,fill 160ms;transform-box:fill-box;transform-origin:center;animation:ecoPop 360ms var(--hb-ease) both;}
+.eco-pin-dot{fill:var(--hb-green);stroke:#fff;stroke-width:1;vector-effect:non-scaling-stroke;transition:fill 160ms;transform-box:fill-box;transform-origin:center;animation:ecoPop 360ms var(--hb-ease) both;}
 .eco-pin:hover .eco-pin-dot,.eco-pin:focus-visible .eco-pin-dot{fill:#7DD580;}
 .eco-pin:focus-visible{outline:none;}
 .eco-pin:focus-visible .eco-pin-ring{opacity:1;}
-.eco-pin-ring{fill:none;stroke:#7DD580;stroke-width:1.5;opacity:0;}
+.eco-pin-ring{fill:none;stroke:#7DD580;stroke-width:1.5;vector-effect:non-scaling-stroke;opacity:0;}
 .eco-pin-count{fill:#fff;font:700 11px 'Inter',system-ui,sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none;}
 @keyframes ecoPop{from{opacity:0;transform:scale(.2);}to{opacity:1;transform:scale(1);}}
 .eco-citylabel{fill:rgba(255,255,255,.92);font:700 9px 'Inter',system-ui,sans-serif;pointer-events:none;}

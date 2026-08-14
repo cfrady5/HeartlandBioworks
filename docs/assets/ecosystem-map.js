@@ -265,6 +265,7 @@
   function applyTransform() {
     world.setAttribute("transform", "translate(" + panX.toFixed(2) + " " + panY.toFixed(2) + ") scale(" + zoom.toFixed(3) + ")");
     svg.classList.toggle("eco-zoomed", zoom > 1.001);
+    if (typeof applyPinScale === "function") applyPinScale();
   }
   function zoomTo(nz, cx, cy) {
     nz = Math.min(maxZoom, Math.max(minZoom, nz));
@@ -345,55 +346,65 @@
       return activeCat === "All Resources" || d.category === activeCat;
     });
   }
+  // Each organization gets its own small dot. Orgs sharing the same
+  // coordinates (city-center data) fan out in a tight ring around the
+  // shared point so every dot is individually visible and hoverable.
+  // Dot radii counter-scale with zoom (r/zoom) so zooming in spreads
+  // locations apart while the dots themselves stay small.
+  var DOT_R = 2.8, RING_PAD = 2.4;
+  function applyPinScale() {
+    var k = Math.max(zoom, 1);
+    pinLayer.querySelectorAll("circle").forEach(function (c) {
+      var base = parseFloat(c.getAttribute("data-r") || "0");
+      if (base) c.setAttribute("r", (base / k).toFixed(2));
+    });
+  }
   function renderPins() {
     pinLayer.innerHTML = "";
     var inState = visibleData().filter(function (d) { return !d.outOfState; });
-    // cluster by city (rounded coords)
+    // group only to compute fan offsets for identical coordinates
     var groups = {};
     inState.forEach(function (d) {
-      var key = d.lat.toFixed(2) + "," + d.lon.toFixed(2);
-      (groups[key] = groups[key] || { lat: d.lat, lon: d.lon, city: d.city, items: [] }).items.push(d);
+      var key = d.lat.toFixed(3) + "," + d.lon.toFixed(3);
+      (groups[key] = groups[key] || []).push(d);
     });
     Object.keys(groups).forEach(function (key) {
-      var g = groups[key];
-      var cx = px(g.lon), cy = py(g.lat);
-      var n = g.items.length;
-      var pin = document.createElementNS(SVGNS, "g");
-      pin.setAttribute("class", "eco-pin");
-      pin.setAttribute("tabindex", "0");
-      pin.setAttribute("role", "button");
-      pin.setAttribute("aria-label", g.city + ": " + n + " resource" + (n > 1 ? "s" : ""));
-      var ring = document.createElementNS(SVGNS, "circle");
-      ring.setAttribute("class", "eco-pin-ring");
-      ring.setAttribute("cx", cx); ring.setAttribute("cy", cy); ring.setAttribute("r", n > 1 ? 13 : 9);
-      var dot = document.createElementNS(SVGNS, "circle");
-      dot.setAttribute("class", "eco-pin-dot");
-      dot.setAttribute("cx", cx); dot.setAttribute("cy", cy); dot.setAttribute("r", n > 1 ? 11 : 6);
-      pin.appendChild(ring); pin.appendChild(dot);
-      if (n > 1) {
-        var t = document.createElementNS(SVGNS, "text");
-        t.setAttribute("class", "eco-pin-count");
-        t.setAttribute("x", cx); t.setAttribute("y", cy);
-        t.textContent = n;
-        pin.appendChild(t);
-      }
-      function tipHtml() {
-        if (n === 1) {
-          var d = g.items[0];
+      var items = groups[key];
+      var n = items.length;
+      var gx = px(items[0].lon), gy = py(items[0].lat);
+      var fanR = n > 1 ? Math.min(3.4 + n * 0.5, 7.5) : 0;
+      items.forEach(function (d, i) {
+        var ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+        var cx = gx + fanR * Math.cos(ang);
+        var cy = gy + fanR * Math.sin(ang);
+        var pin = document.createElementNS(SVGNS, "g");
+        pin.setAttribute("class", "eco-pin");
+        pin.setAttribute("tabindex", "0");
+        pin.setAttribute("role", "button");
+        pin.setAttribute("aria-label", d.name + " — " + d.city + ", " + d.state);
+        var ring = document.createElementNS(SVGNS, "circle");
+        ring.setAttribute("class", "eco-pin-ring");
+        ring.setAttribute("cx", cx); ring.setAttribute("cy", cy);
+        ring.setAttribute("data-r", DOT_R + RING_PAD); ring.setAttribute("r", DOT_R + RING_PAD);
+        var dot = document.createElementNS(SVGNS, "circle");
+        dot.setAttribute("class", "eco-pin-dot");
+        dot.setAttribute("cx", cx); dot.setAttribute("cy", cy);
+        dot.setAttribute("data-r", DOT_R); dot.setAttribute("r", DOT_R);
+        pin.appendChild(ring); pin.appendChild(dot);
+        function tipHtml() {
           return "<h5>" + d.name + "</h5><div class='eco-tip-meta'>" + d.category + "</div><p>" + d.city + ", " + d.state + " — " + d.description + "</p>";
         }
-        return "<h5>" + g.city + ", IN</h5><div class='eco-tip-meta'>" + n + " resources</div><p>" +
-          g.items.map(function (d) { return d.name; }).join(" · ") + "</p>";
-      }
-      function activate() { showTip(tipHtml(), cx, cy); highlightCity(g.city); }
-      pin.addEventListener("mouseenter", activate);
-      pin.addEventListener("mouseleave", hideTip);
-      pin.addEventListener("focus", activate);
-      pin.addEventListener("blur", hideTip);
-      pin.addEventListener("click", function () { activate(); scrollToCity(g.city); });
-      pin.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); scrollToCity(g.city); } });
-      pinLayer.appendChild(pin);
+        function activate() { showTip(tipHtml(), cx, cy); highlightCity(d.city); }
+        pin.addEventListener("mouseenter", activate);
+        pin.addEventListener("mouseleave", hideTip);
+        pin.addEventListener("focus", activate);
+        pin.addEventListener("blur", hideTip);
+        pin.addEventListener("click", function () { activate(); scrollToCity(d.city); });
+        pin.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); scrollToCity(d.city); } });
+        pinLayer.appendChild(pin);
+      });
     });
+    applyPinScale();
   }
 
   // ---- resource panel ----
