@@ -54,7 +54,6 @@
     .section-alt{background:var(--bg2);}
     .section-dark{background:var(--dark);color:#fff;}
     .slabel{display:inline-flex;align-items:center;gap:7px;font-size:.76rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:12px;}
-    .slabel::before{content:'';width:18px;height:2px;background:var(--green);border-radius:1px;}
     .stitle{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;color:var(--text);margin-bottom:14px;}
     .section-dark .stitle{color:#fff;}
     .ssub{font-size:1.02rem;line-height:1.72;color:var(--muted);max-width:540px;}
@@ -109,7 +108,6 @@
 
     /* HERO EXTRAS */
     .hero-cred{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;font-weight:600;color:#7DD580;margin:-16px 0 30px;}
-    .hero-cred::before{content:'';width:16px;height:2px;background:var(--green);border-radius:1px;}
     .hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:30px;}
     .hero-proof{display:inline-flex;align-items:center;gap:10px;font-size:.85rem;color:rgba(255,255,255,.65);}
     .hp-badge{display:inline-flex;padding:5px 12px;border-radius:100px;background:rgba(62,178,72,.18);border:1px solid rgba(62,178,72,.4);color:#7DD580;font-weight:800;font-size:.78rem;letter-spacing:.02em;}
@@ -125,8 +123,6 @@
     .nibrt-stats{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:24px;margin-bottom:26px;position:relative;}
     .nibrt-stat{display:flex;align-items:center;gap:14px;}
     .nibrt-stat+.nibrt-stat{border-left:1px solid rgba(255,255,255,.16);padding-left:26px;}
-    .nibrt-ico{flex:none;width:54px;height:54px;border-radius:50%;border:1.5px solid rgba(62,178,72,.55);display:flex;align-items:center;justify-content:center;color:var(--green);}
-    .nibrt-ico svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
     .nibrt-n{font-family:'Manrope',system-ui,sans-serif;font-size:1.7rem;font-weight:800;color:var(--green);letter-spacing:-.02em;line-height:1.1;margin-bottom:4px;white-space:nowrap;}
     .nibrt-l{font-size:.86rem;line-height:1.45;color:rgba(255,255,255,.62);}
     .nibrt-license{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.14);padding-top:22px;font-size:.95rem;font-weight:600;color:rgba(255,255,255,.85);position:relative;}
@@ -205,15 +201,12 @@
           <p class="nibrt-lead">Heartland BioWorks holds the exclusive NIBRT license across an 8-state Midwest territory, bringing Dublin-tested biomanufacturing training standards to Indiana's workforce.</p>
           <div class="nibrt-stats">
             <div class="nibrt-stat">
-              <span class="nibrt-ico" aria-hidden="true"><svg viewBox="0 0 34 22"><path d="M2 6.2 4.6 4.4 20.4 3.4 23.6 4.8 24 6.6 27.4 7.2 30.6 10.4 27.8 11.6 28.6 14.2 26 19.4 25.4 15.6 20.6 16.4 18.4 16.2 16.6 20 14.2 16 9.6 15 6.6 12.4 5.2 9.4Z"/></svg></span>
               <div><div class="nibrt-n">8-state</div><div class="nibrt-l">Exclusive Midwest license</div></div>
             </div>
             <div class="nibrt-stat">
-              <span class="nibrt-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 21v-10l2.5-3 2.5 3v10z"/><path d="M14 21v-10l2.5-3 2.5 3v10z"/><path d="M10 21v-8h4v8"/><path d="M7.5 8V5.5M16.5 8V5.5M3.5 21h17"/></svg></span>
               <div><div class="nibrt-n">Dublin</div><div class="nibrt-l">Curriculum origin</div></div>
             </div>
             <div class="nibrt-stat">
-              <span class="nibrt-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 01-10 0V4z"/><path d="M7 5H4.5a2.5 2.5 0 002.6 3M17 5h2.5a2.5 2.5 0 01-2.6 3"/><path d="M12 13v4M8.5 21h7M10 21v-1.5a2 2 0 014 0V21"/></svg></span>
               <div><div class="nibrt-n">Gold Standard</div><div class="nibrt-l">Worldwide leader in biomanufacturing training</div></div>
             </div>
           </div>
