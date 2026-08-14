@@ -110,7 +110,14 @@
 
 .eco-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,480px);gap:36px;align-items:stretch;}
 .eco-mapwrap{position:relative;background:linear-gradient(160deg,#0d2942,#082135);border:1px solid rgba(62,178,72,.16);border-radius:20px;padding:18px;height:720px;display:flex;align-items:center;justify-content:center;}
-.eco-mapwrap svg{height:100%;width:auto;max-width:100%;display:block;overflow:visible;}
+.eco-mapwrap svg{height:100%;width:auto;max-width:100%;display:block;overflow:hidden;}
+.eco-mapwrap svg.eco-zoomed{cursor:grab;}
+.eco-mapwrap svg.eco-grabbing{cursor:grabbing;}
+.eco-zoom-ctrl{position:absolute;right:16px;bottom:16px;z-index:6;display:flex;flex-direction:column;gap:6px;}
+.eco-zoom-btn{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(8,33,53,.85);color:#fff;font:700 1.3rem/1 'Inter',system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 150ms,border-color 150ms;}
+.eco-zoom-btn:hover{background:var(--hb-green);border-color:var(--hb-green);}
+.eco-zoom-btn:focus-visible{outline:2px solid var(--hb-green);outline-offset:2px;}
+.eco-zoom-reset{font-size:1.05rem;}
 .eco-state{fill:rgba(62,178,72,.07);stroke:rgba(62,178,72,.5);stroke-width:1.6;stroke-linejoin:round;}
 .eco-county{fill:rgba(62,178,72,.10);stroke:rgba(120,200,140,.32);stroke-width:.6;vector-effect:non-scaling-stroke;stroke-linejoin:round;transition:fill 160ms;}
 .eco-pin{cursor:pointer;}
@@ -121,7 +128,7 @@
 .eco-pin-ring{fill:none;stroke:#7DD580;stroke-width:1.5;opacity:0;}
 .eco-pin-count{fill:#fff;font:700 11px 'Inter',system-ui,sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none;}
 @keyframes ecoPop{from{opacity:0;transform:scale(.2);}to{opacity:1;transform:scale(1);}}
-.eco-citylabel{fill:rgba(255,255,255,.5);font:600 9px 'Inter',system-ui,sans-serif;pointer-events:none;}
+.eco-citylabel{fill:rgba(255,255,255,.92);font:700 9px 'Inter',system-ui,sans-serif;pointer-events:none;}
 
 .eco-tip{position:absolute;z-index:5;min-width:180px;max-width:240px;background:#fff;border:1px solid var(--hb-border);border-radius:12px;box-shadow:0 16px 40px rgba(8,24,40,.28);padding:12px 14px;font-family:'Inter',system-ui,sans-serif;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity 140ms,transform 140ms;}
 .eco-tip.show{opacity:1;transform:translateY(0);}

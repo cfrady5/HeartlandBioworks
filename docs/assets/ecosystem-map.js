@@ -173,12 +173,12 @@
 
   // city labels to anchor the map
   var CITY_LABELS = [
-    { name: "Indianapolis", lat: 39.7684, lon: -86.1581, dx: 6, dy: -6 },
-    { name: "Bloomington", lat: 39.1653, lon: -86.5264, dx: 6, dy: 4 },
-    { name: "South Bend", lat: 41.6764, lon: -86.2520, dx: 6, dy: -4 },
+    { name: "Indianapolis", lat: 39.7684, lon: -86.1581, dx: 9, dy: -9 },
+    { name: "Bloomington", lat: 39.1653, lon: -86.5264, dx: 8, dy: 6 },
+    { name: "South Bend", lat: 41.6764, lon: -86.2520, dx: 8, dy: -3 },
     { name: "Lafayette", lat: 40.4167, lon: -86.8753, dx: -52, dy: 0 },
-    { name: "Fishers", lat: 39.9568, lon: -86.0134, dx: 7, dy: 0 },
-    { name: "Richmond", lat: 39.8289, lon: -84.8902, dx: -48, dy: 0 }
+    { name: "Fishers", lat: 39.9568, lon: -86.0134, dx: 8, dy: -1 },
+    { name: "Richmond", lat: 39.8289, lon: -84.8902, dx: -47, dy: -8 }
   ];
 
   var SVGNS = "http://www.w3.org/2000/svg";
@@ -223,6 +223,10 @@
   svg.setAttribute("viewBox", "0 0 " + VB_W + " " + VB_H);
   svg.setAttribute("role", "img");
   svg.setAttribute("aria-label", "Map of Indiana showing biomanufacturing ecosystem resources");
+  // everything that pans/zooms together lives in `world`
+  var world = document.createElementNS(SVGNS, "g");
+  world.setAttribute("class", "eco-world");
+  svg.appendChild(world);
   var stateG = document.createElementNS(SVGNS, "g");
   stateG.setAttribute("class", "eco-state-g");
   stateG.setAttribute("transform", STATE_TRANSFORM);
@@ -232,20 +236,94 @@
     cp.setAttribute("class", "eco-county");
     stateG.appendChild(cp);
   });
-  svg.appendChild(stateG);
+  world.appendChild(stateG);
   var labelLayer = document.createElementNS(SVGNS, "g");
   CITY_LABELS.forEach(function (c) {
     var t = document.createElementNS(SVGNS, "text");
     t.setAttribute("x", (px(c.lon) + c.dx).toFixed(1));
     t.setAttribute("y", (py(c.lat) + c.dy).toFixed(1));
     t.setAttribute("class", "eco-citylabel");
+    t.setAttribute("paint-order", "stroke");
+    t.setAttribute("stroke", "#0a2036");
+    t.setAttribute("stroke-width", "0.9");
+    t.setAttribute("stroke-linejoin", "round");
     t.textContent = c.name;
     labelLayer.appendChild(t);
   });
-  svg.appendChild(labelLayer);
+  world.appendChild(labelLayer);
   var pinLayer = document.createElementNS(SVGNS, "g");
-  svg.appendChild(pinLayer);
+  world.appendChild(pinLayer);
   mapWrap.appendChild(svg);
+
+  // ---- zoom + pan ----
+  var zoom = 1, minZoom = 1, maxZoom = 4, panX = 0, panY = 0;
+  function clampPan() {
+    var minX = VB_W - VB_W * zoom, minY = VB_H - VB_H * zoom;
+    panX = Math.min(0, Math.max(minX, panX));
+    panY = Math.min(0, Math.max(minY, panY));
+  }
+  function applyTransform() {
+    world.setAttribute("transform", "translate(" + panX.toFixed(2) + " " + panY.toFixed(2) + ") scale(" + zoom.toFixed(3) + ")");
+    svg.classList.toggle("eco-zoomed", zoom > 1.001);
+  }
+  function zoomTo(nz, cx, cy) {
+    nz = Math.min(maxZoom, Math.max(minZoom, nz));
+    if (cx == null) { cx = VB_W / 2; cy = VB_H / 2; }
+    var wx = (cx - panX) / zoom, wy = (cy - panY) / zoom;
+    panX = cx - wx * nz; panY = cy - wy * nz;
+    zoom = nz; clampPan(); applyTransform();
+  }
+  function clientToVB(clientX, clientY) {
+    var r = svg.getBoundingClientRect();
+    return { x: (clientX - r.left) / r.width * VB_W, y: (clientY - r.top) / r.height * VB_H };
+  }
+  // zoom buttons
+  var ctrl = document.createElement("div");
+  ctrl.className = "eco-zoom-ctrl";
+  ctrl.innerHTML =
+    '<button type="button" class="eco-zoom-btn" data-z="in" aria-label="Zoom in" title="Zoom in">+</button>' +
+    '<button type="button" class="eco-zoom-btn" data-z="out" aria-label="Zoom out" title="Zoom out">−</button>' +
+    '<button type="button" class="eco-zoom-btn eco-zoom-reset" data-z="reset" aria-label="Reset view" title="Reset view">↺</button>';
+  mapWrap.appendChild(ctrl);
+  ctrl.addEventListener("click", function (e) {
+    var btn = e.target.closest(".eco-zoom-btn"); if (!btn) return;
+    var z = btn.getAttribute("data-z");
+    if (z === "in") zoomTo(zoom * 1.5);
+    else if (z === "out") zoomTo(zoom / 1.5);
+    else { zoom = 1; panX = 0; panY = 0; applyTransform(); }
+    hideTip();
+  });
+  // wheel zoom toward the cursor
+  svg.addEventListener("wheel", function (e) {
+    if (!(e.ctrlKey || e.metaKey)) return; // hold Ctrl/⌘ to zoom; otherwise let the page scroll
+    e.preventDefault();
+    var p = clientToVB(e.clientX, e.clientY);
+    zoomTo(zoom * (e.deltaY < 0 ? 1.15 : 1 / 1.15), p.x, p.y);
+    hideTip();
+  }, { passive: false });
+  // drag to pan (only meaningful when zoomed in)
+  var dragging = false, lastX = 0, lastY = 0;
+  svg.addEventListener("pointerdown", function (e) {
+    if (zoom <= 1) return;
+    dragging = true; lastX = e.clientX; lastY = e.clientY;
+    try { svg.setPointerCapture(e.pointerId); } catch (err) {}
+    svg.classList.add("eco-grabbing");
+  });
+  svg.addEventListener("pointermove", function (e) {
+    if (!dragging) return;
+    var r = svg.getBoundingClientRect();
+    panX += (e.clientX - lastX) * (VB_W / r.width);
+    panY += (e.clientY - lastY) * (VB_H / r.height);
+    lastX = e.clientX; lastY = e.clientY;
+    clampPan(); applyTransform();
+  });
+  function endDrag(e) {
+    if (!dragging) return;
+    dragging = false; svg.classList.remove("eco-grabbing");
+    try { svg.releasePointerCapture(e.pointerId); } catch (err) {}
+  }
+  svg.addEventListener("pointerup", endDrag);
+  svg.addEventListener("pointercancel", endDrag);
 
   function showTip(html, cx, cy) {
     tip.innerHTML = html;
@@ -253,8 +331,9 @@
     // position within wrapper using fractional coords
     var wrapRect = mapWrap.getBoundingClientRect();
     var svgRect = svg.getBoundingClientRect();
-    var x = (cx / VB_W) * svgRect.width + (svgRect.left - wrapRect.left);
-    var y = (cy / VB_H) * svgRect.height + (svgRect.top - wrapRect.top);
+    var tcx = panX + cx * zoom, tcy = panY + cy * zoom;
+    var x = (tcx / VB_W) * svgRect.width + (svgRect.left - wrapRect.left);
+    var y = (tcy / VB_H) * svgRect.height + (svgRect.top - wrapRect.top);
     tip.style.left = Math.min(Math.max(x + 14, 8), wrapRect.width - 8) + "px";
     tip.style.top = Math.max(y - 10, 8) + "px";
   }
