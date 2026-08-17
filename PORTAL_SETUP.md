@@ -51,7 +51,7 @@ time**; the stored `body_html` is what public pages render.
 
 ## Supabase setup
 
-Project: **heartland-bioworks** (`rxuqpprzmccaeeayweyd`, us-east-2).
+Project: **heartland-bioworks** (`cxwlixxixgjnrblunnpa`).
 The portal and the public website intentionally share this one project.
 
 Apply migrations **in order** (SQL Editor → paste & run, or `supabase db push`):

@@ -7,13 +7,13 @@
    session). Keep the service_role key OUT of this repo — it is
    never needed in the browser.
 
-   Project: heartland-bioworks (rxuqpprzmccaeeayweyd, us-east-2)
+   Project: heartland-bioworks (cxwlixxixgjnrblunnpa)
    Rotate the key in Supabase Dashboard → Settings → API if needed,
    then update it here.
    ============================================================ */
 window.HB_SUPABASE = {
-  url: "https://rxuqpprzmccaeeayweyd.supabase.co",
-  key: "sb_publishable_ecfIod1MsqRyvw2FHXTeVA_gGyK7WwY"
+  url: "https://cxwlixxixgjnrblunnpa.supabase.co",
+  key: "sb_publishable_MvtyPphW5CflncbrhZCx1g_B_8n0QCE"
 };
 
 /* Single shared client for all modules (auth + content). Returns null
