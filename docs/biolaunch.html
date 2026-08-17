@@ -122,6 +122,7 @@
         <h2 class="stitle">Indiana's Biotech Commercialization Engine</h2>
         <p>BioLaunch exists to close the "valley of death" between biotech discovery and commercial success. We connect early-stage companies to the resources, relationships, and capital they need to build durable businesses.</p>
         <p>From startup advising to lab connections to CDMO network access, BioLaunch provides the support structure that transforms promising science into commercialized solutions.</p>
+        <p>BioLaunch works with companies at any stage with particular focus on those at pre-seed through Series A.</p>
       </div>
       <div class="reveal">
         <div class="overview-image">
@@ -179,18 +180,6 @@
   </div>
 </section>
 
-<section class="section" id="faq">
-  <div class="container">
-    <div class="slabel">FAQs</div>
-    <h2 class="stitle">Common Questions</h2>
-    <div class="faq-list">
-      <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">What stage companies does BioLaunch support?<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-a-inner">BioLaunch works with companies at any stage with particular focus on those at pre-seed through Series A.</div></div></div>
-      <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">Does my company need to be based in Indiana?<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-a-inner">Companies must have a meaningful operational presence in Indiana or be committed to establishing one. BioLaunch prioritizes companies that will contribute to Indiana's bioeconomy through jobs, partnerships, and long-term presence.</div></div></div>
-      <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">Is there an equity component to BioLaunch support?<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-a-inner">No — Heartland BioWorks does not take equity in supported companies. BioLaunch is a mission-driven support program, not a venture fund. Funding connections we facilitate are with external investors who set their own terms.</div></div></div>
-    </div>
-  </div>
-</section>
-
 <!-- Innovation ecosystem partners.
      ADD/REMOVE a partner by adding/removing one .partner-item link below.
      Logos are intentionally omitted until logo use is approved; the text
@@ -234,7 +223,6 @@
 <div id="hb-footer"></div>
 
 <script>
-document.querySelectorAll('.faq-q').forEach(q=>{function t(){const i=q.parentElement,o=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>{x.classList.remove('open');x.querySelector('.faq-a').style.maxHeight='0';x.querySelector('.faq-q').setAttribute('aria-expanded','false');});if(!o){i.classList.add('open');i.querySelector('.faq-a').style.maxHeight=i.querySelector('.faq-a-inner').scrollHeight+'px';q.setAttribute('aria-expanded','true');}}q.addEventListener('click',t);q.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t();}});});
 const obs=new IntersectionObserver(e=>e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('vis');obs.unobserve(en.target);}}),{threshold:.15});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 function postH(){window.parent.postMessage({type:'resize',height:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},'*');}
