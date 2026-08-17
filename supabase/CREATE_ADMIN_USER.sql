@@ -2,7 +2,7 @@
 -- Create the first Heartland BioWorks portal admin.
 --
 --   Sign in at /portal.html with:
---     username:  cfrady          (or cfrady@heartlandbioworks.test)
+--     email:     caleb.frady@theari.us
 --     password:  Test2026
 --
 -- RUN THIS *AFTER* BOOTSTRAP_ALL.sql — it depends on the profiles
@@ -18,7 +18,7 @@ set search_path = public, extensions;
 
 do $$
 declare
-  v_email   text := 'cfrady@heartlandbioworks.test';
+  v_email   text := 'caleb.frady@theari.us';
   v_pass    text := 'Test2026';
   v_user_id uuid;
 begin
@@ -88,4 +88,4 @@ end $$;
 select p.email, p.first_name, p.last_name, p.role, p.active, u.email_confirmed_at
   from public.profiles p
   join auth.users u on u.id = p.id
- where p.email = 'cfrady@heartlandbioworks.test';
+ where p.email = 'caleb.frady@theari.us';
