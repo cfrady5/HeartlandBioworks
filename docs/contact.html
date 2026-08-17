@@ -114,6 +114,73 @@
     var inp = form.querySelector('[name="' + key + '"]'); if (inp) inp.classList.toggle("invalid", !!msg);
   }
 
+
+  /* ----------------------------------------------------------
+     Pre-select Interest Areas based on where the visitor came
+     from. Program CTAs link here as:
+       contact.html?program=biolaunch&type=cdmo_lab_network
+     so the form arrives already reflecting their intent. An
+     explicit ?interest=BioCAN,Partnerships wins over the map.
+     Visitors can always change the selection before submitting.
+     ---------------------------------------------------------- */
+  (function preselectInterests() {
+    var qs = new URLSearchParams(location.search);
+    var program = (qs.get("program") || "").toLowerCase();
+    var type    = (qs.get("type") || "").toLowerCase();
+
+    var BY_PROGRAM = {
+      biotrain:  ["BioTrain"],
+      biolaunch: ["BioLaunch"],
+      bionatsec: [],
+      general:   []
+    };
+    var BY_TYPE = {
+      job_seeker:        ["Workforce Development"],
+      employer:          ["Workforce Development"],
+      educator:          ["Workforce Development"],
+      current_worker:    ["Workforce Development"],
+      startup_support:   ["Commercialization Support"],
+      biostart:          ["Commercialization Support"],
+      commercialization: ["Commercialization Support"],
+      cdmo_lab_network:  ["BioCAN"],
+      biocan:            ["BioCAN"],
+      biocan_grants:     ["BioCAN"],
+      funding:           ["BioCAN"],
+      partnership:       ["Partnerships"],
+      media:             ["Media Inquiries"],
+      innovator:         ["Partnerships"],
+      industry:          ["Partnerships"],
+      government:        ["Partnerships"]
+    };
+
+    var wanted = [];
+    var explicit = qs.get("interest");
+    if (explicit) {
+      wanted = explicit.split(",").map(function (v) { return v.trim(); });
+    } else {
+      wanted = (BY_PROGRAM[program] || []).concat(BY_TYPE[type] || []);
+    }
+    if (!wanted.length) return;
+
+    var checked = 0;
+    wanted.forEach(function (want) {
+      var box = [].slice.call(document.querySelectorAll("#cf-interests input[type=checkbox]"))
+        .filter(function (c) { return c.value.toLowerCase() === want.toLowerCase(); })[0];
+      if (box && !box.checked) { box.checked = true; checked++; }
+    });
+    if (!checked) return;
+
+    // Tell the visitor why boxes are already ticked.
+    var group = document.getElementById("cf-interests");
+    if (group && !document.getElementById("cf-preselect-note")) {
+      var note = document.createElement("p");
+      note.id = "cf-preselect-note";
+      note.className = "cform-preselect";
+      note.textContent = "We've pre-selected the areas that match the page you came from — add or remove any before submitting.";
+      group.parentNode.insertBefore(note, group.nextSibling);
+    }
+  })();
+
   form.addEventListener("submit", async function (ev) {
     ev.preventDefault();
     errBox.classList.remove("show"); errBox.textContent = "";
