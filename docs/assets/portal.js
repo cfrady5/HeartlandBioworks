@@ -131,8 +131,11 @@
       var err = $("#pl-err"); err.classList.remove("show");
       $("#pl-ok").classList.remove("show");
       $("#pl-submit").disabled = true;
-      var r = await P.sb.auth.signInWithPassword({
-        email: $("#pl-email").value.trim(), password: $("#pl-pass").value });
+      // Username support, matching the rest of the site:
+      // "cfrady" -> "cfrady@heartlandbioworks.test". Emails pass through.
+      var who = $("#pl-email").value.trim();
+      if (who && who.indexOf("@") === -1) who = who.toLowerCase() + "@heartlandbioworks.test";
+      var r = await P.sb.auth.signInWithPassword({ email: who, password: $("#pl-pass").value });
       $("#pl-submit").disabled = false;
       if (r.error) {
         err.textContent = "Sign-in failed: " + (r.error.message || "check your email and password.");
@@ -143,6 +146,7 @@
     });
     $("#pl-forgot").addEventListener("click", async function () {
       var email = $("#pl-email").value.trim();
+      if (email && email.indexOf("@") === -1) email = email.toLowerCase() + "@heartlandbioworks.test";
       var err = $("#pl-err"); err.classList.remove("show");
       if (!email) { err.textContent = "Enter your email above first, then press Forgot password."; err.classList.add("show"); return; }
       var r = await P.sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
