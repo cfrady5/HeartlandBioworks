@@ -54,19 +54,17 @@ time**; the stored `body_html` is what public pages render.
 Project: **heartland-bioworks** (`cxwlixxixgjnrblunnpa`).
 The portal and the public website intentionally share this one project.
 
-Apply migrations **in order** (SQL Editor → paste & run, or `supabase db push`):
+**Fresh project bootstrap (one paste):** open the SQL Editor and run
+**`supabase/BOOTSTRAP_ALL.sql`** — it concatenates migrations 0001–0005 in
+order: legacy content tables (news_items/events/media_assets,
+contact_submissions, newsletter_subscribers), the **storage buckets**
+(`news-media`, `event-media`, `media-library` — public read, authenticated
+write), and the full portal schema, RLS, RPC, and seed data. On an existing
+project, apply only the numbered migrations you're missing instead.
 
-1. `supabase/migrations/0004_portal_foundation.sql`
-2. `supabase/migrations/0005_portal_seed.sql`
-
-0005 is idempotent and also migrates legacy rows:
+0005 is idempotent; on a project that has legacy data it also migrates
 `contact_submissions → inquiries` (with notes) and `news_items → news_posts`,
 and seeds the current team roster into `team_members`.
-
-**Storage buckets** (already exist from earlier phases): `news-media`,
-`event-media`, `media-library` — public read, authenticated write. The
-portal uploads news images to `news-media` and press/media files to
-`media-library`.
 
 **Auth settings** (Dashboard → Authentication → Sign In / Up):
 - **Disable public sign-ups.** Staff are invited (below); the
