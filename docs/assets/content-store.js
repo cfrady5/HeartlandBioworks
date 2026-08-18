@@ -229,6 +229,13 @@
     if (res.error) throw fail("load subscribers", res.error);
     return (res.data || []).map(function (r) { return mapFrom(SUB_FIELDS, r); });
   }
+  async function deleteSubscribers(ids) {
+    var sb = client();
+    if (!sb) throw new Error("Subscriber service unavailable — nothing was deleted.");
+    var res = await sb.from("newsletter_subscribers").delete().in("id", ids).select("id");
+    if (res.error) throw fail("delete subscribers", res.error);
+    return (res.data || []).map(function (r) { return r.id; });
+  }
   async function updateSubscriber(id, patch) {
     var sb = client();
     if (!sb) throw new Error("Subscriber service unavailable — nothing was saved.");
@@ -250,6 +257,7 @@
     deleteContacts: deleteContacts,
     addSubscriber: addSubscriber,
     getSubscribers: getSubscribers,
-    updateSubscriber: updateSubscriber
+    updateSubscriber: updateSubscriber,
+    deleteSubscribers: deleteSubscribers
   };
 })();

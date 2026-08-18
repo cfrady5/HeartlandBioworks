@@ -236,6 +236,9 @@
   function fmtDT(iso) { return iso ? String(iso).slice(0, 10) : ""; }
   var CONTACT_CSV_HEADER = ["first_name", "last_name", "email", "job_title", "country", "phone", "organization_name", "organization_type", "interests", "message", "status", "created_at"];
   function contactCsvRow(c) { return [c.firstName, c.lastName, c.email, c.jobTitle, c.country, c.phone, c.organizationName, c.organizationType, (c.interests || []).join("; "), c.message, c.status, c.createdAt]; }
+  var USER_CSV_HEADER = ["first_name", "last_name", "email", "organization", "job_title", "source", "consent_status", "created_at"];
+  function userCsvRow(r) { return [r.firstName, r.lastName, r.email, r.organization, r.jobTitle, r.source, r.consentStatus, r.createdAt]; }
+  function exportableUser(r) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(r.email || "") && r.consentStatus !== "No Consent"; }
   function csvCell(v) { v = String(v == null ? "" : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
   function downloadCsv(filename, header, rows) {
     var csv = header.join(",") + "\n" + rows.map(function (r) { return r.map(csvCell).join(","); }).join("\n");
@@ -324,14 +327,17 @@
   }
 
   function userRows() {
-    // merged opt-in contact database: contact submissions + newsletter signups
+    // merged opt-in contact database: contact submissions + newsletter signups.
+    // key encodes the origin table so bulk delete knows where each row lives.
     var rows = [];
     (state.items.contacts || []).forEach(function (c) {
-      rows.push({ firstName: c.firstName, lastName: c.lastName, email: c.email, organization: c.organizationName,
+      rows.push({ key: "c:" + c.id, kind: "contact", id: c.id,
+        firstName: c.firstName, lastName: c.lastName, email: c.email, organization: c.organizationName,
         jobTitle: c.jobTitle, source: "Contact Form", consentStatus: c.consent ? "Active" : "No Consent", createdAt: c.createdAt });
     });
     (state.items.subscribers || []).forEach(function (u) {
-      rows.push({ firstName: u.firstName, lastName: u.lastName, email: u.email, organization: u.organization,
+      rows.push({ key: "s:" + u.id, kind: "subscriber", id: u.id,
+        firstName: u.firstName, lastName: u.lastName, email: u.email, organization: u.organization,
         jobTitle: u.jobTitle, source: u.source || "Newsletter", consentStatus: u.consent ? (u.status || "Active") : "No Consent", createdAt: u.createdAt });
     });
     return rows.sort(function (a, b) { return (b.createdAt || "").localeCompare(a.createdAt || ""); });
@@ -346,8 +352,13 @@
         .toLowerCase().indexOf(q) !== -1;
     });
   }
+  function selectedUsers() {
+    return filteredUsers().filter(function (r) { return state.selected[r.key]; });
+  }
   function usersView() {
     var rows = filteredUsers();
+    var sel = selectedUsers();
+    var allChecked = rows.length > 0 && sel.length === rows.length;
     return '<div class="hbd-head"><h2>Users / Email List</h2>' +
       '<button type="button" class="hbd-create" data-export-users>Export Email List CSV</button></div>' +
       '<p class="hbd-sectionhint">The Heartland BioWorks contact database — contact form submissions and newsletter signups, with consent status. Exports include only valid, consenting email records and never include internal notes.</p>' +
@@ -355,10 +366,22 @@
       '<div class="hbd-toolbar">' + searchBox("Search name, email, organization…") +
         filterSelect("source-filter", "Source", ["All", "Contact Form", "Newsletter", "Event Signup", "Other"], state.sourceFilter) +
         filterSelect("status-filter", "Status", ["All", "Active", "Unsubscribed", "Bounced", "No Consent"], state.statusFilter) + "</div>" +
+      (sel.length
+        ? '<div class="hbd-bulkbar" role="toolbar" aria-label="Bulk actions">' +
+            '<strong>' + sel.length + " selected</strong>" +
+            '<button type="button" class="hbd-back" data-download-selected-users>Download CSV</button>' +
+            '<button type="button" class="hbd-back hbd-bulk-danger" data-delete-selected-users>Delete</button>' +
+            '<button type="button" class="hbd-back" data-clear-selected>Clear selection</button>' +
+          "</div>"
+        : "") +
       (rows.length
-        ? '<div class="hbd-tablewrap"><table class="hbd-table"><thead><tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Organization</th><th>Job Title</th><th>Source</th><th>Consent Status</th><th>Created</th></tr></thead><tbody>' +
+        ? '<div class="hbd-tablewrap"><table class="hbd-table"><thead><tr>' +
+          '<th class="hbd-selcol"><input type="checkbox" data-select-all-users aria-label="Select all shown records"' + (allChecked ? " checked" : "") + " /></th>" +
+          "<th>First Name</th><th>Last Name</th><th>Email</th><th>Organization</th><th>Job Title</th><th>Source</th><th>Consent Status</th><th>Created</th></tr></thead><tbody>" +
           rows.map(function (r) {
-            return "<tr><td>" + esc(r.firstName) + "</td><td>" + esc(r.lastName) + "</td><td>" + esc(r.email) + "</td><td>" + esc(r.organization) + "</td><td>" + esc(r.jobTitle) + "</td><td>" + esc(r.source) + "</td>" +
+            var on = !!state.selected[r.key];
+            return "<tr" + (on ? ' class="hbd-selrow"' : "") + '><td class="hbd-selcol"><input type="checkbox" data-select-user="' + esc(r.key) + '" aria-label="Select ' + esc((r.firstName || "") + " " + (r.lastName || "")) + '"' + (on ? " checked" : "") + " /></td>" +
+              "<td>" + esc(r.firstName) + "</td><td>" + esc(r.lastName) + "</td><td>" + esc(r.email) + "</td><td>" + esc(r.organization) + "</td><td>" + esc(r.jobTitle) + "</td><td>" + esc(r.source) + "</td>" +
               '<td><span class="hbd-status ' + (r.consentStatus === "Active" ? "pub" : "draft") + '">' + esc(r.consentStatus) + "</span></td>" +
               "<td>" + esc(fmtDT(r.createdAt)) + "</td></tr>";
           }).join("") + "</tbody></table></div>"
@@ -459,13 +482,52 @@
         CONTACT_CSV_HEADER, cs.map(contactCsvRow));
       return;
     }
-    if (t.closest("[data-export-users]")) {
-      var us = filteredUsers().filter(function (r) {
-        return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(r.email || "") && r.consentStatus !== "No Consent";
+    if (t.matches && t.matches("[data-select-user]")) {
+      var uk = t.getAttribute("data-select-user");
+      if (t.checked) state.selected[uk] = true; else delete state.selected[uk];
+      paint(); return;
+    }
+    if (t.matches && t.matches("[data-select-all-users]")) {
+      var uon = t.checked;
+      filteredUsers().forEach(function (r) {
+        if (uon) state.selected[r.key] = true; else delete state.selected[r.key];
       });
+      paint(); return;
+    }
+    if (t.closest("[data-download-selected-users]")) {
+      // same consent/validity rule as the full email-list export
+      var selU = selectedUsers().filter(exportableUser);
+      if (!selU.length) { state.notice = { kind: "err", msg: "None of the selected records are exportable (valid, consenting emails only)." }; paint(); return; }
+      downloadCsv("heartland-bioworks-email-list-selected-" + new Date().toISOString().slice(0, 10) + ".csv",
+        USER_CSV_HEADER, selU.map(userCsvRow));
+      return;
+    }
+    if (t.closest("[data-delete-selected-users]")) {
+      var selRows2 = selectedUsers();
+      if (!selRows2.length) return;
+      if (!window.confirm("Delete " + selRows2.length + " record" + (selRows2.length === 1 ? "" : "s") + "? Contact-form rows delete the underlying contact request too. This cannot be undone.")) return;
+      t.closest("[data-delete-selected-users]").disabled = true;
+      var cIds = selRows2.filter(function (r) { return r.kind === "contact"; }).map(function (r) { return r.id; });
+      var sIds = selRows2.filter(function (r) { return r.kind === "subscriber"; }).map(function (r) { return r.id; });
+      try {
+        var dC = cIds.length ? await HBStore.deleteContacts(cIds) : [];
+        var dS = sIds.length ? await HBStore.deleteSubscribers(sIds) : [];
+        var goneC = {}, goneS = {};
+        dC.forEach(function (id) { goneC[id] = true; delete state.selected["c:" + id]; });
+        dS.forEach(function (id) { goneS[id] = true; delete state.selected["s:" + id]; });
+        state.items.contacts = (state.items.contacts || []).filter(function (x) { return !goneC[x.id]; });
+        state.items.subscribers = (state.items.subscribers || []).filter(function (x) { return !goneS[x.id]; });
+        var total = dC.length + dS.length;
+        state.notice = total === selRows2.length
+          ? { kind: "ok", msg: total + " record" + (total === 1 ? "" : "s") + " deleted." }
+          : { kind: "err", msg: total + " of " + selRows2.length + " deleted — contact-form records require an admin account to delete." };
+      } catch (e4) { state.notice = { kind: "err", msg: e4.message || "Delete failed." }; }
+      paint(); return;
+    }
+    if (t.closest("[data-export-users]")) {
+      var us = filteredUsers().filter(exportableUser);
       downloadCsv("heartland-bioworks-email-list-" + new Date().toISOString().slice(0, 10) + ".csv",
-        ["first_name", "last_name", "email", "organization", "job_title", "source", "consent_status", "created_at"],
-        us.map(function (r) { return [r.firstName, r.lastName, r.email, r.organization, r.jobTitle, r.source, r.consentStatus, r.createdAt]; }));
+        USER_CSV_HEADER, us.map(userCsvRow));
       return;
     }
     if (t.closest("[data-logout]")) { await HBAuth.logout(); window.location.replace("login.html"); return; }
