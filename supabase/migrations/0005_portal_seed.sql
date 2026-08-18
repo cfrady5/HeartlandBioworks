@@ -167,6 +167,33 @@ select * from (values
 ) as t(name, title, bio_short, bio_full, headshot_url, linkedin_url, email, display_order, active)
 where not exists (select 1 from public.team_members tm where tm.name = t.name);
 
+-- ---------- seed board_members (Executive Board) from the current site roster ----------
+insert into public.board_members (name, title, organization, board_type, display_order, active)
+select * from (values
+  ('Mike Bolinder',       'SVP, External Engagement & Chief Innovation Officer',        'BioCrossroads',                                        'executive',  1, true),
+  ('Susan Brock Williams','Associate Vice President, State Government Affairs',         'Eli Lilly',                                            'executive',  2, true),
+  ('Tim Davies',          'Vice President, Crop Health R&D',                            'Corteva Agriscience',                                  'executive',  3, true),
+  ('Daniel DeLaurentis',  'Vice President for Research',                                'Purdue University',                                    'executive',  4, true),
+  ('Molly Dodge',         'Senior Vice President for Workforce and Careers',            'Ivy Tech Community College',                           'executive',  5, true),
+  ('Scott Fadness',       'Mayor',                                                      'City of Fishers',                                      'executive',  6, true),
+  ('John Fernandez',      'CEO',                                                        'Amplify Bloomington',                                  'executive',  7, true),
+  ('Joe Hogsett',         'Mayor',                                                      'City of Indianapolis',                                 'executive',  8, true),
+  ('Jon Hooker',          'President',                                                  'Central Indiana Building & Construction Trades Council','executive', 9, true),
+  ('Tracey Jackson',      'Vice President of Workforce Development & Community Impact', '16 Tech Innovation District',                          'executive', 10, true),
+  ('Kristin Jones',       'President & CEO',                                            'Indiana Life Sciences Association',                    'executive', 11, true),
+  ('Melina Kennedy',      'CEO',                                                        'Central Indiana Corporate Partnership (CICP)',         'executive', 12, true),
+  ('Andrew Kossack',      'President & CEO',                                            'Applied Research Institute (ARI)',                     'executive', 13, true),
+  ('Emily Krueger',       'President & CEO',                                            '16 Tech Innovation District',                          'executive', 14, true),
+  ('Cory Lewis',          'President & CEO',                                            'INCOG BioPharma Services',                             'executive', 15, true),
+  ('Russell Mumper',      'Vice President for Research',                                'Indiana University',                                   'executive', 16, true),
+  ('Dan Peterson',        'Vice President, Industry & Government Affairs',              'Cook Group',                                           'executive', 17, true),
+  ('Jeffrey Rhoads',      'Vice President for Research',                                'University of Notre Dame',                             'executive', 18, true),
+  ('John Stewart',        'Advisor, State Government and Public Affairs',               'Elanco',                                               'executive', 19, true),
+  ('Christy Wright',      'CEO',                                                        'AgriNovus Indiana',                                    'executive', 20, true),
+  ('Vince Wong',          'President & CEO',                                            'BioCrossroads',                                        'executive', 21, true)
+) as b(name, title, organization, board_type, display_order, active)
+where not exists (select 1 from public.board_members bm where bm.name = b.name);
+
 -- ---------- seed program_pages shells ----------
 insert into public.program_pages (slug, title, eyebrow, hero_headline, published) values
   ('biotrain',  'BioTrain',                  'Workforce Development',        'Building Indiana''s Biomanufacturing Workforce', true),

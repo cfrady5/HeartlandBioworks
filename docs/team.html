@@ -126,9 +126,31 @@ var TEAM = [
     empty.style.display = shown.length ? "none" : "block";
   }
 
-  // Executive Board roster — filled from the portal CMS (board_members);
-  // stays empty (with the "coming soon" note) until members are added.
-  var BOARD = [];
+  // Executive Board roster — hard-coded fallback; overridden by the portal
+  // CMS (board_members, board_type "executive") when rows exist there.
+  var BOARD = [
+    { name: "Mike Bolinder", title: "SVP, External Engagement & Chief Innovation Officer", org: "BioCrossroads" },
+    { name: "Susan Brock Williams", title: "Associate Vice President, State Government Affairs", org: "Eli Lilly" },
+    { name: "Tim Davies", title: "Vice President, Crop Health R&D", org: "Corteva Agriscience" },
+    { name: "Daniel DeLaurentis", title: "Vice President for Research", org: "Purdue University" },
+    { name: "Molly Dodge", title: "Senior Vice President for Workforce and Careers", org: "Ivy Tech Community College" },
+    { name: "Scott Fadness", title: "Mayor", org: "City of Fishers" },
+    { name: "John Fernandez", title: "CEO", org: "Amplify Bloomington" },
+    { name: "Joe Hogsett", title: "Mayor", org: "City of Indianapolis" },
+    { name: "Jon Hooker", title: "President", org: "Central Indiana Building & Construction Trades Council" },
+    { name: "Tracey Jackson", title: "Vice President of Workforce Development & Community Impact", org: "16 Tech Innovation District" },
+    { name: "Kristin Jones", title: "President & CEO", org: "Indiana Life Sciences Association" },
+    { name: "Melina Kennedy", title: "CEO", org: "Central Indiana Corporate Partnership (CICP)" },
+    { name: "Andrew Kossack", title: "President & CEO", org: "Applied Research Institute (ARI)" },
+    { name: "Emily Krueger", title: "President & CEO", org: "16 Tech Innovation District" },
+    { name: "Cory Lewis", title: "President & CEO", org: "INCOG BioPharma Services" },
+    { name: "Russell Mumper", title: "Vice President for Research", org: "Indiana University" },
+    { name: "Dan Peterson", title: "Vice President, Industry & Government Affairs", org: "Cook Group" },
+    { name: "Jeffrey Rhoads", title: "Vice President for Research", org: "University of Notre Dame" },
+    { name: "John Stewart", title: "Advisor, State Government and Public Affairs", org: "Elanco" },
+    { name: "Christy Wright", title: "CEO", org: "AgriNovus Indiana" },
+    { name: "Vince Wong", title: "President & CEO", org: "BioCrossroads" }
+  ];
   function renderBoard() {
     var bg = document.getElementById("boardGrid");
     var note = document.getElementById("boardNote");
@@ -159,9 +181,10 @@ var TEAM = [
             shortBio: m.bio_short || "", fullBio: m.bio_full || "" };
         });
       }
-      if (!res[1].error && res[1].data) {
-        BOARD = res[1].data.filter(function (b) { return b.board_type === "executive"; })
+      if (!res[1].error && res[1].data && res[1].data.length) {
+        var exec = res[1].data.filter(function (b) { return b.board_type === "executive"; })
           .map(function (b) { return { name: b.name, title: b.title || "", org: b.organization || "" }; });
+        if (exec.length) BOARD = exec;
       }
     }).catch(function () {}).then(function () { render(""); renderBoard(); });
   })();
