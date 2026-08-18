@@ -327,20 +327,38 @@
   }
 
   function userRows() {
-    // merged opt-in contact database: contact submissions + newsletter signups.
-    // key encodes the origin table so bulk delete knows where each row lives.
-    var rows = [];
+    // The email list is newsletter_subscribers records only — one person,
+    // one record. Contact requests are separate records (Contact Requests
+    // section) and are never touched by actions here; each row links to
+    // that person's requests by email address.
+    var counts = {};
     (state.items.contacts || []).forEach(function (c) {
-      rows.push({ key: "c:" + c.id, kind: "contact", id: c.id,
-        firstName: c.firstName, lastName: c.lastName, email: c.email, organization: c.organizationName,
-        jobTitle: c.jobTitle, source: "Contact Form", consentStatus: c.consent ? "Active" : "No Consent", createdAt: c.createdAt });
+      var k = (c.email || "").trim().toLowerCase();
+      if (k) counts[k] = (counts[k] || 0) + 1;
     });
-    (state.items.subscribers || []).forEach(function (u) {
-      rows.push({ key: "s:" + u.id, kind: "subscriber", id: u.id,
+    var rows = (state.items.subscribers || []).map(function (u) {
+      var k = (u.email || "").trim().toLowerCase();
+      return { key: "s:" + u.id, id: u.id,
         firstName: u.firstName, lastName: u.lastName, email: u.email, organization: u.organization,
-        jobTitle: u.jobTitle, source: u.source || "Newsletter", consentStatus: u.consent ? (u.status || "Active") : "No Consent", createdAt: u.createdAt });
+        jobTitle: u.jobTitle, source: u.source || "Newsletter",
+        consentStatus: u.consent ? (u.status || "Active") : "No Consent",
+        createdAt: u.createdAt, contactCount: counts[k] || 0 };
     });
-    return rows.sort(function (a, b) { return (b.createdAt || "").localeCompare(a.createdAt || ""); });
+    rows.sort(function (a, b) { return (b.createdAt || "").localeCompare(a.createdAt || ""); });
+    // One row per email even if legacy duplicate subscriber rows exist
+    // (0007 enforces this in the database going forward): keep the newest,
+    // except a consenting record always wins over a non-consenting one.
+    var byEmail = {}, out = [];
+    rows.forEach(function (r) {
+      var k = (r.email || "").trim().toLowerCase();
+      if (!k) { out.push(r); return; }
+      var kept = byEmail[k];
+      if (!kept) { byEmail[k] = r; out.push(r); return; }
+      if (kept.consentStatus === "No Consent" && r.consentStatus === "Active") {
+        out[out.indexOf(kept)] = r; byEmail[k] = r;
+      }
+    });
+    return out;
   }
   function filteredUsers() {
     var q = state.q.toLowerCase();
@@ -361,7 +379,7 @@
     var allChecked = rows.length > 0 && sel.length === rows.length;
     return '<div class="hbd-head"><h2>Users / Email List</h2>' +
       '<button type="button" class="hbd-create" data-export-users>Export Email List CSV</button></div>' +
-      '<p class="hbd-sectionhint">The Heartland BioWorks contact database — contact form submissions and newsletter signups, with consent status. Exports include only valid, consenting email records and never include internal notes.</p>' +
+      '<p class="hbd-sectionhint">The Heartland BioWorks email list — one record per person, with consent status. Contact requests are separate records: use the Requests column to see everything a person has sent, and deleting here never removes their contact requests. Exports include only valid, consenting email records.</p>' +
       (state.notice ? '<div class="hbd-notice ' + state.notice.kind + '">' + esc(state.notice.msg) + "</div>" : "") +
       '<div class="hbd-toolbar">' + searchBox("Search name, email, organization…") +
         filterSelect("source-filter", "Source", ["All", "Contact Form", "Newsletter", "Event Signup", "Other"], state.sourceFilter) +
@@ -377,13 +395,16 @@
       (rows.length
         ? '<div class="hbd-tablewrap"><table class="hbd-table"><thead><tr>' +
           '<th class="hbd-selcol"><input type="checkbox" data-select-all-users aria-label="Select all shown records"' + (allChecked ? " checked" : "") + " /></th>" +
-          "<th>First Name</th><th>Last Name</th><th>Email</th><th>Organization</th><th>Job Title</th><th>Source</th><th>Consent Status</th><th>Created</th></tr></thead><tbody>" +
+          "<th>First Name</th><th>Last Name</th><th>Email</th><th>Organization</th><th>Job Title</th><th>Source</th><th>Consent Status</th><th>Created</th><th>Requests</th></tr></thead><tbody>" +
           rows.map(function (r) {
             var on = !!state.selected[r.key];
             return "<tr" + (on ? ' class="hbd-selrow"' : "") + '><td class="hbd-selcol"><input type="checkbox" data-select-user="' + esc(r.key) + '" aria-label="Select ' + esc((r.firstName || "") + " " + (r.lastName || "")) + '"' + (on ? " checked" : "") + " /></td>" +
               "<td>" + esc(r.firstName) + "</td><td>" + esc(r.lastName) + "</td><td>" + esc(r.email) + "</td><td>" + esc(r.organization) + "</td><td>" + esc(r.jobTitle) + "</td><td>" + esc(r.source) + "</td>" +
               '<td><span class="hbd-status ' + (r.consentStatus === "Active" ? "pub" : "draft") + '">' + esc(r.consentStatus) + "</span></td>" +
-              "<td>" + esc(fmtDT(r.createdAt)) + "</td></tr>";
+              "<td>" + esc(fmtDT(r.createdAt)) + "</td>" +
+              '<td class="hbd-actions">' + (r.contactCount
+                ? '<button type="button" data-view-contacts="' + esc(r.email) + '">' + r.contactCount + " request" + (r.contactCount === 1 ? "" : "s") + " →</button>"
+                : '<span class="hbd-none">—</span>') + "</td></tr>";
           }).join("") + "</tbody></table></div>"
         : '<div class="hbc-empty">No contacts match the current search/filters.</div>');
   }
@@ -503,25 +524,31 @@
       return;
     }
     if (t.closest("[data-delete-selected-users]")) {
+      // deletes email-list (subscriber) records ONLY — contact requests
+      // are separate records and are never touched from this view
       var selRows2 = selectedUsers();
       if (!selRows2.length) return;
-      if (!window.confirm("Delete " + selRows2.length + " record" + (selRows2.length === 1 ? "" : "s") + "? Contact-form rows delete the underlying contact request too. This cannot be undone.")) return;
+      if (!window.confirm("Remove " + selRows2.length + " record" + (selRows2.length === 1 ? "" : "s") + " from the email list? Their contact requests are kept. This cannot be undone.")) return;
       t.closest("[data-delete-selected-users]").disabled = true;
-      var cIds = selRows2.filter(function (r) { return r.kind === "contact"; }).map(function (r) { return r.id; });
-      var sIds = selRows2.filter(function (r) { return r.kind === "subscriber"; }).map(function (r) { return r.id; });
       try {
-        var dC = cIds.length ? await HBStore.deleteContacts(cIds) : [];
-        var dS = sIds.length ? await HBStore.deleteSubscribers(sIds) : [];
-        var goneC = {}, goneS = {};
-        dC.forEach(function (id) { goneC[id] = true; delete state.selected["c:" + id]; });
+        var dS = await HBStore.deleteSubscribers(selRows2.map(function (r) { return r.id; }));
+        var goneS = {};
         dS.forEach(function (id) { goneS[id] = true; delete state.selected["s:" + id]; });
-        state.items.contacts = (state.items.contacts || []).filter(function (x) { return !goneC[x.id]; });
         state.items.subscribers = (state.items.subscribers || []).filter(function (x) { return !goneS[x.id]; });
-        var total = dC.length + dS.length;
-        state.notice = total === selRows2.length
-          ? { kind: "ok", msg: total + " record" + (total === 1 ? "" : "s") + " deleted." }
-          : { kind: "err", msg: total + " of " + selRows2.length + " deleted — contact-form records require an admin account to delete." };
+        state.notice = dS.length === selRows2.length
+          ? { kind: "ok", msg: dS.length + " record" + (dS.length === 1 ? "" : "s") + " removed from the email list. Contact requests were not affected." }
+          : { kind: "err", msg: dS.length + " of " + selRows2.length + " removed." };
       } catch (e4) { state.notice = { kind: "err", msg: e4.message || "Delete failed." }; }
+      paint(); return;
+    }
+    if (t.closest("[data-view-contacts]")) {
+      // jump to Contact Requests pre-searched by this person's email
+      var vEmail = t.closest("[data-view-contacts]").getAttribute("data-view-contacts");
+      state.section = "contacts"; state.editing = null; state.contactOpen = null;
+      state.notice = null; state.statusFilter = "All"; state.sourceFilter = "All";
+      try { history.replaceState(null, "", "#contacts"); } catch (e5) {}
+      await refresh();
+      state.q = vEmail;
       paint(); return;
     }
     if (t.closest("[data-export-users]")) {
