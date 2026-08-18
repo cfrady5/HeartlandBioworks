@@ -159,19 +159,52 @@
     if (res.error) throw fail("send your message", res.error);
     return true;
   }
+  /* Contact requests are backed by public.inquiries — the same table the
+     staff portal inbox reads — so every submission appears here regardless
+     of which write path it arrived through (the submit_inquiry RPC, or the
+     legacy contact_submissions fallback, which a DB trigger mirrors into
+     inquiries). The dashboard's New/Contacted/Closed vocabulary maps onto
+     the portal's richer status set. */
+  var INQ_STATUS_OUT = { new: "New", in_progress: "Contacted", waiting: "Contacted", follow_up: "Contacted", resolved: "Closed", archived: "Closed" };
+  var INQ_STATUS_IN = { New: "new", Contacted: "in_progress", Closed: "resolved" };
+  function fromInquiry(r) {
+    var m = r.metadata || {};
+    return {
+      id: r.id,
+      firstName: r.first_name || "", lastName: r.last_name || "",
+      jobTitle: r.job_title || "", email: r.email || "", phone: r.phone || "",
+      country: m.country || "", organizationName: r.organization || "",
+      organizationType: m.organization_type || "",
+      interests: Array.isArray(m.interests) ? m.interests : [],
+      message: r.message || "", consent: m.consent !== false,
+      status: INQ_STATUS_OUT[r.status] || "New",
+      internalNotes: m.internal_notes || "",
+      createdAt: r.created_at
+    };
+  }
   async function getContacts() {
     var sb = client();
     if (!sb) throw new Error("Contact service unavailable. Check your connection and reload.");
-    var res = await sb.from("contact_submissions").select("*");
+    var res = await sb.from("inquiries").select("*").order("created_at", { ascending: false });
     if (res.error) throw fail("load contact requests", res.error);
-    return (res.data || []).map(function (r) { return mapFrom(CONTACT_FIELDS, r); });
+    return (res.data || []).map(fromInquiry);
   }
   async function updateContact(id, patch) {
     var sb = client();
     if (!sb) throw new Error("Contact service unavailable — nothing was saved.");
-    var res = await sb.from("contact_submissions").update(mapTo(CONTACT_FIELDS, patch)).eq("id", id).select().single();
+    var update = {};
+    if (patch.status !== undefined) update.status = INQ_STATUS_IN[patch.status] || "new";
+    if (patch.internalNotes !== undefined) {
+      // notes live inside inquiries.metadata so nothing else changes shape
+      var cur = await sb.from("inquiries").select("metadata").eq("id", id).single();
+      if (cur.error) throw fail("save contact changes", cur.error);
+      var meta = cur.data.metadata || {};
+      meta.internal_notes = patch.internalNotes;
+      update.metadata = meta;
+    }
+    var res = await sb.from("inquiries").update(update).eq("id", id).select().single();
     if (res.error) throw fail("save contact changes", res.error);
-    return mapFrom(CONTACT_FIELDS, res.data);
+    return fromInquiry(res.data);
   }
   async function addSubscriber(payload) {
     var sb = client();
