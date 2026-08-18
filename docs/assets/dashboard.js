@@ -104,7 +104,8 @@
   var initial = (window.location.hash || "").replace("#", "");
   var state = { section: SECTIONS.indexOf(initial) !== -1 ? initial : "news",
     editing: null, notice: null, items: [], loading: false,
-    q: "", statusFilter: "All", sourceFilter: "All", contactOpen: null };
+    q: "", statusFilter: "All", sourceFilter: "All", contactOpen: null,
+    selected: {} };
 
   /* ---------- DashboardLayout ---------- */
   function layout(inner) {
@@ -233,6 +234,8 @@
 
   /* ---------- contacts + users (email list) ---------- */
   function fmtDT(iso) { return iso ? String(iso).slice(0, 10) : ""; }
+  var CONTACT_CSV_HEADER = ["first_name", "last_name", "email", "job_title", "country", "phone", "organization_name", "organization_type", "interests", "message", "status", "created_at"];
+  function contactCsvRow(c) { return [c.firstName, c.lastName, c.email, c.jobTitle, c.country, c.phone, c.organizationName, c.organizationType, (c.interests || []).join("; "), c.message, c.status, c.createdAt]; }
   function csvCell(v) { v = String(v == null ? "" : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
   function downloadCsv(filename, header, rows) {
     var csv = header.join(",") + "\n" + rows.map(function (r) { return r.map(csvCell).join(","); }).join("\n");
@@ -262,18 +265,35 @@
         .toLowerCase().indexOf(q) !== -1;
     }).sort(function (a, b) { return (b.createdAt || "").localeCompare(a.createdAt || ""); });
   }
+  function selectedContacts() {
+    return filteredContacts().filter(function (c) { return state.selected[c.id]; });
+  }
   function contactsView() {
     if (state.contactOpen) return contactDetail();
     var rows = filteredContacts();
+    var sel = selectedContacts();
+    var allChecked = rows.length > 0 && sel.length === rows.length;
     return '<div class="hbd-head"><h2>Contact Requests</h2>' +
       '<button type="button" class="hbd-back" data-export-contacts>Export CSV</button></div>' +
       (state.notice ? '<div class="hbd-notice ' + state.notice.kind + '">' + esc(state.notice.msg) + "</div>" : "") +
       '<div class="hbd-toolbar">' + searchBox("Search contact requests…") +
         filterSelect("status-filter", "Status", ["All", "New", "Contacted", "Closed"], state.statusFilter) + "</div>" +
+      (sel.length
+        ? '<div class="hbd-bulkbar" role="toolbar" aria-label="Bulk actions">' +
+            '<strong>' + sel.length + " selected</strong>" +
+            '<button type="button" class="hbd-back" data-download-selected>Download CSV</button>' +
+            '<button type="button" class="hbd-back hbd-bulk-danger" data-delete-selected>Delete</button>' +
+            '<button type="button" class="hbd-back" data-clear-selected>Clear selection</button>' +
+          "</div>"
+        : "") +
       (rows.length
-        ? '<div class="hbd-tablewrap"><table class="hbd-table"><thead><tr><th>Name</th><th>Email</th><th>Organization</th><th>Status</th><th>Received</th><th></th></tr></thead><tbody>' +
+        ? '<div class="hbd-tablewrap"><table class="hbd-table"><thead><tr>' +
+          '<th class="hbd-selcol"><input type="checkbox" data-select-all aria-label="Select all shown requests"' + (allChecked ? " checked" : "") + " /></th>" +
+          "<th>Name</th><th>Email</th><th>Organization</th><th>Status</th><th>Received</th><th></th></tr></thead><tbody>" +
           rows.map(function (c) {
-            return "<tr><td>" + esc(c.firstName + " " + c.lastName) + "</td><td>" + esc(c.email) + "</td><td>" + esc(c.organizationName) + "</td>" +
+            var on = !!state.selected[c.id];
+            return "<tr" + (on ? ' class="hbd-selrow"' : "") + '><td class="hbd-selcol"><input type="checkbox" data-select-contact="' + esc(c.id) + '" aria-label="Select ' + esc(c.firstName + " " + c.lastName) + '"' + (on ? " checked" : "") + " /></td>" +
+              "<td>" + esc(c.firstName + " " + c.lastName) + "</td><td>" + esc(c.email) + "</td><td>" + esc(c.organizationName) + "</td>" +
               '<td><span class="hbd-status ' + (c.status === "New" ? "pub" : "draft") + '">' + esc(c.status) + "</span></td>" +
               "<td>" + esc(fmtDT(c.createdAt)) + "</td>" +
               '<td class="hbd-actions"><button type="button" data-open-contact="' + esc(c.id) + '">Open</button></td></tr>';
@@ -356,7 +376,7 @@
     mount.innerHTML = layout(inner);
   }
   async function refresh() {
-    state.loading = true; paint();
+    state.loading = true; state.selected = {}; paint();
     try {
       if (state.section === "contacts") state.items = await HBStore.getContacts();
       else if (state.section === "users") {
@@ -395,12 +415,48 @@
       } catch (e2) { state.notice = { kind: "err", msg: e2.message || "Save failed." }; }
       paint(); return;
     }
+    if (t.matches && t.matches("[data-select-contact]")) {
+      var sid = t.getAttribute("data-select-contact");
+      if (t.checked) state.selected[sid] = true; else delete state.selected[sid];
+      paint(); return;
+    }
+    if (t.matches && t.matches("[data-select-all]")) {
+      var on = t.checked;
+      filteredContacts().forEach(function (c) {
+        if (on) state.selected[c.id] = true; else delete state.selected[c.id];
+      });
+      paint(); return;
+    }
+    if (t.closest("[data-clear-selected]")) { state.selected = {}; paint(); return; }
+    if (t.closest("[data-download-selected]")) {
+      // internal notes intentionally excluded from exports
+      var selRows = selectedContacts();
+      if (!selRows.length) return;
+      downloadCsv("heartland-bioworks-contact-requests-selected-" + new Date().toISOString().slice(0, 10) + ".csv",
+        CONTACT_CSV_HEADER, selRows.map(contactCsvRow));
+      return;
+    }
+    if (t.closest("[data-delete-selected]")) {
+      var toDelete = selectedContacts().map(function (c) { return c.id; });
+      if (!toDelete.length) return;
+      if (!window.confirm("Delete " + toDelete.length + " contact request" + (toDelete.length === 1 ? "" : "s") + "? This cannot be undone.")) return;
+      t.closest("[data-delete-selected]").disabled = true;
+      try {
+        var deleted = await HBStore.deleteContacts(toDelete);
+        var gone = {};
+        deleted.forEach(function (id) { gone[id] = true; delete state.selected[id]; });
+        state.items = state.items.filter(function (x) { return !gone[x.id]; });
+        state.notice = deleted.length === toDelete.length
+          ? { kind: "ok", msg: deleted.length + " contact request" + (deleted.length === 1 ? "" : "s") + " deleted." }
+          : { kind: "err", msg: deleted.length + " of " + toDelete.length + " deleted — removing the rest requires an admin account." };
+      } catch (e3) { state.notice = { kind: "err", msg: e3.message || "Delete failed." }; }
+      paint(); return;
+    }
     if (t.closest("[data-export-contacts]")) {
       // internal notes intentionally excluded from exports
       var cs = filteredContacts();
       downloadCsv("heartland-bioworks-contact-requests-" + new Date().toISOString().slice(0, 10) + ".csv",
-        ["first_name", "last_name", "email", "job_title", "country", "phone", "organization_name", "organization_type", "interests", "message", "status", "created_at"],
-        cs.map(function (c) { return [c.firstName, c.lastName, c.email, c.jobTitle, c.country, c.phone, c.organizationName, c.organizationType, (c.interests || []).join("; "), c.message, c.status, c.createdAt]; }));
+        CONTACT_CSV_HEADER, cs.map(contactCsvRow));
       return;
     }
     if (t.closest("[data-export-users]")) {

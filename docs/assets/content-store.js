@@ -206,6 +206,15 @@
     if (res.error) throw fail("save contact changes", res.error);
     return fromInquiry(res.data);
   }
+  async function deleteContacts(ids) {
+    var sb = client();
+    if (!sb) throw new Error("Contact service unavailable — nothing was deleted.");
+    // .select() returns the rows actually removed: RLS lets only admins
+    // delete inquiries, so a non-admin gets 0 rows back, not an error.
+    var res = await sb.from("inquiries").delete().in("id", ids).select("id");
+    if (res.error) throw fail("delete contact requests", res.error);
+    return (res.data || []).map(function (r) { return r.id; });
+  }
   async function addSubscriber(payload) {
     var sb = client();
     if (!sb) throw new Error("Subscription service unavailable. Please email heartlandbioworks@theari.us to subscribe.");
@@ -238,6 +247,7 @@
     submitContact: submitContact,
     getContacts: getContacts,
     updateContact: updateContact,
+    deleteContacts: deleteContacts,
     addSubscriber: addSubscriber,
     getSubscribers: getSubscribers,
     updateSubscriber: updateSubscriber
