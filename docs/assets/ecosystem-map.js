@@ -173,25 +173,32 @@
 
   // city labels to anchor the map
   var CITY_LABELS = [
-    { name: "Indianapolis", lat: 39.7684, lon: -86.1581, dx: 9, dy: -9 },
+    { name: "Indianapolis", lat: 39.7684, lon: -86.1581, dx: -78, dy: 3 },
     { name: "Bloomington", lat: 39.1653, lon: -86.5264, dx: 8, dy: 6 },
     { name: "South Bend", lat: 41.6764, lon: -86.2520, dx: 8, dy: -3 },
     { name: "Lafayette", lat: 40.4167, lon: -86.8753, dx: -52, dy: 0 },
-    { name: "Fishers", lat: 39.9568, lon: -86.0134, dx: 8, dy: -1 },
-    { name: "Richmond", lat: 39.8289, lon: -84.8902, dx: -47, dy: -8 }
+    { name: "Fishers", lat: 39.9568, lon: -86.0134, dx: 9, dy: -4 },
+    { name: "Richmond", lat: 39.8289, lon: -84.8902, dx: -52, dy: 13 }
   ];
 
   var SVGNS = "http://www.w3.org/2000/svg";
   var activeCat = "All Resources";
+  var selectedCity = null;
 
   // ---- build DOM shell ----
   mount.innerHTML =
     '<div class="eco-map">' +
       '<div class="eco-filters" role="group" aria-label="Filter resources by capability"></div>' +
       '<div class="eco-grid">' +
-        '<div class="eco-mapwrap"><div class="eco-tip" role="status" aria-live="polite"></div></div>' +
+        '<div class="eco-mapwrap">' +
+          '<div class="eco-tip" role="status" aria-live="polite"></div>' +
+          '<div class="eco-hint" aria-hidden="true">Ctrl + scroll to zoom &middot; drag to pan</div>' +
+        '</div>' +
         '<div class="eco-panel">' +
-          '<div class="eco-panel-head"><h3 class="eco-panel-title">All Resources</h3><span class="eco-count"></span></div>' +
+          '<div class="eco-panel-head">' +
+            '<div><span class="eco-panel-eyebrow">Resource Directory</span><h3 class="eco-panel-title">All Resources</h3></div>' +
+            '<span class="eco-count"></span>' +
+          '</div>' +
           '<div class="eco-list"></div>' +
         '</div>' +
       '</div>' +
@@ -381,6 +388,7 @@
         pin.setAttribute("class", "eco-pin");
         pin.setAttribute("tabindex", "0");
         pin.setAttribute("role", "button");
+        pin.setAttribute("data-city", d.city);
         pin.setAttribute("aria-label", d.name + " — " + d.city + ", " + d.state);
         var ring = document.createElementNS(SVGNS, "circle");
         ring.setAttribute("class", "eco-pin-ring");
@@ -395,12 +403,14 @@
           return "<h5>" + d.name + "</h5><div class='eco-tip-meta'>" + d.category + "</div><p>" + d.city + ", " + d.state + " — " + d.description + "</p>";
         }
         function activate() { showTip(tipHtml(), cx, cy); highlightCity(d.city); }
+        function deactivate() { hideTip(); highlightCity(selectedCity); }
+        function select() { activate(); selectCity(d.city); scrollToCity(d.city); }
         pin.addEventListener("mouseenter", activate);
-        pin.addEventListener("mouseleave", hideTip);
+        pin.addEventListener("mouseleave", deactivate);
         pin.addEventListener("focus", activate);
-        pin.addEventListener("blur", hideTip);
-        pin.addEventListener("click", function () { activate(); scrollToCity(d.city); });
-        pin.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); scrollToCity(d.city); } });
+        pin.addEventListener("blur", deactivate);
+        pin.addEventListener("click", select);
+        pin.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(); } });
         pinLayer.appendChild(pin);
       });
     });
@@ -412,7 +422,7 @@
     var data = visibleData();
     listEl.innerHTML = "";
     titleEl.textContent = activeCat;
-    countEl.textContent = "Showing " + data.length + " resource" + (data.length === 1 ? "" : "s");
+    countEl.textContent = data.length + " resource" + (data.length === 1 ? "" : "s");
     if (!data.length) { listEl.innerHTML = '<div class="eco-empty">No resources in this category yet — check back soon.</div>'; return; }
     // in-state first, out-of-state notes last
     data.sort(function (a, b) { return (a.outOfState ? 1 : 0) - (b.outOfState ? 1 : 0); });
@@ -430,7 +440,7 @@
       item.innerHTML =
         '<span class="eco-cat">' + d.category + "</span>" +
         "<h4>" + d.name + "</h4>" +
-        '<div class="eco-loc">📍 ' + d.city + ", " + d.state +
+        '<div class="eco-loc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>' + d.city + ", " + d.state +
           (d.outOfState ? ' &nbsp;<span class="eco-oos">Out of state</span>' : "") + "</div>" +
         "<p>" + d.description + "</p>" +
         (d.url ? '<span class="eco-visit">Visit site <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span>' : "");
@@ -440,16 +450,38 @@
 
   function highlightCity(city) {
     listEl.querySelectorAll(".eco-item").forEach(function (it) {
-      it.classList.toggle("hl", it.getAttribute("data-city") === city);
+      it.classList.toggle("hl", city != null && it.getAttribute("data-city") === city);
     });
+  }
+  function highlightPins(city) {
+    pinLayer.querySelectorAll(".eco-pin").forEach(function (p) {
+      p.classList.toggle("hl", city != null && p.getAttribute("data-city") === city);
+    });
+  }
+  function selectCity(city) {
+    selectedCity = city;
+    pinLayer.querySelectorAll(".eco-pin").forEach(function (p) {
+      p.classList.toggle("sel", city != null && p.getAttribute("data-city") === city);
+    });
+    highlightCity(city);
   }
   function scrollToCity(city) {
     var first = listEl.querySelector('.eco-item[data-city="' + city + '"]');
     if (first) first.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
 
+  // hovering a directory card lights up its pins on the map
+  listEl.addEventListener("mouseover", function (e) {
+    var it = e.target.closest(".eco-item");
+    if (it && !it.classList.contains("out-of-state")) highlightPins(it.getAttribute("data-city"));
+  });
+  listEl.addEventListener("mouseout", function (e) {
+    if (e.target.closest(".eco-item")) highlightPins(null);
+  });
+
   function setCat(cat) {
     activeCat = cat;
+    selectCity(null);
     Array.prototype.forEach.call(filtersEl.children, function (b) {
       var on = b.textContent.indexOf(cat) === 0;
       b.classList.toggle("active", on);
