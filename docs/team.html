@@ -101,7 +101,6 @@ var TEAM = [
       ? '<img src="' + esc(m.photo) + '" alt="' + esc(m.name) + '" loading="lazy" onerror="this.outerHTML=\'<div class=&quot;team-avatar-fallback&quot;>' + esc(initials(m.name)) + '</div>\'" />'
       : '<div class="team-avatar-fallback">' + esc(initials(m.name)) + "</div>";
     var links = "";
-    if (m.email) links += '<a class="team-link" href="mailto:' + esc(m.email) + '">✉ ' + esc(m.email) + "</a>";
     if (m.linkedin) links += '<a class="team-link" href="' + esc(m.linkedin) + '" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" fill="currentColor" stroke="none"/><circle cx="4" cy="4" r="2" fill="currentColor"/></svg> LinkedIn</a>';
     var hasFull = m.fullBio && m.fullBio.trim() && m.fullBio.trim() !== (m.shortBio || "").trim();
     var fullPs = hasFull ? m.fullBio.split(/\n\n+/).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") : "";
