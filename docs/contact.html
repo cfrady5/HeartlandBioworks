@@ -68,10 +68,14 @@
         <h2>Message</h2>
         <div class="cform-field"><label for="cf-message">How can we help? <span class="hbd-req">*</span></label><textarea id="cf-message" name="message" rows="5"></textarea><div class="hbd-field-err" data-err="message"></div></div>
 
-        <!-- honeypot: hidden from humans; bots that fill it are silently dropped server-side -->
+        <!-- honeypot: hidden from humans; bots that fill it are silently dropped
+             server-side. Deliberately NOT named "website"/"url" and given a
+             bogus autocomplete token — Chrome ignores autocomplete="off" and
+             was autofilling the old "website" field, silently dropping real
+             submissions. -->
         <div style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true">
-          <label for="cf-website">Website</label>
-          <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off" />
+          <label for="cf-hp-check">Leave this field empty</label>
+          <input type="text" id="cf-hp-check" name="hb_hp_check" tabindex="-1" autocomplete="one-time-code" />
         </div>
         <div class="cform-field cform-consent">
           <label><input type="checkbox" id="cf-consent" name="consent" /> I consent to receive communications from Heartland BioWorks regarding programs, opportunities, events, and updates. <span class="hbd-req">*</span></label>
@@ -216,7 +220,7 @@
         p_utm_campaign: qs.get("utm_campaign") || "", p_referrer: document.referrer || "",
         p_metadata: { country: val("country"), organization_type: val("organizationType") || null,
                       interests: interests, consent: true },
-        p_website: (document.getElementById("cf-website") || { value: "" }).value
+        p_website: (document.getElementById("cf-hp-check") || { value: "" }).value
       });
       if (rpc.error) {
         // Portal schema not deployed yet? Fall back to the legacy table so
