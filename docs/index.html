@@ -34,8 +34,8 @@
     }
     .hero-overlay{position:absolute;inset:0;background:var(--navy);}
     .hero-content{position:relative;z-index:2;padding:110px 0 90px;max-width:820px;}
-    .hero-mark{width:88px;height:auto;margin-bottom:26px;}
-    @media(max-width:640px){.hero-mark{width:66px;margin-bottom:20px;}}
+    .hero-mark{width:min(340px,72vw);height:auto;margin-bottom:30px;}
+    @media(max-width:640px){.hero-mark{width:min(250px,74vw);margin-bottom:22px;}}
     .hero-tagline{font:italic 600 .98rem/1.5 'Inter',system-ui,sans-serif;color:#7DD580;margin:-18px 0 34px;}
     .hero h1{font-size:clamp(2.6rem,5.2vw,4.6rem);font-weight:800;line-height:1.06;letter-spacing:-.04em;color:#fff;margin-bottom:22px;}
     .hero h1 em{font-style:normal;background:linear-gradient(120deg,#3EB248 0%,#7DD580 60%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -253,11 +253,11 @@
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="container">
     <div class="hero-content">
-      <!-- Brand mark, transparent PNG on the navy hero (no white plate).
-           Hidden automatically if the asset is missing so the hero never
-           shows a broken image. -->
-      <img class="hero-mark fu" src="assets/hbw-mark.png" alt=""
-           onerror="this.remove()" width="88" height="88" />
+      <!-- Brand lockup — the same transparent PNG the navbar uses, so it
+           sits directly on the navy hero with no white plate. Removes
+           itself if the asset ever fails to load. -->
+      <img class="hero-mark fu" src="https://static.wixstatic.com/media/fcced6_4c68e46b8f1c4c089a46ca9a416c50a2~mv2.png"
+           alt="Heartland BioWorks — powered by ARI" onerror="this.remove()" />
       <h1 class="fu">Advancing Biotechnology and <em>Biomanufacturing</em> in Indiana</h1>
       <p class="hero-sub fu">Heartland BioWorks connects Indiana's workforce, manufacturing, research, and commercialization assets to accelerate domestic biotechnology production, strengthen national security, and expand economic opportunity across the state.</p>
       <p class="hero-tagline fu">Indiana's federally designated biomanufacturing EDA tech hub&nbsp;·&nbsp;powered&nbsp;by&nbsp;ARI</p>
