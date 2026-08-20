@@ -32,7 +32,6 @@
     { key: "about", label: "About", href: "about.html", children: [
       { key: "about", label: "About Us", href: "about.html" },
       { key: "team", label: "Meet the Team", href: "team.html" },
-      { label: "Executive Board", href: "team.html#executive-board" },
       { key: "faqs", label: "FAQs", href: "faqs.html" }
     ]}
   ];
