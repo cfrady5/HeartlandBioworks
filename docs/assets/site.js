@@ -109,8 +109,8 @@
           '<a href="index.html" aria-label="Heartland BioWorks — home"><img src="' + LOGO + '" alt="Heartland BioWorks" /></a>' +
           '<p>Indiana’s federally designated biomanufacturing EDA Tech Hub, powered by the Applied Research Institute — connecting workforce, research, industry, and government to grow the state’s bioeconomy.</p>' +
           '<div class="hb-fcontact">' +
-            '<a href="mailto:heartlandbioworks@theari.us">✉ heartlandbioworks@theari.us</a>' +
-            '<a href="contact.html">📍 16 Tech Innovation District, Indianapolis, IN</a>' +
+            '<a href="mailto:heartlandbioworks@theari.us">heartlandbioworks@theari.us</a>' +
+            '<a href="contact.html">16 Tech Innovation District, Indianapolis, IN</a>' +
           '</div>' +
         '</div>' +
         '<div class="hb-fcol"><h4>Programs</h4><ul>' +
@@ -136,7 +136,7 @@
             '<p>Monthly funding, training, and BioCAN updates. No spam.</p>' +
             '<form class="hb-fnews-row" data-hb-news novalidate>' +
               '<input type="email" name="email" placeholder="you@org.com" aria-label="Email address" required />' +
-              '<button type="submit">Subscribe</button>' +
+              '<button type="submit">Join the Mailing List</button>' +
             '</form>' +
           '</div>' +
         '</ul></div>' +
@@ -229,17 +229,17 @@
       var btn = form.querySelector("button");
       var email = input ? input.value.trim() : "";
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-        if (btn) { btn.textContent = "Enter a valid email"; setTimeout(function () { btn.textContent = "Subscribe"; }, 2200); }
+        if (btn) { btn.textContent = "Enter a valid email"; setTimeout(function () { btn.textContent = "Join the Mailing List"; }, 2200); }
         return;
       }
-      if (btn) { btn.disabled = true; btn.textContent = "Subscribing…"; }
+      if (btn) { btn.disabled = true; btn.textContent = "Adding you…"; }
       try {
         if (window.HBStore && HBStore.addSubscriber) {
           await HBStore.addSubscriber({ email: email, source: "Newsletter", consent: true, status: "Active" });
         } else if (window.parent) {
           window.parent.postMessage({ type: "formSubmit", formType: "newsletter", data: { email: email } }, "*");
         }
-        if (btn) btn.textContent = "Subscribed ✓";
+        if (btn) btn.textContent = "You're on the list ✓";
       } catch (err) {
         if (btn) { btn.disabled = false; btn.textContent = "Try again"; }
       }

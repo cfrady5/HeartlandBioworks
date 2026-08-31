@@ -21,6 +21,7 @@
     .prog-hero::after{content:'';position:absolute;top:-100px;right:-80px;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(62,178,72,.1) 0%,transparent 70%);pointer-events:none;}
     .hero-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;background:rgba(62,178,72,.12);border:1px solid rgba(62,178,72,.28);border-radius:100px;font-size:.76rem;font-weight:700;color:#7DD580;letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px;}
     .prog-hero h1{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:800;letter-spacing:-.04em;line-height:1.06;color:#fff;margin-bottom:20px;}
+    .prog-hero h1 em{font-style:normal;background:linear-gradient(120deg,#7DD580 0%,#3EB248 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
     .prog-hero p.lead{font-size:1.1rem;line-height:1.72;color:rgba(255,255,255,.65);max-width:580px;margin-bottom:36px;}
     .hero-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--green);color:#fff;border-radius:8px;font-size:1rem;font-weight:600;transition:background 200ms,transform 200ms,box-shadow 200ms;}.hero-cta:hover{background:var(--green2);transform:translateY(-2px);box-shadow:0 10px 28px rgba(62,178,72,.35);}
     .hero-metrics{display:flex;gap:40px;margin-top:52px;flex-wrap:wrap;}
@@ -37,7 +38,8 @@
     .overview-image{border-radius:20px;overflow:hidden;aspect-ratio:4/3;background:var(--bg2);}.overview-image img{width:100%;height:100%;object-fit:cover;}
     .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
     .pillar{padding:30px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;transition:background 200ms,border-color 200ms;}.pillar:hover{background:rgba(255,255,255,.09);border-color:rgba(62,178,72,.28);}
-    .pillar-ico{font-size:1.8rem;margin-bottom:14px;}
+    .pillar-ico{margin-bottom:14px;color:#fff;}
+    .pillar-ico svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
     .pillar h3{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px;}
     .pillar p{font-size:.88rem;line-height:1.65;color:rgba(255,255,255,.55);}
     .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
@@ -69,7 +71,7 @@
 
 <section class="prog-hero">
   <div class="container">
-    <h1>Biosecurity for<br>America's Bioeconomy</h1>
+    <h1><em>Biosecurity</em> for<br>America's Bioeconomy</h1>
     <p class="lead">Bio for National Security is a future-facing ecosystem initiative — exploring how Indiana's biomanufacturing base can strengthen domestic production of critical medicines and countermeasures and support national biosecurity. It is an ecosystem initiative, not one of the four core EDA-funded Heartland BioWorks projects (BioTrain, BioLaunch, BioCAN, and the planned HQ).</p>
     <a href="#cta" class="hero-cta">Get Involved →</a>
   </div>
@@ -106,9 +108,9 @@
     <h2 class="stitle" style="margin-bottom:12px;">The Bio for National Security Framework</h2>
     <p class="ssub" style="margin-bottom:0;">Three interconnected areas of focus that form Indiana's biodefense strategy.</p>
     <div class="pillars reveal">
-      <div class="pillar"><div class="pillar-ico">🛡️</div><h3>Supply Chain Resilience</h3><p>Reducing dependence on foreign sources for critical biologics, APIs, and biomanufacturing inputs through domestic production expansion and strategic stockpiling programs.</p></div>
-      <div class="pillar"><div class="pillar-ico">⚗️</div><h3>Medical Countermeasures</h3><p>Supporting rapid development and scalable domestic manufacturing of vaccines, therapeutics, and diagnostics against CBRN threats and emerging pathogens.</p></div>
-      <div class="pillar"><div class="pillar-ico">🔬</div><h3>Dual-Use Technology</h3><p>Accelerating biotechnologies that serve both commercial and national security applications, from biosensors to synthetic biology platforms for defense missions.</p></div>
+      <div class="pillar"><div class="pillar-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-3.5 8-10V5.5L12 2 4 5.5V12c0 6.5 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Supply Chain Resilience</h3><p>Reducing dependence on foreign sources for critical biologics, APIs, and biomanufacturing inputs through domestic production expansion and strategic stockpiling programs.</p></div>
+      <div class="pillar"><div class="pillar-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6.5L4.6 18a2 2 0 001.7 3h11.4a2 2 0 001.7-3L14 9.5V3"/><path d="M7.5 15h9"/></svg></div><h3>Medical Countermeasures</h3><p>Supporting rapid development and scalable domestic manufacturing of vaccines, therapeutics, and diagnostics against CBRN threats and emerging pathogens.</p></div>
+      <div class="pillar"><div class="pillar-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a5 5 0 015 5c0 2-1.2 3-2.5 4"/><path d="M9 21h9"/><path d="M6 21a6 6 0 019-5.2"/><path d="M10 10l3 3"/><path d="M8.5 11.5l-2 2"/></svg></div><h3>Dual-Use Technology</h3><p>Accelerating biotechnologies that serve both commercial and national security applications, from biosensors to synthetic biology platforms for defense missions.</p></div>
     </div>
   </div>
 </section>
