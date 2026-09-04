@@ -4,5 +4,17 @@
   "outputDirectory": "docs",
   "installCommand": "echo 'static site — no dependencies to install'",
   "buildCommand": "echo 'static site — no build step'",
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/biocan-grants",
+      "destination": "/biocan.html#biocan-grants",
+      "permanent": false
+    },
+    {
+      "source": "/heartlandbioworks/press/bio-launch/biocan-grants",
+      "destination": "/biocan.html#biocan-grants",
+      "permanent": false
+    }
+  ]
 }
