@@ -256,3 +256,19 @@
   window.addEventListener("resize", postH);
   setTimeout(postH, 300); setTimeout(postH, 900);
 })();
+
+/* Favicon set — injected here so every page gets it without editing each
+   <head>. /favicon.ico is also requested automatically by browsers. */
+(function () {
+  var head = document.head; if (!head || document.querySelector('link[rel="icon"]')) return;
+  [
+    ['icon', 'image/png', '32x32',   'favicon-32.png'],
+    ['icon', 'image/png', '192x192', 'favicon-192.png'],
+    ['icon', 'image/png', '512x512', 'favicon-512.png'],
+    ['apple-touch-icon', null, '180x180', 'apple-touch-icon.png']
+  ].forEach(function (i) {
+    var l = document.createElement('link');
+    l.rel = i[0]; if (i[1]) l.type = i[1]; l.sizes = i[2]; l.href = i[3];
+    head.appendChild(l);
+  });
+})();
