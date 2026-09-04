@@ -397,6 +397,18 @@ var BIOCAN_APPLICATION_URL        = "";   /* TODO: live application URL, when a 
     target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     history.replaceState(null, "", "#" + id);
   });
+
+  /* 5. Deep-link fallback for the /biocan-grants redirect. The redirect
+        points at ?go=biocan-grants#biocan-grants; if any hop drops the
+        hash, the query param still gets the visitor to the section. */
+  var go = new URLSearchParams(location.search).get("go");
+  var goEl = go && /^[a-z0-9-]+$/i.test(go) ? document.getElementById(go) : null;
+  if (goEl) {
+    window.addEventListener("load", function () {
+      goEl.scrollIntoView({ behavior: "auto", block: "start" });
+      history.replaceState(null, "", location.pathname + "#" + go);
+    });
+  }
 })();
 </script>
 <script src="assets/site.js" defer></script>

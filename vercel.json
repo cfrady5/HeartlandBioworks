@@ -2,18 +2,18 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "outputDirectory": "docs",
-  "installCommand": "echo 'static site — no dependencies to install'",
-  "buildCommand": "echo 'static site — no build step'",
+  "installCommand": "echo 'static site \u2014 no dependencies to install'",
+  "buildCommand": "echo 'static site \u2014 no build step'",
   "trailingSlash": false,
   "redirects": [
     {
       "source": "/biocan-grants",
-      "destination": "/biocan.html#biocan-grants",
+      "destination": "/biocan.html?go=biocan-grants#biocan-grants",
       "permanent": false
     },
     {
       "source": "/heartlandbioworks/press/bio-launch/biocan-grants",
-      "destination": "/biocan.html#biocan-grants",
+      "destination": "/biocan.html?go=biocan-grants#biocan-grants",
       "permanent": false
     }
   ]
