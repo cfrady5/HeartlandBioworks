@@ -16,23 +16,23 @@
   // Top-level nav model. `key` matches body[data-page] for active state.
   var NAV = [
     { key: "home", label: "Home", href: "/" },
-    { key: "programs", label: "Programs", href: "programs.html", children: [
-      { label: "All Programs", href: "programs.html" },
-      { key: "biotrain", label: "BioTrain", href: "biotrain.html" },
-      { key: "biolaunch", label: "BioLaunch", href: "biolaunch.html" },
-      { key: "biodefense", label: "Bio for National Security", href: "biodefense.html" }
+    { key: "programs", label: "Programs", href: "programs", children: [
+      { label: "All Programs", href: "programs" },
+      { key: "biotrain", label: "BioTrain", href: "biotrain" },
+      { key: "biolaunch", label: "BioLaunch", href: "biolaunch" },
+      { key: "biodefense", label: "Bio for National Security", href: "biodefense" }
     ]},
-    { key: "resources", label: "Resources", href: "news.html", children: [
-      { key: "news", label: "News & Media", href: "news.html" },
-      { key: "press", label: "Press Releases", href: "press-releases.html" },
-      { key: "events", label: "Upcoming Events", href: "events.html" },
-      { key: "media", label: "Media Library", href: "media-library.html" },
-      { key: "biocan", label: "CDMO Resources", href: "biocan.html#ecosystem-map" }
+    { key: "resources", label: "Resources", href: "news", children: [
+      { key: "news", label: "News & Media", href: "news" },
+      { key: "press", label: "Press Releases", href: "press-releases" },
+      { key: "events", label: "Upcoming Events", href: "events" },
+      { key: "media", label: "Media Library", href: "media-library" },
+      { key: "biocan", label: "CDMO Resources", href: "biocan#ecosystem-map" }
     ]},
-    { key: "about", label: "About", href: "about.html", children: [
-      { key: "about", label: "About Us", href: "about.html" },
-      { key: "team", label: "Meet the Team", href: "team.html" },
-      { key: "faqs", label: "FAQs", href: "faqs.html" }
+    { key: "about", label: "About", href: "about", children: [
+      { key: "about", label: "About Us", href: "about" },
+      { key: "team", label: "Meet the Team", href: "team" },
+      { key: "faqs", label: "FAQs", href: "faqs" }
     ]}
   ];
 
@@ -68,7 +68,7 @@
         out += '<a class="hb-sub" href="' + c.href + '"' + (c.key === page ? ' aria-current="page"' : '') + '>' + c.label + '</a>';
       });
     });
-    out += '<a href="contact.html"' + (page === "contact" ? ' aria-current="page"' : '') + '>Contact Us</a>';
+    out += '<a href="contact"' + (page === "contact" ? ' aria-current="page"' : '') + '>Contact Us</a>';
     return out;
   }
 
@@ -78,7 +78,7 @@
         '<a class="hb-logo" href="/" aria-label="Heartland BioWorks — Home">' +
           '<img src="' + LOGO + '" alt="Heartland BioWorks" /></a>' +
         '<ul class="hb-links">' + NAV.map(navItemHtml).join("") + '</ul>' +
-        '<a class="hb-cta" href="contact.html">Contact Us</a>' +
+        '<a class="hb-cta" href="contact">Contact Us</a>' +
         '<button class="hb-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="hb-mobile">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>' +
         '</button>' +
@@ -89,7 +89,7 @@
 
   function breadcrumbHtml(spec) {
     // spec like "Programs > BioTrain"; we prepend Home and link known crumbs.
-    var hrefByLabel = { "Programs": "programs.html", "Home": "/" };
+    var hrefByLabel = { "Programs": "programs", "Home": "/" };
     var parts = spec.split(">").map(function (s) { return s.trim(); }).filter(Boolean);
     var crumbs = [{ label: "Home", href: "/" }];
     parts.forEach(function (p) { crumbs.push({ label: p, href: hrefByLabel[p] || null }); });
@@ -110,28 +110,28 @@
           '<p>Indiana’s federally designated biomanufacturing EDA Tech Hub, powered by the Applied Research Institute — connecting workforce, research, industry, and government to grow the state’s bioeconomy.</p>' +
           '<div class="hb-fcontact">' +
             '<a href="mailto:heartlandbioworks@theari.us">heartlandbioworks@theari.us</a>' +
-            '<a href="contact.html">16 Tech Innovation District, Indianapolis, IN</a>' +
+            '<a href="contact">16 Tech Innovation District, Indianapolis, IN</a>' +
           '</div>' +
         '</div>' +
         '<div class="hb-fcol"><h4>Programs</h4><ul>' +
-          '<li><a href="programs.html">All Programs</a></li>' +
-          '<li><a href="biotrain.html">BioTrain</a></li>' +
-          '<li><a href="biolaunch.html">BioLaunch</a></li>' +
-          '<li><a href="biocan.html#ecosystem-map">CDMO Resources</a></li>' +
-          '<li><a href="biodefense.html">Bio for National Security</a></li>' +
+          '<li><a href="programs">All Programs</a></li>' +
+          '<li><a href="biotrain">BioTrain</a></li>' +
+          '<li><a href="biolaunch">BioLaunch</a></li>' +
+          '<li><a href="biocan#ecosystem-map">CDMO Resources</a></li>' +
+          '<li><a href="biodefense">Bio for National Security</a></li>' +
         '</ul></div>' +
         '<div class="hb-fcol"><h4>Resources</h4><ul>' +
-          '<li><a href="news.html">News &amp; Media</a></li>' +
-          '<li><a href="press-releases.html">Press Releases</a></li>' +
-          '<li><a href="events.html">Upcoming Events</a></li>' +
-          '<li><a href="media-library.html">Media Library</a></li>' +
-          '<li><a href="biocan.html#ecosystem-map">Ecosystem Map</a></li>' +
+          '<li><a href="news">News &amp; Media</a></li>' +
+          '<li><a href="press-releases">Press Releases</a></li>' +
+          '<li><a href="events">Upcoming Events</a></li>' +
+          '<li><a href="media-library">Media Library</a></li>' +
+          '<li><a href="biocan#ecosystem-map">Ecosystem Map</a></li>' +
         '</ul></div>' +
         '<div class="hb-fcol"><h4>About</h4><ul>' +
-          '<li><a href="about.html">About Us</a></li>' +
-          '<li><a href="team.html">Meet the Team</a></li>' +
-          '<li><a href="faqs.html">FAQs</a></li>' +
-          '<li><a href="contact.html">Contact Us</a></li>' +
+          '<li><a href="about">About Us</a></li>' +
+          '<li><a href="team">Meet the Team</a></li>' +
+          '<li><a href="faqs">FAQs</a></li>' +
+          '<li><a href="contact">Contact Us</a></li>' +
           '<div class="hb-fnews">' +
             '<p>Monthly funding, training, and BioCAN updates. No spam.</p>' +
             '<form class="hb-fnews-row" data-hb-news novalidate>' +
@@ -143,7 +143,7 @@
       '</div>' +
       '<div class="hb-footer-bot">' +
         '<span>© 2026 Heartland BioWorks — a project of the Applied Research Institute. Indiana’s federally designated biomanufacturing EDA Tech Hub.</span>' +
-        '<div class="hb-fbot-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="login.html">Staff Login</a></div>' +
+        '<div class="hb-fbot-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="login">Staff Login</a></div>' +
         '<div class="hb-fsocial">' +
           '<a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>' +
           '<a href="#" aria-label="X"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg></a>' +

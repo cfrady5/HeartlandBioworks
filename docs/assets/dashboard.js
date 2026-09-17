@@ -1,6 +1,6 @@
 /* ============================================================
    Heartland BioWorks — staff dashboard (mounts into #hb-dashboard).
-   Protected: HBAuth.requireAuth() redirects to login.html.
+   Protected: HBAuth.requireAuth() redirects to login.
    All reads/writes go through HBStore — the same source the public
    pages read — so publishing here is what makes content public.
 
@@ -15,7 +15,7 @@
   var mount = document.getElementById("hb-dashboard");
   if (!mount || !window.HBStore) return;
   mount.innerHTML = '<div class="hbc-empty" aria-busy="true" style="margin:40px;">Checking sign-in…</div>';
-  if (!(await HBAuth.requireAuth())) return;   // redirects to login.html
+  if (!(await HBAuth.requireAuth())) return;   // redirects to login
   var USER = await HBAuth.getUser();
 
   function esc(s) {
@@ -557,7 +557,7 @@
         USER_CSV_HEADER, us.map(userCsvRow));
       return;
     }
-    if (t.closest("[data-logout]")) { await HBAuth.logout(); window.location.replace("login.html"); return; }
+    if (t.closest("[data-logout]")) { await HBAuth.logout(); window.location.replace("login"); return; }
     if (t.closest("[data-create]") && !t.closest("form")) { state.editing = "new"; state.notice = null; paint(); return; }
     if (t.closest("[data-back]")) { state.editing = null; paint(); return; }
     var btn = t.closest("[data-edit],[data-toggle],[data-delete]");

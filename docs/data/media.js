@@ -36,7 +36,7 @@ window.HB_SEED_MEDIA = [
     title: "Interactive Indiana Ecosystem Map",
     assetType: "Other",
     description: "Explore Indiana's CDMO, lab, workforce, and innovation resources by capability area on the interactive ecosystem map.",
-    fileUrl: "biocan.html#ecosystem-map",
+    fileUrl: "biocan#ecosystem-map",
     thumbnailUrl: "",
     uploadDate: "2026-06-10",
     tags: ["BioCAN", "Ecosystem"],

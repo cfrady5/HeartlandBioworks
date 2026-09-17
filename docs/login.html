@@ -35,7 +35,7 @@
 <script>
 (function () {
   // already signed in? go straight to the dashboard
-  if (window.HBAuth) HBAuth.getUser().then(function (u) { if (u) window.location.replace("dashboard.html"); });
+  if (window.HBAuth) HBAuth.getUser().then(function (u) { if (u) window.location.replace("dashboard"); });
   var form = document.getElementById("loginForm");
   var err = document.getElementById("loginErr");
   var btn = form.querySelector(".hbl-btn");
@@ -44,7 +44,7 @@
     err.classList.remove("show"); err.textContent = "";
     btn.disabled = true; btn.textContent = "Signing in…";
     var res = await HBAuth.login(document.getElementById("email").value, document.getElementById("password").value);
-    if (res.ok) { window.location.href = "dashboard.html"; return; }
+    if (res.ok) { window.location.href = "dashboard"; return; }
     btn.disabled = false; btn.textContent = "Sign In";
     err.textContent = res.error; err.classList.add("show");
   });

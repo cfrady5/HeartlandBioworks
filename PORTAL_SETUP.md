@@ -156,7 +156,7 @@ await sb.rpc("submit_inquiry", {
 });
 ```
 
-Or simply link to `contact.html?program=<slug>&type=<slug>` — the main
+Or simply link to `contact?program=<slug>&type=<slug>` — the main
 contact form forwards those (plus UTM parameters) automatically. Program
 CTAs across biotrain/biolaunch/biocan/biodefense already do this.
 

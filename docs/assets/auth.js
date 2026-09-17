@@ -12,7 +12,7 @@
      HBAuth.logout()               -> Promise<void>
      HBAuth.getUser()              -> Promise<{ email } | null>
      HBAuth.requireAuth()          -> Promise<boolean>; redirects to
-                                      login.html when signed out
+                                      login when signed out
    ============================================================ */
 (function () {
   "use strict";
@@ -69,7 +69,7 @@
   async function requireAuth() {
     var user = await getUser();
     if (user) return true;
-    window.location.replace("login.html");
+    window.location.replace("login");
     return false;
   }
 

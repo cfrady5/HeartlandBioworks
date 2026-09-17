@@ -8,13 +8,14 @@
   "redirects": [
     {
       "source": "/biocan-grants",
-      "destination": "/biocan.html?go=biocan-grants#biocan-grants",
+      "destination": "/biocan?go=biocan-grants#biocan-grants",
       "permanent": false
     },
     {
       "source": "/heartlandbioworks/press/bio-launch/biocan-grants",
-      "destination": "/biocan.html?go=biocan-grants#biocan-grants",
+      "destination": "/biocan?go=biocan-grants#biocan-grants",
       "permanent": false
     }
-  ]
+  ],
+  "cleanUrls": true
 }
