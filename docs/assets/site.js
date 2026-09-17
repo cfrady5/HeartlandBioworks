@@ -15,7 +15,7 @@
 
   // Top-level nav model. `key` matches body[data-page] for active state.
   var NAV = [
-    { key: "home", label: "Home", href: "index.html" },
+    { key: "home", label: "Home", href: "/" },
     { key: "programs", label: "Programs", href: "programs.html", children: [
       { label: "All Programs", href: "programs.html" },
       { key: "biotrain", label: "BioTrain", href: "biotrain.html" },
@@ -59,7 +59,7 @@
   }
 
   function mobileHtml() {
-    var out = '<a href="index.html"' + (page === "home" ? ' aria-current="page"' : '') + '>Home</a>';
+    var out = '<a href="/"' + (page === "home" ? ' aria-current="page"' : '') + '>Home</a>';
     NAV.forEach(function (item) {
       if (item.key === "home") return;
       if (!item.children) { out += '<a href="' + item.href + '">' + item.label + '</a>'; return; }
@@ -75,7 +75,7 @@
   function headerHtml() {
     return '<nav class="hb-nav" aria-label="Primary">' +
       '<div class="hb-nav-inner">' +
-        '<a class="hb-logo" href="index.html" aria-label="Heartland BioWorks — Home">' +
+        '<a class="hb-logo" href="/" aria-label="Heartland BioWorks — Home">' +
           '<img src="' + LOGO + '" alt="Heartland BioWorks" /></a>' +
         '<ul class="hb-links">' + NAV.map(navItemHtml).join("") + '</ul>' +
         '<a class="hb-cta" href="contact.html">Contact Us</a>' +
@@ -89,9 +89,9 @@
 
   function breadcrumbHtml(spec) {
     // spec like "Programs > BioTrain"; we prepend Home and link known crumbs.
-    var hrefByLabel = { "Programs": "programs.html", "Home": "index.html" };
+    var hrefByLabel = { "Programs": "programs.html", "Home": "/" };
     var parts = spec.split(">").map(function (s) { return s.trim(); }).filter(Boolean);
-    var crumbs = [{ label: "Home", href: "index.html" }];
+    var crumbs = [{ label: "Home", href: "/" }];
     parts.forEach(function (p) { crumbs.push({ label: p, href: hrefByLabel[p] || null }); });
     var items = crumbs.map(function (c, i) {
       var last = i === crumbs.length - 1;
@@ -106,7 +106,7 @@
     return '<footer class="hb-footer" aria-label="Site footer"><div class="hb-footer-inner">' +
       '<div class="hb-footer-top">' +
         '<div class="hb-fbrand">' +
-          '<a href="index.html" aria-label="Heartland BioWorks — home"><img src="' + LOGO + '" alt="Heartland BioWorks" /></a>' +
+          '<a href="/" aria-label="Heartland BioWorks — home"><img src="' + LOGO + '" alt="Heartland BioWorks" /></a>' +
           '<p>Indiana’s federally designated biomanufacturing EDA Tech Hub, powered by the Applied Research Institute — connecting workforce, research, industry, and government to grow the state’s bioeconomy.</p>' +
           '<div class="hb-fcontact">' +
             '<a href="mailto:heartlandbioworks@theari.us">heartlandbioworks@theari.us</a>' +
