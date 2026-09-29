@@ -128,6 +128,11 @@
     .nibrt-license{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.14);padding-top:22px;font-size:.95rem;font-weight:600;color:rgba(255,255,255,.85);position:relative;}
     .nibrt-license svg{width:24px;height:24px;stroke:var(--green);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none;}
     .nibrt-states{color:var(--green);font-weight:700;letter-spacing:.04em;}
+    .nibrt-sub{font:800 1.05rem/1.3 'Manrope',system-ui,sans-serif;color:#fff;margin:4px 0 12px;position:relative;}
+    .nibrt-points{list-style:none;padding:0;margin:0 0 26px;display:flex;flex-direction:column;gap:10px;position:relative;}
+    .nibrt-points li{display:flex;align-items:flex-start;gap:12px;font-size:.97rem;line-height:1.6;color:rgba(255,255,255,.8);}
+    .nibrt-points li::before{content:'✓';width:22px;height:22px;border-radius:50%;background:rgba(62,178,72,.18);color:#7DD580;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;flex-shrink:0;margin-top:1px;}
+    .nibrt-cta{margin-bottom:28px;position:relative;}
     @media(max-width:900px){.nibrt-grid{flex-direction:column;align-items:flex-start;gap:28px;}.nibrt-logo{flex:none;max-width:240px;padding:0 0 24px;border-right:0;border-bottom:1px solid rgba(255,255,255,.15);}}
     @media(max-width:768px){.nibrt-stats{grid-template-columns:1fr;gap:18px;}.nibrt-stat+.nibrt-stat{border-left:0;padding-left:0;}.nibrt-band{padding:36px 26px;}}
 
@@ -150,10 +155,10 @@
     <p class="lead">BioTrain connects employers, educators, and job seekers to build the skilled biomanufacturing workforce Indiana's growing bioeconomy demands.</p>
     <p class="hero-cred">Delivered with NIBRT, the global leader in biomanufacturing training</p>
     <div class="hero-btns">
-      <a href="contact?program=biotrain&type=job_seeker" class="hero-cta">Apply as a Job Seeker →</a>
+      <a href="contact?program=biotrain&type=job_seeker" class="hero-cta">Get Started →</a>
       <a href="contact?program=biotrain&type=employer" class="hero-cta cta-alt">Partner as an Employer →</a>
     </div>
-    <div class="hero-proof"><span class="hp-badge">100% placement</span> Inaugural Veterans cohort</div>
+    <div class="hero-proof"><span class="hp-badge">Every participant</span> in our first veterans cohort moved into a biomanufacturing job</div>
     <div class="hero-metrics">
       <div class="hm-item"><div class="hm-num"><em>Stackable</em></div><div class="hm-label">Industry credentials</div></div>
       <div class="hm-item"><div class="hm-num"><em>No degree</em></div><div class="hm-label">Four-year degree not required</div></div>
@@ -173,10 +178,10 @@
         <p>Indiana's biomanufacturing sector is growing rapidly — and the workforce must grow with it. BioTrain bridges the gap between industry demand and talent supply through targeted training, stackable credentials, and direct employer partnerships.</p>
         <p>From entry-level technicians to advanced bioprocess engineers, BioTrain's programs are designed with industry to ensure graduates are ready on day one.</p>
         <ul class="feature-list">
-          <li>NIBRT-validated curriculum aligned to real job requirements</li>
+          <li>Industry-validated curriculum through NIBRT, aligned to real job requirements</li>
           <li>Stackable credentials and recognized certifications</li>
           <li>Employer-sponsored cohort programs</li>
-          <li>Pathways from Ivy Tech Community College through Purdue University</li>
+          <li>Training in partnership with Ivy Tech Community College and Purdue University</li>
           <li>Direct placement partnerships with hiring companies</li>
         </ul>
       </div>
@@ -197,14 +202,21 @@
         <div class="nibrt-logo"><img src="assets/nibrt-logo.png" alt="NIBRT — National Institute for Bioprocessing Research and Training" loading="lazy" /></div>
         <div class="nibrt-body">
           <div class="slabel">Global Partnership</div>
-          <h2 class="stitle" style="color:#fff;">Powered by NIBRT's Global Biomanufacturing Curriculum</h2>
-          <p class="nibrt-lead">Heartland BioWorks holds the exclusive NIBRT license across an 8-state Midwest territory, bringing Dublin-tested biomanufacturing training standards to Indiana's workforce.</p>
+          <h2 class="stitle" style="color:#fff;">Built on NIBRT</h2>
+          <p class="nibrt-lead">BioTrain training uses curriculum licensed from NIBRT, the National Institute for Bioprocessing Research and Training in Dublin, Ireland, and validated with industry. Heartland BioWorks is a member of NIBRT's Global Partners Program, an international network of training centers working to close the gap in skilled biomanufacturing talent. We hold the exclusive NIBRT partnership across eight Midwest states: Illinois, Indiana, Iowa, Kentucky, Michigan, Minnesota, Ohio, and Wisconsin.</p>
+          <h3 class="nibrt-sub">What that means for employers</h3>
+          <ul class="nibrt-points">
+            <li>New hires who already understand how a GMP facility runs, from documentation to cleanroom practice.</li>
+            <li>A training standard shared by NIBRT partners on four continents, now available in the Midwest.</li>
+            <li>Training built around the roles you are hiring for, not a one-size-fits-all course.</li>
+          </ul>
+          <a href="contact?program=biotrain&type=employer" class="hero-cta nibrt-cta">Talk with us about your workforce needs →</a>
           <div class="nibrt-stats">
             <div class="nibrt-stat">
-              <div><div class="nibrt-n">8-state</div><div class="nibrt-l">Exclusive Midwest license</div></div>
+              <div><div class="nibrt-n">8-state</div><div class="nibrt-l">Exclusive Midwest partnership</div></div>
             </div>
             <div class="nibrt-stat">
-              <div><div class="nibrt-n">Dublin</div><div class="nibrt-l">Curriculum origin</div></div>
+              <div><div class="nibrt-n">4 continents</div><div class="nibrt-l">NIBRT Global Partners network</div></div>
             </div>
             <div class="nibrt-stat">
               <div><div class="nibrt-n">Gold Standard</div><div class="nibrt-l">Worldwide leader in biomanufacturing training</div></div>
@@ -212,8 +224,8 @@
           </div>
           <div class="nibrt-license">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M9.8 9l1.6 1.6 2.8-3.2"/><path d="M9.3 13.6 8 21l4-2.4 4 2.4-1.3-7.4"/></svg>
-            <span>Exclusive Midwest license:</span>
-            <span class="nibrt-states">IN &nbsp;·&nbsp; IL &nbsp;·&nbsp; MI &nbsp;·&nbsp; OH &nbsp;·&nbsp; WI &nbsp;·&nbsp; MN &nbsp;·&nbsp; IA &nbsp;·&nbsp; KY</span>
+            <span>Exclusive Midwest partnership:</span>
+            <span class="nibrt-states">IL &nbsp;·&nbsp; IN &nbsp;·&nbsp; IA &nbsp;·&nbsp; KY &nbsp;·&nbsp; MI &nbsp;·&nbsp; MN &nbsp;·&nbsp; OH &nbsp;·&nbsp; WI</span>
           </div>
         </div>
       </div>
@@ -249,26 +261,32 @@
 <!-- PROGRAMS -->
 <section class="section section-alt" id="programs">
   <div class="container">
-    <div class="slabel">Programs</div>
+    <div class="slabel">Training</div>
     <h2 class="stitle">Training Pathways</h2>
-    <p class="ssub">Structured programs designed for every stage of a biomanufacturing career — from first step to advancement.</p>
+    <p class="ssub">BioTrain helps Indiana residents start careers in biomanufacturing and helps employers build the teams they need. Whether you're new to the field, already working in it, or hiring, here's where to start.</p>
     <div class="program-cards">
       <div class="prog-card reveal">
         <div class="prog-card-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M8.2 14.3L7 22l5-2.6L17 22l-1.2-7.7"/></svg></div>
-        <h3>Biomanufacturing Technician Certification</h3>
-        <p>16-week intensive training for entry-level biomanufacturing roles, built on NIBRT's global curriculum in partnership with Ivy Tech Community College and Eli Lilly.</p>
-        <a href="contact?program=biotrain" class="prog-card-link">Learn More →</a>
+        <h3>Start a Career in Biomanufacturing</h3>
+        <p>New to the field? BioTrain offers hands-on training built on NIBRT curriculum, in partnership with Purdue University and Ivy Tech Community College. Training length and credentials depend on the role you're aiming for, and we'll help you find the right fit.</p>
+        <a href="contact?program=biotrain&type=job_seeker" class="prog-card-link">Get Started →</a>
       </div>
       <div class="prog-card reveal">
         <div class="prog-card-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l9 4 9-4"/><path d="M3 12l9 4 9-4"/><path d="M12 3L3 7l9 4 9-4z"/></svg></div>
-        <h3>Advanced Bioprocess Operations</h3>
-        <p>Continuing education for experienced technicians moving into senior process roles. Covers upstream/downstream processing, QA/QC, and GMP compliance.</p>
-        <a href="contact?program=biotrain" class="prog-card-link">Learn More →</a>
+        <h3>Injectable Drug Product and Lyophilization Courses at Purdue</h3>
+        <p>Three courses taught by Purdue University: Principles of Injectable Drug Product Manufacturing, Practical Applications of Injectable Drug Product Manufacturing, and Fundamentals of Lyophilization. Theory is taught online and open to anyone, whether or not you're a Purdue student. Hands-on practicals take place at Purdue's West Lafayette campus.</p>
+        <a href="contact?program=biotrain&type=current_worker" class="prog-card-link">Ask about these courses →</a>
+      </div>
+      <div class="prog-card reveal">
+        <div class="prog-card-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div>
+        <h3>Upskilling for Current Biomanufacturing Workers</h3>
+        <p>Training for technicians and operators building skills in processing, quality, and GMP. Offered through BioTrain partners, including Purdue University, in coordination with employers. Reach out to talk about timing and fit.</p>
+        <a href="contact?program=biotrain&type=current_worker" class="prog-card-link">Talk about timing and fit →</a>
       </div>
       <div class="prog-card reveal">
         <div class="prog-card-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.9"/><path d="M16 3.1a4 4 0 010 7.8"/></svg></div>
-        <h3>Employer Partnership Program</h3>
-        <p>Design a custom training cohort for your company's workforce. Heartland BioWorks coordinates curriculum development, instructor placement, and graduate pipeline — already active with INCOG BioPharma and Simtra BioPharma Solutions.</p>
+        <h3>Partner With BioTrain</h3>
+        <p>Every employer partnership starts with a conversation about your workforce needs. Depending on fit and capacity, that can include a custom cohort built on NIBRT curriculum, upskilling for your current team, or connection to trained talent. BioTrain is already running employer cohorts with Indiana biomanufacturers, including INCOG Biopharma Services.</p>
         <a href="contact?program=biotrain&type=employer" class="prog-card-link">Partner With Us →</a>
       </div>
     </div>
@@ -286,28 +304,28 @@
           Who is BioTrain for?
           <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-        <div class="faq-a"><div class="faq-a-inner">BioTrain serves three audiences: job seekers looking to enter biomanufacturing, current biomanufacturing workers seeking advancement, and employers looking to build or upskill their workforce. Programs are available at multiple entry points.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">BioTrain serves three audiences: job seekers looking to enter biomanufacturing, current biomanufacturing workers seeking advancement, and employers looking to build or upskill their workforce. Training is available at multiple entry points.</div></div>
       </div>
       <div class="faq-item">
         <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
-          Are programs free for participants?
+          Is training free?
           <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-        <div class="faq-a"><div class="faq-a-inner">Many BioTrain programs offer subsidized or fully funded enrollment through employer sponsorships, state workforce development grants, and federal partnerships. Contact us to discuss funding options for your specific situation.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">Many BioTrain training opportunities offer subsidized or fully funded enrollment through employer sponsorships, state workforce development grants, and federal partnerships. Contact us to discuss funding options for your specific situation.</div></div>
       </div>
       <div class="faq-item">
         <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
           How do I connect my company to BioTrain?
           <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-        <div class="faq-a"><div class="faq-a-inner">Employers can join the BioTrain network by reaching out through the contact form below. We'll schedule a needs assessment to understand your hiring pipeline and connect you with appropriate training cohorts or build a custom program.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">Employers can join the BioTrain network by reaching out through the contact form below. We'll schedule a needs assessment to understand your hiring pipeline and connect you with appropriate training cohorts or build custom training.</div></div>
       </div>
       <div class="faq-item">
         <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
           What credentials do participants earn?
           <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-        <div class="faq-a"><div class="faq-a-inner">Credentials vary by program and include industry-recognized certifications — including certifications issued through NIBRT, the global leader in biomanufacturing training — stackable community college credits, OSHA and GMP compliance certifications, and in some cases direct pathway credits toward associate or bachelor's degrees.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">Credentials depend on the training path and the role you're preparing for. Many are stackable, so you can build on them as your career grows. We'll walk you through what each option offers before you enroll.</div></div>
       </div>
     </div>
   </div>

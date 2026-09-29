@@ -61,7 +61,10 @@
 .hb-footer{background:#050E18;padding:64px 0 30px;color:#fff;}
 .hb-footer-inner{width:min(calc(100% - 48px),1280px);margin:0 auto;}
 .hb-footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.07);}
-.hb-fbrand img{height:44px;margin-bottom:16px;}
+.hb-fbrand > a > img{height:54px;width:auto;margin-bottom:18px;}
+/* EDA Tech Hubs mark is navy-on-transparent, so it sits on a white plate; aspect ratio locked (566x142) */
+.hb-ftechhubs{display:inline-block;background:#fff;border-radius:8px;padding:9px 12px;margin:-4px 0 18px;line-height:0;}
+.hb-ftechhubs img{height:38px;width:auto;display:block;}
 .hb-fbrand p{font:400 .88rem/1.7 'Inter',system-ui,sans-serif;color:rgba(255,255,255,.42);max-width:300px;margin:0 0 18px;}
 .hb-fcontact{display:flex;flex-direction:column;gap:8px;}
 .hb-fcontact a{font:400 .85rem/1.4 'Inter',system-ui,sans-serif;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:7px;transition:color 140ms;}

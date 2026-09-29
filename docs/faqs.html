@@ -14,7 +14,7 @@
 <section class="hb-pagehero">
   <div class="hb-pagehero-inner">
     <h1>Frequently Asked Questions</h1>
-    <p>Answers about Heartland BioWorks, its programs, BioCAN grants, and how to get involved. Don't see your question? <a href="#contact" style="color:#7DD580;text-decoration:underline;">Contact us</a>.</p>
+    <p>Answers about Heartland BioWorks, its programs, funding and support through BioLaunch, and how to get involved. Don't see your question? <a href="#contact" style="color:#7DD580;text-decoration:underline;">Contact us</a>.</p>
   </div>
 </section>
 
@@ -46,14 +46,14 @@ var FAQS = [
   { cat: "BioLaunch", q: "What is BioLaunch?", a: "BioLaunch provides commercialization and innovation support for biotechnology and biomanufacturing solutions — helping move ideas toward market." },
   { cat: "BioLaunch", q: "What is BioStart?", a: "BioStart is the mentorship and peer-to-peer startup support track under BioLaunch, connecting founders with experienced operators and Indiana's innovation network." },
 
-  { cat: "BioCAN Grants", q: "What is BioCAN?", a: "BioCAN — the BioResource Coordination and Access Network — connects innovators with Indiana's CDMOs, labs, and scale-up resources, and helps companies navigate funding." },
-  { cat: "BioCAN Grants", q: "What funding does BioCAN help with?", a: "BioCAN helps companies navigate federal and state funding pathways such as SBIR/STTR, BARDA and DoD programs, and Indiana state programs. Specific opportunities and eligibility vary — contact the team for current guidance." },
-  { cat: "BioCAN Grants", q: "How do I find CDMO or lab capacity in Indiana?", a: "Explore the interactive ecosystem map on the BioCAN page to browse Indiana's CDMO, lab, and scale-up resources by capability area." },
+  { cat: "BioCAN", q: "What is BioCAN?", a: "BioCAN — the BioResource Coordination and Access Network — connects innovators with Indiana's CDMOs, labs, and scale-up resources, and helps companies navigate funding." },
+  { cat: "BioCAN", q: "What funding does BioCAN help with?", a: "BioCAN helps companies navigate federal and state funding pathways such as SBIR/STTR, BARDA and DoD programs, and Indiana state programs. Specific opportunities and eligibility vary — contact the team for current guidance." },
+  { cat: "BioCAN", q: "How do I find CDMO or lab capacity in Indiana?", a: "Explore the interactive ecosystem map on the BioCAN page to browse Indiana's CDMO, lab, and scale-up resources by capability area." },
 
   { cat: "Partners", q: "Who are Heartland BioWorks' partners?", a: "The ecosystem includes research universities (Purdue, Indiana University), Ivy Tech Community College, EmployIndy, BioCrossroads, the 16 Tech Innovation District, the Applied Research Institute, and a growing network of Indiana CDMOs and labs." },
   { cat: "Partners", q: "How can my organization partner with Heartland BioWorks?", a: "Organizations interested in workforce, manufacturing, research, or funding collaboration can reach out through the contact options on this site." },
 
-  { cat: "Contact", q: "How do I get in touch?", a: "Email info@heartlandbioworks.org or use the contact options in the site footer. For program-specific questions, mention whether you're interested in BioTrain, BioLaunch, or BioCAN." },
+  { cat: "Contact", q: "How do I get in touch?", html: true, a: "Email <a href=\"mailto:heartlandbioworks@theari.us\">heartlandbioworks@theari.us</a> or use the <a href=\"contact\">Contact Us</a> page in the site header. For program-specific questions, mention whether you are interested in BioTrain or BioLaunch." },
   { cat: "Contact", q: "How do I stay updated?", a: "Subscribe to the monthly briefing in the footer for funding opportunities, training programs, ecosystem resources, and BioCAN announcements." }
 ];
 
@@ -67,10 +67,10 @@ var FAQS = [
     q = (q || "").trim().toLowerCase();
     var cats = {};
     FAQS.forEach(function (f) {
-      if (q && (f.q + " " + f.a + " " + f.cat).toLowerCase().indexOf(q) === -1) return;
+      if (q && (f.q + " " + f.a.replace(/<[^>]+>/g, "") + " " + f.cat).toLowerCase().indexOf(q) === -1) return;
       (cats[f.cat] = cats[f.cat] || []).push(f);
     });
-    var order = ["General", "BioTrain", "BioLaunch", "BioCAN Grants", "Partners", "Contact"];
+    var order = ["General", "BioTrain", "BioLaunch", "BioCAN", "Partners", "Contact"];
     var html = order.filter(function (c) { return cats[c]; }).map(function (c) {
       return '<h2 class="faqp-cat">' + esc(c) + "</h2>" + cats[c].map(function (f, i) {
         var id = "faq-" + c.replace(/\W+/g, "") + "-" + i;
@@ -78,7 +78,7 @@ var FAQS = [
           '<button class="faqp-q" type="button" aria-expanded="false" aria-controls="' + id + '">' +
             "<span>" + esc(f.q) + "</span>" +
             '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>' +
-          '<div class="faqp-a" id="' + id + '" role="region"><div><div class="faqp-a-inner">' + esc(f.a) + "</div></div></div>" +
+          '<div class="faqp-a" id="' + id + '" role="region"><div><div class="faqp-a-inner">' + (f.html ? f.a : esc(f.a)) + "</div></div></div>" +
         "</div>";
       }).join("");
     }).join("");

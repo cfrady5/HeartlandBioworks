@@ -27,7 +27,7 @@
       { key: "press", label: "Press Releases", href: "press-releases" },
       { key: "events", label: "Upcoming Events", href: "events" },
       { key: "media", label: "Media Library", href: "media-library" },
-      { key: "biocan", label: "CDMO Resources", href: "biocan#ecosystem-map" }
+      { key: "biocan", label: "CDMO & Lab Resources", href: "biocan#ecosystem-map" }
     ]},
     { key: "about", label: "About", href: "about", children: [
       { key: "about", label: "About Us", href: "about" },
@@ -107,10 +107,11 @@
       '<div class="hb-footer-top">' +
         '<div class="hb-fbrand">' +
           '<a href="/" aria-label="Heartland BioWorks — home"><img src="' + LOGO + '" alt="Heartland BioWorks" /></a>' +
+          '<a class="hb-ftechhubs" href="https://www.eda.gov/funding/programs/regional-technology-and-innovation-hubs" target="_blank" rel="noopener noreferrer" aria-label="U.S. Economic Development Administration Tech Hubs program"><img src="assets/eda-tech-hubs.png" alt="Tech Hubs — U.S. Economic Development Administration" loading="lazy" /></a>' +
           '<p>Indiana’s federally designated biomanufacturing EDA Tech Hub, powered by the Applied Research Institute — connecting workforce, research, industry, and government to grow the state’s bioeconomy.</p>' +
           '<div class="hb-fcontact">' +
             '<a href="mailto:heartlandbioworks@theari.us">heartlandbioworks@theari.us</a>' +
-            '<a href="contact">16 Tech Innovation District, Indianapolis, IN</a>' +
+            '<a href="contact">1250 Indiana Avenue, 16 Tech Innovation District, Indianapolis, IN 46202</a>' +
           '</div>' +
         '</div>' +
         '<div class="hb-fcol"><h4>Programs</h4><ul>' +
