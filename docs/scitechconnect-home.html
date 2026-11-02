@@ -162,42 +162,46 @@
     background:var(--stc-accent);box-shadow:0 0 0 4px rgba(56,182,255,.18);
   }
 
-  /* ── SUBWAY ROADMAP ── */
+  /* ── JOURNEY (numbered Identify→Engage→Train→Mentor tiles) ── */
   .stc-roadmap{background:var(--stc-white);text-align:center;}
-  .stc-roadmap-head{max-width:62ch;margin:0 auto 56px;}
+  .stc-roadmap-head{max-width:62ch;margin:0 auto 48px;}
   .stc-roadmap-head .stc-sub2{margin-top:10px;color:var(--stc-muted);}
-  .stc-line{
-    position:relative;
-    display:grid;grid-template-columns:repeat(4,1fr);
-    gap:24px;align-items:start;
-  }
-  /* The connecting track */
-  .stc-line::before{
-    content:"";position:absolute;top:42px;left:12%;right:12%;height:5px;
-    background:linear-gradient(90deg,var(--stc-blue),var(--stc-accent));
-    border-radius:99px;z-index:0;
-  }
-  .stc-station{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;background:transparent;border:0;cursor:pointer;font-family:inherit;color:inherit;padding:0;}
-  .stc-stop{
-    width:84px;height:84px;border-radius:50%;
+  .stc-journey{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:left;}
+  .stc-step{
+    position:relative;display:flex;flex-direction:column;
     background:var(--stc-white);
-    border:5px solid var(--stc-blue);
-    display:flex;align-items:center;justify-content:center;
-    color:var(--stc-blue);
-    transition:transform .25s var(--stc-ease),border-color .25s var(--stc-ease),
-               background .25s var(--stc-ease),color .25s var(--stc-ease),box-shadow .25s var(--stc-ease);
+    border:1px solid var(--stc-border);
+    border-radius:18px;padding:26px 24px 22px;
+    text-decoration:none;color:inherit;
+    transition:transform .25s var(--stc-ease),box-shadow .25s var(--stc-ease),border-color .25s var(--stc-ease);
   }
-  .stc-stop svg{width:38px;height:38px;stroke:currentColor;stroke-width:1.9;fill:none;}
-  .stc-station:hover .stc-stop,
-  .stc-station:focus-visible .stc-stop,
-  .stc-station.is-active .stc-stop{
-    transform:scale(1.12);
-    background:var(--stc-blue);color:var(--stc-white);
+  .stc-step:hover,.stc-step:focus-visible{
+    transform:translateY(-5px);
     border-color:var(--stc-accent);
-    box-shadow:0 12px 30px rgba(0,74,173,.3);
+    box-shadow:0 16px 38px rgba(16,13,40,.14);
   }
-  .stc-station h3{margin:18px 0 6px;font-size:1.15rem;color:var(--stc-dark);}
-  .stc-station p{font-size:.86rem;color:var(--stc-muted);max-width:22ch;}
+  /* Highlighted final step (matches mockup's "Submit/Mentor") */
+  .stc-step--accent{background:var(--stc-blue);border-color:var(--stc-blue);color:var(--stc-white);}
+  .stc-step--accent .stc-step-cat{color:rgba(255,255,255,.75);}
+  .stc-step--accent h3{color:var(--stc-white);}
+  .stc-step--accent p{color:rgba(255,255,255,.82);}
+  .stc-step--accent .stc-step-num{color:rgba(255,255,255,.3);}
+  .stc-step--accent .stc-step-link{color:var(--stc-white);}
+  .stc-step-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;}
+  .stc-step-ico{
+    width:46px;height:46px;border-radius:12px;flex:none;
+    background:rgba(56,182,255,.12);color:var(--stc-blue);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .stc-step--accent .stc-step-ico{background:rgba(255,255,255,.16);color:var(--stc-white);}
+  .stc-step-ico svg{width:24px;height:24px;stroke:currentColor;stroke-width:1.9;fill:none;}
+  /* Numbered eyebrow replaces the old small-blue label (per refresh notes) */
+  .stc-step-num{font-family:var(--stc-font-head);font-weight:800;font-size:1.5rem;letter-spacing:-.02em;color:#C9D4E6;line-height:1;}
+  .stc-step-cat{display:block;font-family:var(--stc-font-head);font-weight:800;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--stc-blue);margin-bottom:4px;}
+  .stc-step h3{font-size:1.2rem;color:var(--stc-dark);margin-bottom:10px;}
+  .stc-step p{font-size:.88rem;line-height:1.55;color:var(--stc-muted);margin-bottom:16px;}
+  .stc-step-link{margin-top:auto;font-family:var(--stc-font-head);font-weight:700;font-size:.85rem;color:var(--stc-blue);display:inline-flex;align-items:center;gap:6px;}
+  .stc-step:hover .stc-step-link{gap:10px;}
 
   /* ── FAQ (single column for natural reading order) ── */
   .stc-faq{background:var(--stc-light);}
@@ -307,16 +311,11 @@
     .stc-faq-grid{grid-template-columns:1fr;}
     .stc-footer-grid{grid-template-columns:1fr 1fr;}
     .stc-footer .stc-foot-brand{grid-column:1/-1;}
-    /* Roadmap stacks vertically with a vertical track */
-    .stc-line{grid-template-columns:1fr;gap:40px;}
-    .stc-line::before{
-      top:0;bottom:0;left:42px;right:auto;width:5px;height:auto;
-      background:linear-gradient(180deg,var(--stc-blue),var(--stc-accent));
-    }
-    .stc-station{flex-direction:row;text-align:left;gap:20px;align-items:center;}
-    .stc-station h3{margin:0 0 4px;}
-    .stc-station p{max-width:none;}
-    .stc-station .stc-station-text{flex:1;}
+    /* Journey: 2-up on tablet */
+    .stc-journey{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:560px){
+    .stc-journey{grid-template-columns:1fr;}
   }
   @media(max-width:560px){
     .stc-section{padding:60px 0;}
@@ -392,51 +391,70 @@
     <div class="stc-wrap">
       <div class="stc-roadmap-head stc-reveal">
         <span class="stc-eyebrow">Strategic Access, Tailored to You</span>
-        <h2 class="stc-h2" id="stc-road-title">Your Journey to Mission Impact</h2>
-        <p class="stc-sub2">Four stops from the campus lab to deployed Department of War capability — start anywhere on the line.</p>
+        <h2 class="stc-h2" id="stc-road-title">Your SciTechCONNECT Journey</h2>
+        <p class="stc-sub2">Four ordered steps from the campus lab to deployed Department of War capability — follow them in sequence or start where you are.</p>
       </div>
 
-      <div class="stc-line" role="list">
-        <!-- LEARN -->
-        <button type="button" class="stc-station stc-reveal" role="listitem">
-          <span class="stc-stop" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/></svg>
-          </span>
-          <span class="stc-station-text">
-            <h3>Learn</h3>
-            <p>Webinars · Curriculum · Podcast</p>
-          </span>
-        </button>
-        <!-- BRIDGE -->
-        <button type="button" class="stc-station stc-reveal" role="listitem">
-          <span class="stc-stop" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M2 17c3 0 3-4 6-4s3 4 6 4 3-4 6-4"/><path d="M4 17V9m16 8V9"/><path d="M2 9h20"/></svg>
-          </span>
-          <span class="stc-station-text">
-            <h3>Bridge</h3>
-            <p>Connect with program managers, primes &amp; peer institutions</p>
-          </span>
-        </button>
-        <!-- FUND -->
-        <button type="button" class="stc-station stc-reveal" role="listitem">
-          <span class="stc-stop" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1.1 1.1-1.8 2.5-1.8s2.5.7 2.5 1.8-1.1 1.6-2.5 1.6-2.5.6-2.5 1.7 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/></svg>
-          </span>
-          <span class="stc-station-text">
-            <h3>Fund</h3>
-            <p>SBIR/STTR · BAAs · Grants &amp; capital pathways</p>
-          </span>
-        </button>
-        <!-- DEPLOY -->
-        <button type="button" class="stc-station stc-reveal" role="listitem">
-          <span class="stc-stop" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4.5 16.5L3 21l4.5-1.5"/><path d="M14 4s4 0 6 2 2 6 2 6l-9 5-4-4 5-9z"/><circle cx="14.5" cy="9.5" r="1.6"/></svg>
-          </span>
-          <span class="stc-station-text">
-            <h3>Deploy</h3>
-            <p>Transition research into fielded DoW capability</p>
-          </span>
-        </button>
+      <div class="stc-journey" role="list">
+        <!-- 01 · IDENTIFY (Learn) -->
+        <!-- REPLACE href with the Opportunities in S&T page URL -->
+        <a class="stc-step stc-reveal" role="listitem" href="#opportunities">
+          <div class="stc-step-top">
+            <span class="stc-step-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            </span>
+            <span class="stc-step-num" aria-hidden="true">01</span>
+          </div>
+          <span class="stc-step-cat">Learn</span>
+          <h3>Identify</h3>
+          <p>Discover where your research, technology, and expertise align with DoW science and technology priorities.</p>
+          <span class="stc-step-link">Opportunities in S&amp;T →</span>
+        </a>
+
+        <!-- 02 · ENGAGE (Bridge) -->
+        <!-- REPLACE href with the Upcoming Events page URL -->
+        <a class="stc-step stc-reveal" role="listitem" href="#events">
+          <div class="stc-step-top">
+            <span class="stc-step-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 00-3-3.87M16 3.13A4 4 0 0116 11"/></svg>
+            </span>
+            <span class="stc-step-num" aria-hidden="true">02</span>
+          </div>
+          <span class="stc-step-cat">Bridge</span>
+          <h3>Engage</h3>
+          <p>Connect with the DoW S&amp;T community through events, webinars, and conversations that open doors to collaboration.</p>
+          <span class="stc-step-link">Events &amp; Webinars →</span>
+        </a>
+
+        <!-- 03 · TRAIN (Fund) -->
+        <!-- REPLACE href with the Lessons on Demand page URL -->
+        <a class="stc-step stc-reveal" role="listitem" href="#lessons">
+          <div class="stc-step-top">
+            <span class="stc-step-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/></svg>
+            </span>
+            <span class="stc-step-num" aria-hidden="true">03</span>
+          </div>
+          <span class="stc-step-cat">Fund</span>
+          <h3>Train</h3>
+          <p>Build the knowledge to pursue DoW opportunities through practical, on-demand lessons on funding, research partnerships, and working with the department.</p>
+          <span class="stc-step-link">On-Demand Learning →</span>
+        </a>
+
+        <!-- 04 · MENTOR (Submit) — highlighted final step -->
+        <!-- REPLACE href with the Live Coaching / Discovery Sessions URL -->
+        <a class="stc-step stc-step--accent stc-reveal" role="listitem" href="#coaching">
+          <div class="stc-step-top">
+            <span class="stc-step-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            </span>
+            <span class="stc-step-num" aria-hidden="true">04</span>
+          </div>
+          <span class="stc-step-cat">Submit</span>
+          <h3>Mentor</h3>
+          <p>Move forward with one-on-one guidance from experienced coaches who help you refine your approach and plan your next steps.</p>
+          <span class="stc-step-link">Discovery Sessions →</span>
+        </a>
       </div>
     </div>
   </section>
@@ -579,11 +597,6 @@
   } else {
     reveals.forEach(function(el){ el.classList.add('stc-vis'); });
   }
-
-  // Roadmap: tap/click toggles an active state (hover/focus already handled in CSS)
-  root.querySelectorAll('.stc-station').forEach(function(st){
-    st.addEventListener('click', function(){ st.classList.toggle('is-active'); });
-  });
 
   // FAQ: keep one answer open at a time (native <details> still works without JS)
   var allFaq = root.querySelectorAll('.stc-faq details');
