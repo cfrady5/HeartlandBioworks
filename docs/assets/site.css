@@ -514,7 +514,8 @@
 .fund-sub{font:600 1.02rem/1.4 'Inter',system-ui,sans-serif;color:rgba(255,255,255,.88);}
 .fund-desc-wrap{padding:52px 48px;border-left:1px solid rgba(255,255,255,.16);display:flex;align-items:center;}
 .fund-desc{font:400 .97rem/1.78 'Inter',system-ui,sans-serif;color:rgba(255,255,255,.76);margin:0;}
-[data-doc].is-pending{opacity:.5;pointer-events:none;}
+/* the .reveal.vis fade-in also sets opacity, so out-rank it or a pending card looks live */
+[data-doc].is-pending,[data-doc].is-pending.reveal.vis{opacity:.5;pointer-events:none;}
 .fund-note{font:400 .82rem/1.6 'Inter',system-ui,sans-serif;color:var(--hb-muted);margin-top:16px;}
 @media(max-width:860px){
   .fund-summary{grid-template-columns:1fr;}
